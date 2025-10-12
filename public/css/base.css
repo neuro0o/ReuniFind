@@ -1,0 +1,89 @@
+/* ==========================================
+   ReuniFind Global Design Config
+   ========================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap');
+
+/* ---------- Root Variables ---------- */
+:root {
+  /* ReuniFind Brand Colors */
+--color-primary: #3A5987;
+--color-secondary: #F1F4FB;
+--color-tertiary: #D5DEEF;
+--color-background: #E4E9F7;
+
+  /* Alerts */
+  --color-success: #22c55e;
+  --color-error: #ef4444;
+  --color-warning: #facc15;
+
+  /* Font Families */
+  --font-heading: 'Quicksand', 'Segoe UI', sans-serif;
+  --font-body: 'Inter', 'Poppins', 'Segoe UI', sans-serif;
+
+  /* Font Weights */
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+
+}
+
+/* ---------- Default Styles ---------- */
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-background);
+  color: #1e293b; /* text color */
+  font-family: var(--font-body);
+  font-weight: var(--fw-regular);
+  line-height: 1.6;
+  scroll-behavior: smooth;
+}
+
+/* ---------- Headings ---------- */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  color: var(--color-primary);
+  margin-top: 0;
+}
+
+h1 {
+  font-weight: var(--fw-bold);
+}
+
+h2, h3, h4 {
+  font-weight: var(--fw-semibold);
+}
+
+/* ---------- Buttons & Navbars ---------- */
+button, .btn, nav, .navbar {
+  font-family: var(--font-heading);
+  font-weight: var(--fw-medium);
+}
+
+/* ---------- Links ---------- */
+/* a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+a:hover {
+  color: var(--color-warning);
+} */
+
+.btn {
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius);
+  padding: 10px 24px;
+  font-family: var(--font-heading);
+  font-weight: var(--fw-medium);
+  transition: var(--transition);
+}
+
+.btn:hover {
+  background-color: var(--color-tertiary);
+}
