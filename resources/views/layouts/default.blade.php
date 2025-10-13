@@ -28,5 +28,8 @@
     <footer>
       @yield('footer')
     </footer>
+
+    <!-- Page-specific JS -->
+    @yield('page-js')
   </body>
 </html>

@@ -8,6 +8,11 @@
     <link rel="stylesheet" href="{{ asset('css/landing.css') }}">
 @endsection
 
+<!-- PAGE SPECIFIC JS -->
+@section('page-js')
+
+@endsection
+
 <!-- HEADER SECTION -->
 @section('header')
     

@@ -1,4 +1,12 @@
-@extends('layouts.user_default')
+@extends('layouts.default')
+
+<!-- TITLE -->
+@section('title', 'Home')
+
+<!-- PAGE SPECIFIC CSS -->
+@section('page-css')
+    <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
+@endsection
 
 <!-- HEADER SECTION -->
 @section('header')
@@ -9,13 +17,10 @@
 @section('content')    
     <section class="hero">
         <div class="layout">
-            @include('layouts.user_sidenav')
+            @include('layouts.sidebar')
             <div class="main-content">
-                <img src="{{ asset('images/ReuniFind_Logo.svg') }}" alt="ReuniFind Logo" style="width:100px; margin-bottom:20px;"> 
-                <h1>Found something? ReuniFind it!</h1> 
-                <p>Because every lost things deserve a way home</p>
-                <a href="{{ route('register') }}" class="btn primary">Register</a>
-                <a href="{{ route('register') }}" class="btn primary">Register</a>
+                <h1>PAGE TITLE</h1>
+                <h6>[-- DASHBOARD CONTENT --]</h6>
             </div>
         </div>
     </section>
@@ -25,4 +30,10 @@
 <!-- FOOTER SECTION -->
 @section('footer')
     
+@endsection
+
+<!-- PAGE SPECIFIC JS -->
+@section('page-js')
+    <!-- FIXME: Fix Sidebar Collapse Behavior -->
+    <script src="{{ asset('js/sidebar.js') }}"></script>
 @endsection
