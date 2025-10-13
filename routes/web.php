@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 // LANDING
 Route::get('/', function () {
     return view('landing');
+    // return view('user/dashboard');
 });
 
 /*----------------- AUTH ROUTES -------------------*/

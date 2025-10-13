@@ -1,0 +1,118 @@
+.dashboard-header {
+  margin-bottom: 2rem;
+}
+
+.dashboard-header h1 {
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-bold);
+  color: var(--color-primary);
+}
+
+.dashboard-header p {
+  font-size: var(--fs-md);
+  color: #475569;
+  margin-top: 0.3rem;
+}
+
+/* Quick Action Section */
+.quick-actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.2rem;
+  margin-top: 2rem;
+}
+
+.quick-actions button {
+  border: none;
+  background: white;
+  border-radius: 1rem;
+  padding: 1.2rem 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  color: var(--color-primary);
+  font-family: var(--font-heading);
+  font-weight: var(--fw-semibold);
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.quick-actions button:hover {
+  background-color: var(--color-secondary);
+  transform: translateY(-3px);
+}
+
+/* Activity Summary */
+.activity-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-top: 3rem;
+}
+
+.activity-card {
+  background-color: white;
+  border-radius: 1rem;
+  padding: 1.5rem 1rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  text-align: center;
+}
+
+.activity-card h3 {
+  font-size: var(--fs-lg);
+  color: var(--color-primary);
+  margin-bottom: 0.5rem;
+}
+
+.activity-card p {
+  font-size: var(--fs-sm);
+  color: #64748b;
+}
+
+/* Announcement */
+.announcement {
+  background-color: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin-top: 3rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.announcement h4 {
+  font-size: var(--fs-lg);
+  color: var(--color-primary);
+  margin-bottom: 1rem;
+}
+
+.announcement ul {
+  list-style: none;
+}
+
+.announcement li {
+  margin-bottom: 0.6rem;
+  font-size: var(--fs-sm);
+}
+
+/* Trending Forum */
+.trending {
+  margin-top: 3rem;
+}
+
+.trending h4 {
+  font-size: var(--fs-lg);
+  color: var(--color-primary);
+  margin-bottom: 1.5rem;
+}
+
+.trending .forum-card {
+  background: white;
+  border-radius: 1rem;
+  padding: 1rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  margin-bottom: 1rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .quick-actions, .activity-summary {
+    grid-template-columns: 1fr;
+  }
+}
