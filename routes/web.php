@@ -1,20 +1,24 @@
 <?php
 
+use App\Http\Controllers\RegistrationController;
 use Illuminate\Support\Facades\Route;
 
 // LANDING
 Route::get('/', function () {
-    // return view('landing');
-
-    // TODO: REMOVE LATER
-    return view('user.index');
+    return view('landing');
 });
 
-// AUTH
-Route::get('/register', function() {
-    return view('auth.register');
-})->name('register');
+/*----------------- AUTH ROUTES -------------------*/
 
+// REGISTER
+Route::get('register', [RegistrationController::class, 'showForm'])
+    ->name('register');
+
+
+// LOGIN
+Route::get('/login', function() {
+    return view('auth.login');
+})->name('login');
 
 /*----------------- TEMP ROUTES -------------------*/
 // HOME @ DASHBOARD
