@@ -23,7 +23,7 @@
 
         <div class="form-card">
           <h2 id="form-title">LOGIN</h2>
-          <form method="post" action="">
+          <form method="post" action="{{ route('login.process') }}">
             @csrf
 
             <label for="userEmail">Email</label>

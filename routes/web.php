@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RegistrationController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,11 +15,16 @@ Route::get('/', function () {
 Route::get('register', [RegistrationController::class, 'showForm'])
     ->name('register');
 
+Route::post('register', [RegistrationController::class, 'processForm'])
+    ->name('register.process');
+
 
 // LOGIN
-Route::get('/login', function() {
-    return view('auth.login');
-})->name('login');
+Route::get('login', [AuthController::class, 'showLoginForm'])
+    ->name('login');
+Route::post('login', [AuthController::class, 'login'])
+    ->name('login.process');
+
 
 /*----------------- TEMP ROUTES -------------------*/
 // HOME @ DASHBOARD

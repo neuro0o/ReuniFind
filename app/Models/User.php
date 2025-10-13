@@ -18,8 +18,8 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
-        'email',
+        'userName',
+        'userEmail',
         'password',
     ];
 
@@ -44,5 +44,13 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Tell Laravel authentication to use `userEmail` instead of `email`.
+     */
+    public function getAuthIdentifierName()
+    {
+        return 'userEmail';
     }
 }

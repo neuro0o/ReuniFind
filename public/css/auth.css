@@ -119,3 +119,11 @@
     padding: 1.5rem 0rem;
   }
 }
+
+.error-msg {
+  color: var(--color-error);
+  font-size: 1.2rem;
+  display: block;
+  margin-top: 5px;
+  text-align: left;
+}
