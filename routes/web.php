@@ -3,6 +3,8 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RegistrationController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 // LANDING
 Route::get('/', function () {
@@ -15,10 +17,8 @@ Route::get('/', function () {
 // REGISTER
 Route::get('register', [RegistrationController::class, 'showForm'])
     ->name('register');
-
 Route::post('register', [RegistrationController::class, 'processForm'])
     ->name('register.process');
-
 
 // LOGIN
 Route::get('login', [AuthController::class, 'showLoginForm'])
@@ -26,13 +26,20 @@ Route::get('login', [AuthController::class, 'showLoginForm'])
 Route::post('login', [AuthController::class, 'login'])
     ->name('login.process');
 
+// Logout
+Route::post('/logout', function (Request $request) {
+    Auth::logout();
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+    return redirect('/'); // landing page
+})->name('logout');
 
-/*----------------- TEMP ROUTES -------------------*/
 // HOME @ DASHBOARD
 Route::get('/dashboard', function () {
-    return view('dashboard'); // Blade file name here
-})->name('dashboard');
+    return view('user.dashboard');
+})->middleware('auth')->name('user.dashboard');
 
+/*----------------- TEMP ROUTES -------------------*/
 // LOST & FOUND REPORT
 Route::prefix('report')->group(function () {
     Route::get('/lost', function () {

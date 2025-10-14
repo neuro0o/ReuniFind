@@ -12,12 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->id('userID');
+            $table->string('userEmail')->unique();
+            $table->string('userName');
             $table->string('password');
-            $table->rememberToken();
+            $table->enum('userRole', [
+                'Admin',
+                'User'
+            ])->default('User');
+            $table->string('contactInfo')->nullable();
+            $table->string('profileImg')->nullable();
             $table->timestamps();
         });
 
@@ -29,7 +33,11 @@ return new class extends Migration
 
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();
-            $table->foreignId('user_id')->nullable()->index();
+            $table->foreignId('user_id')
+                  ->nullable()
+                  ->constrained('users', 'userID') // references users.userID
+                  ->onDelete('cascade');
+
             $table->string('ip_address', 45)->nullable();
             $table->text('user_agent')->nullable();
             $table->longText('payload');
@@ -42,8 +50,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
-        Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
+        Schema::dropIfExists('password_reset_tokens');
+        Schema::dropIfExists('users');
     }
 };
