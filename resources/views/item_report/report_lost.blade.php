@@ -29,6 +29,7 @@
 
           <!-- RIGHT: Form Fields -->
           <div class="form-fields">
+            <input type="hidden" name="reportType" value="Lost">
             <label for="itemName">Item Name</label>
             <input type="text" name="itemName" id="itemName" placeholder="Enter Item Name..." value="{{ old('itemName') }}" required>
             <br>

@@ -19,11 +19,21 @@ class ItemReportController extends Controller
         return view('item_report.report_lost', compact('categoryEnum', 'locationEnum'));
     }
 
+    // -------------------- CREATE ITEM REPORT (Found Form) -------------------- //
+    public function reportFound()
+    {
+        $categoryEnum = $this->getEnumValues('item_reports', 'itemCategory');
+        $locationEnum = $this->getEnumValues('item_reports', 'itemLocation');
+
+        return view('item_report.report_found', compact('categoryEnum', 'locationEnum'));
+    }
+
     // -------------------- STORE ITEM REPORT -------------------- //
     public function processForm(Request $request)
     {
         // Validate input
         $validated = $request->validate([
+            'reportType' => 'required|in:Lost,Found',
             'itemName' => 'required|string|max:255',
             'itemCategory' => 'required|string',
             'itemDescription' => 'nullable|string|max:255',
@@ -40,7 +50,7 @@ class ItemReportController extends Controller
 
         // Create new report
         $report = new ItemReport();
-        $report->reportType = 'Lost';
+        $report->reportType = $validated['reportType']; // Use form value
         $report->itemName = $validated['itemName'];
         $report->itemCategory = $validated['itemCategory'];
         $report->itemDescription = $validated['itemDescription'];
@@ -56,11 +66,34 @@ class ItemReportController extends Controller
 
 
     // -------------------- READ (View All Reports) -------------------- //
-    public function viewReports()
+    public function viewReports(Request $request)
     {
-        $reports = ItemReport::with('user')->latest()->get();
+        $query = ItemReport::query();
+
+        if ($request->filled('keyword')) {
+            $query->where('itemName', 'like', '%' . $request->keyword . '%')
+                    ->orWhere('itemDescription', 'like', '%' . $request->keyword . '%');
+        }
+
+        if ($request->filled('status') && $request->status !== 'all') {
+            $query->where('reportType', ucfirst($request->status));
+        }
+
+        if ($request->filled('category') && $request->category !== '') {
+            $query->where('itemCategory', ucfirst($request->category));
+        }
+
+        $reports = $query->orderBy('reportDate', 'desc')->get();
+
         return view('item_report.view', compact('reports'));
     }
+
+    public function show($id)
+    {
+        $report = ItemReport::findOrFail($id);
+        return view('user.report_details', compact('report'));
+    }
+
 
     // -------------------- READ (User’s Reports) -------------------- //
     public function myReports()

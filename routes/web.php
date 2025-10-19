@@ -49,7 +49,14 @@ Route::middleware(['auth'])->prefix('item_report')->group(function () {
     Route::get('/report_found', [ItemReportController::class, 'reportFound'])->name('item_report.report_found');
     Route::post('/report_found', [ItemReportController::class, 'processForm'])->name('item_report.store');
 
-    Route::get('/view', [ItemReportController::class, 'viewReports'])->name('item_report.view');
+    Route::get('/view', [ItemReportController::class, 'viewReports'])
+    ->middleware('auth')
+    ->name('item_report.view');
+
+    Route::get('/reports/{id}', [ItemReportController::class, 'show'])->name('reports.show');
+
+
+    // temp routes
     Route::get('/matchmaking', [ItemReportController::class, 'matchmaking'])
     ->name('item_report.report_matchmaking');
     Route::get('/my_report', [ItemReportController::class, 'myReports'])->name('item_report.my_report');
