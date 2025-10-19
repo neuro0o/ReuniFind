@@ -84,13 +84,21 @@
         </ul>
     </li>
 
-    <!-- FIXME: -->
     <!-- User Profile -->
     <div class="user-profile">
-        <img src="{{ asset('images/profile/default_user.png') }}" alt="User" class="user-pic" style="width: 20px;">
-        <span class="username">{{ Auth::user()->name ?? 'Guest' }}</span>
-        <span class="email">{{ Auth::user()->email ?? 'neuro@gmail.com' }}</span>
+        <img 
+            src="{{ Auth::check() && Auth::user()->profileImg 
+                ? asset('storage/profile/' . Auth::user()->profileImg) 
+                : asset('images/profile/user_default.png') }}" 
+            alt="User" 
+            class="user-pic">
+
+        <div class="user-info">
+            <span class="username">{{ Auth::user()->userName ?? 'Guest' }}</span><br>
+            <span class="email">{{ Auth::user()->userEmail ?? 'neuro@gmail.com' }}</span>
+        </div>
     </div>
+
     
     <!-- Account Settings -->
     <li class="active">
