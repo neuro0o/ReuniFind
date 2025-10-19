@@ -1,3 +1,14 @@
+.button-groups {
+  display: flex;
+  gap: 1rem; /* space between buttons */
+  justify-content: center; /* center buttons horizontally */
+  flex-wrap: wrap; /* wrap on smaller screens */
+}
+
+.button-groups a {
+  font-weight: var(--fw-bold);
+}
+
 .feature-list {
   min-width:  50%;
   margin: 0 auto;
@@ -11,13 +22,6 @@
 
   /* TODO: REMOVE LATER */
   /* border: 1px solid red; */
-}
-
-.button-groups {
-  display: flex;
-  gap: 1rem; /* space between buttons */
-  justify-content: center; /* center buttons horizontally */
-  flex-wrap: wrap; /* wrap on smaller screens */
 }
 
 #feature-desc {

@@ -13,7 +13,7 @@
 
     <!-- Home @ Dashboard -->
     <li class="active">
-      <a href="{{ route('dashboard') }}">
+      <a href="{{ route('user.dashboard') }}">
         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M240-200h120v-240h240v240h120v-360L480-740 240-560v360Zm-80 80v-480l320-240 320 240v480H520v-240h-80v240H160Zm320-350Z"/></svg>
         <span>Home</span>
       </a>
@@ -84,13 +84,21 @@
         </ul>
     </li>
 
-    <!-- FIXME: -->
     <!-- User Profile -->
     <div class="user-profile">
-        <img src="{{ asset('images/default_user.png') }}" alt="User" class="user-pic">
-        <span class="username">{{ Auth::user()->name ?? 'Guest' }}</span>
-        <span class="email">{{ Auth::user()->email ?? 'neuro@gmail.com' }}</span>
+        <img 
+            src="{{ Auth::check() && Auth::user()->profileImg 
+                ? asset('storage/profile/' . Auth::user()->profileImg) 
+                : asset('images/profile/user_default.png') }}" 
+            alt="User" 
+            class="user-pic">
+
+        <div class="user-info">
+            <span class="username">{{ Auth::user()->userName ?? 'Guest' }}</span><br>
+            <span class="email">{{ Auth::user()->userEmail ?? 'neuro@gmail.com' }}</span>
+        </div>
     </div>
+
     
     <!-- Account Settings -->
     <li class="active">
@@ -102,8 +110,13 @@
 
     <!-- Logout -->
     <li class="active">
-      <a href="{{ route('logout') }}">
-        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h280v80H200Zm440-160-55-58 102-102H360v-80h327L585-622l55-58 200 200-200 200Z"/></svg>
+      <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+        @csrf
+      </form>
+      <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
+            <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h280v80H200Zm440-160-55-58 102-102H360v-80h327L585-622l55-58 200 200-200 200Z"/>
+        </svg>
         <span>Logout</span>
       </a>
     </li>
