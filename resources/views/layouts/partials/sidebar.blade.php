@@ -28,11 +28,11 @@
       </button>
       <ul class="sub-menu">
           <div>
-            <li><a href="{{ route('report.lost') }}">Report Lost Item</a></li>
-            <li><a href="{{ route('report.found') }}">Report Found Item</a></li>
-            <li><a href="{{ route('report.view') }}">View All Reports</a></li>
-            <li><a href="{{ route('report.matchmaking') }}">Report Matchmaking</a></li>
-            <li><a href="{{ route('report.my') }}">My Reports</a></li>
+            <li><a href="{{ route('item_report.report_lost') }}">Report Lost Item</a></li>
+            <li><a href="{{ route('item_report.report_found') }}">Report Found Item</a></li>
+            <li><a href="{{ route('item_report.view') }}">View All Reports</a></li>
+            <li><a href="{{ route('item_report.report_matchmaking') }}">Report Matchmaking</a></li>
+            <li><a href="{{ route('item_report.my_report') }}">My Reports</a></li>
           </div>
         </ul>
     </li>
@@ -88,14 +88,14 @@
     <div class="user-profile">
         <img 
             src="{{ Auth::check() && Auth::user()->profileImg 
-                ? asset('storage/profile/' . Auth::user()->profileImg) 
-                : asset('images/profile/user_default.png') }}" 
+                ? asset('storage/profiles/' . Auth::user()->profileImg) 
+                : asset('images/profiles/user_default.png') }}" 
             alt="User" 
             class="user-pic">
 
         <div class="user-info">
             <span class="username">{{ Auth::user()->userName ?? 'Guest' }}</span><br>
-            <span class="email">{{ Auth::user()->userEmail ?? 'neuro@gmail.com' }}</span>
+            <span class="email">{{ Auth::user()->userEmail ?? 'guest@gmail.com' }}</span>
         </div>
     </div>
 
