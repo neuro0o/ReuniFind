@@ -26,7 +26,7 @@
       <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    <!-- Reports Table -->
+    <!-- Report Table -->
     @if($userReports->count() > 0)
       <div class="table-container">
         <table class="report-table">
@@ -46,26 +46,26 @@
           <tbody>
             @foreach($userReports as $report)
               <tr>
-                <td>{{ $report->reportType }}</td>
-                <td>{{ $report->itemName }}</td>
-                <td>{{ $report->itemCategory }}</td>
-                <td>{{ $report->itemDescription }}</td>
-                <td>{{ $report->itemLocation }}</td>
-                <td>{{ \Carbon\Carbon::parse($report->reportDate)->format('d/m/Y') }}</td>
-                <td>
+                <td data-label="Report Type">{{ $report->reportType }}</td>
+                <td data-label="Item Name">{{ $report->itemName }}</td>
+                <td data-label="Category">{{ $report->itemCategory }}</td>
+                <td data-label="Description">{{ $report->itemDescription }}</td>
+                <td data-label="Location">{{ $report->itemLocation }}</td>
+                <td data-label="Date">{{ \Carbon\Carbon::parse($report->reportDate)->format('d/m/Y') }}</td>
+                <td data-label="Image">
                     @if($report->itemImg)
-                        <img src="{{ asset('storage/' . $report->itemImg) }}" alt="Item Image" width="80">
+                        <img src="{{ asset('storage/' . $report->itemImg) }}" alt="Item Image">
                     @else
                         N/A
                     @endif
                 </td>
-                <td>
+                <td data-label="Status">
                     <span class="status {{ strtolower($report->status ?? 'pending') }}">
                         {{ ucfirst($report->status ?? 'Pending') }}
                     </span>
                 </td>
             
-                <td>
+                <td data-label="Action">
                   <div class="btn-group">
                     <a href="{{ route('item_report.edit', $report->reportID) }}" class="btn edit">Edit</a>
                     <form action="{{ route('item_report.destroy', $report->reportID) }}" method="POST" onsubmit="return confirm('Are you sure?')">
