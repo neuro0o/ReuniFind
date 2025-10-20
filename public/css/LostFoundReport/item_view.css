@@ -1,4 +1,7 @@
-/* CSS FOR REPORT VIEW PAGE */
+/* CSS FOR REPORT VIEW PAGE */    
+.main-content {
+  padding-bottom: 10rem;
+}
 
 .filter-bar {
   display: flex;
@@ -57,7 +60,7 @@ box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
 .item-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr); /* Default: 2 columns */
-  gap: 25px;
+  gap: 30px;
 }
 
 .item-card {
@@ -67,7 +70,7 @@ box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
   gap: 30px;
   background: var(--color-secondary);
   border-radius: 2.5rem;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.7);
   padding: 25px 50px;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -105,9 +108,9 @@ box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
 }
 
 .btn {
-  border: 1.5px solid #44536e;
+  border: 1.5px solid var(--color-primary);
   border-radius: 1.5rem;
-  background: none;
+  background: var(--color-tertiary);
   color: var(--color-primary);
   font-weight: var(--fw-bold);
   font-size: var(--fs-sm);
@@ -121,13 +124,11 @@ box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
   color: var(--color-secondary);
 }
 
-
-
 /* Responsive layout adjustments */
 @media (max-width: 1024px) {
   .main-content{
     width: 70%;
-    margin-left: 250px; /* prevent overlap */
+    margin: 2rem;
   }
 
   .filter-bar {
@@ -153,8 +154,71 @@ box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
     width: 80px;
     height: 80px;
   }
+}
 
-  
+@media (max-width: 768px) {
+  .filter-bar {
+    display: flex;
+    flex-wrap: wrap; /* allow wrapping */
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 3rem;
+  }
 
-  
+  /* Put search bar full width on top */
+  .filter-bar input {
+    width: 100%;
+    order: 1; /* appear first */
+    text-align: center;
+  }
+
+  /* Dropdown filters */
+  .filter-bar select {
+    width: calc(100% - 5px); /* split space evenly with gap */
+    order: 2;
+    text-align: center;
+  }
+
+  .item-card {
+    flex-direction: column; /* Stack elements vertically */
+    align-items: center; /* Center content horizontally */
+    text-align: center; /* Center text */
+    gap: 10px;
+    padding: 20px;
+    width: 300px;
+  }
+
+  .item-card img {
+    width: 120px;
+    height: 120px;
+  }
+
+  .item-info {
+    width: 100%;
+  }
+
+  .item-info h3, 
+  .item-info p {
+    text-align: center;
+  }
+
+  .btn-group {
+    display: flex;
+    flex-direction: column; /* Stack buttons vertically */
+    gap: 10px;
+    width: 100%;
+    align-items: center; /* Center buttons */
+  }
+
+  .btn {
+    width: 80%; /* Optional: make buttons same width */
+  }
+}
+
+@media (max-width: 426px) {
+  .item-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 30px;
+  }
 }

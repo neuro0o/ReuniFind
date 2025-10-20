@@ -42,8 +42,8 @@
             <div class="item-info">
               <h3>{{ $report->itemName }}</h3>
               <p>
-                <strong>Item Status:</strong> {{ $report->reportType }} |
-                <strong>Location:</strong> {{ $report->itemLocation }} |
+                <strong>Item Status:</strong> {{ $report->reportType }}&nbsp;&nbsp;
+                <strong>Location:</strong> {{ $report->itemLocation }}
                 <br><strong>Date:</strong> {{ \Carbon\Carbon::parse($report->reportDate)->format('d/m/Y') }}
               </p>
               <div class="btn-group">
