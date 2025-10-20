@@ -1,0 +1,133 @@
+/* .main-content {
+  padding: 2rem;
+  color: var(--color-primary);
+} */
+
+h1 {
+  font-size: 2rem;
+  font-weight: var(--fw-bold);
+  margin-bottom: 1.5rem;
+}
+
+/* Tabs */
+.filter-tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.tab-btn {
+  background: transparent;
+  border: 2px solid var(--color-primary);
+  border-radius: 1rem;
+  padding: 0.5rem 1.5rem;
+  font-weight: var(--fw-bold);
+  color: var(--color-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tab-btn.active {
+  background: var(--color-primary);
+  color: var(--color-secondary);
+}
+
+.tab-btn:hover {
+  background: var(--color-primary);
+  color: var(--color-secondary);
+}
+
+/* Table */
+.table-container {
+  overflow-x: auto;
+}
+
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--color-secondary);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.report-table th,
+.report-table td {
+  text-align: left;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+.report-table th {
+  background-color: rgba(0,0,0,0.05);
+  font-weight: var(--fw-bold);
+}
+
+.report-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Status colors */
+.status {
+  font-weight: var(--fw-bold);
+}
+
+.status.pending { color: #f7b32b; }
+.status.approved { color: #4caf50; }
+.status.claimed { color: #1976d2; }
+
+/* Buttons */
+.btn-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn {
+  border: 1.5px solid transparent;
+  border-radius: 1rem;
+  padding: 0.4rem 1rem;
+  font-weight: var(--fw-bold);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn.edit {
+  border-color: #4caf50;
+  color: #4caf50;
+  background: transparent;
+}
+
+.btn.delete {
+  border-color: #e53935;
+  color: #e53935;
+  background: transparent;
+}
+
+.btn.edit:hover {
+  background: #4caf50;
+  color: white;
+}
+
+.btn.delete:hover {
+  background: #e53935;
+  color: white;
+}
+
+.empty-text {
+  text-align: center;
+  margin-top: 3rem;
+  color: var(--color-primary);
+  font-size: 1rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .report-table th, .report-table td {
+    font-size: 0.9rem;
+    padding: 0.8rem;
+  }
+
+  .tab-btn {
+    padding: 0.4rem 1rem;
+  }
+}
