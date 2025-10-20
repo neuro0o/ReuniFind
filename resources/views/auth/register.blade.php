@@ -5,7 +5,7 @@
 
 <!-- PAGE SPECIFIC CSS -->
 @section('page-css')
-  <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/auth/auth.css') }}">
 @endsection
 
 <!-- HEADER SECTION -->

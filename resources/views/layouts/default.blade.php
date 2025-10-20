@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Base CSS (global for all pages) -->
-    <link rel="stylesheet" href="{{ asset('css/base.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/utils/base.css') }}">
 
     <!-- Page-specific CSS -->
     @yield('page-css')

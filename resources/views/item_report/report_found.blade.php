@@ -3,8 +3,8 @@
 @section('title', 'Report Found Item')
 
 @section('page-css')
-    <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/item.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/utils/sidebar.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/LostFoundReport/item_form.css') }}">
 @endsection
 
 @section('content')

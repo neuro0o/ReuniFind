@@ -1,8 +1,10 @@
+/* CSS FOR ITEM REPORT FORM */
+
 .content {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  width: 80%;
   min-height: 100vh; /* full height for centering */
   background-color: var(--color-background);
 }
@@ -184,14 +186,13 @@
     border-radius: 2rem;
     margin: 2rem;
     padding: 60px;
-    width: min(800px, 90%); /* responsive max width */
   }
 }
 
-@media (max-width: 769px) {
+@media (max-width: 768px) {
   .form-card {
     margin: 1.5rem 0;
-    width: 80%;
+    width: 90%;
   }
 
   .form-card select {

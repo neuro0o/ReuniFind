@@ -5,8 +5,8 @@
 
 <!-- PAGE SPECIFIC CSS -->
 @section('page-css')
-    <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/user_dashboard.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/utils/sidebar.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/auth/user_dashboard.css') }}">
 @endsection
 
 <!-- HEADER SECTION -->
