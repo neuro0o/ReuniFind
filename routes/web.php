@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ItemReportController;
 use App\Http\Controllers\RegistrationController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
@@ -39,29 +40,40 @@ Route::get('/dashboard', function () {
     return view('user.dashboard');
 })->middleware('auth')->name('user.dashboard');
 
-/*----------------- TEMP ROUTES -------------------*/
+
 // LOST & FOUND REPORT
-Route::prefix('report')->group(function () {
-    Route::get('/lost', function () {
-        return view('report.lost');
-    })->name('report.lost');
+Route::middleware(['auth'])->prefix('item_report')->group(function () {
+    Route::get('/report_lost', [ItemReportController::class, 'reportLost'])->name('item_report.report_lost');
+    Route::post('/report_lost', [ItemReportController::class, 'processForm'])->name('item_report.store');
 
-    Route::get('/found', function () {
-        return view('report.found');
-    })->name('report.found');
+    Route::get('/report_found', [ItemReportController::class, 'reportFound'])->name('item_report.report_found');
+    Route::post('/report_found', [ItemReportController::class, 'processForm'])->name('item_report.store');
 
-    Route::get('/view', function () {
-        return view('report.view');
-    })->name('report.view');
+    Route::get('/view', [ItemReportController::class, 'viewReports'])
+    ->middleware('auth')
+    ->name('item_report.view');
 
-    Route::get('/matchmaking', function () {
-        return view('report.matchmaking');
-    })->name('report.matchmaking');
+    Route::get('/reports/{id}', [ItemReportController::class, 'show'])->name('reports.show');
 
-    Route::get('/my', function () {
-        return view('report.my');
-    })->name('report.my');
+
+    // temp routes
+    Route::get('/matchmaking', [ItemReportController::class, 'matchmaking'])
+    ->name('item_report.report_matchmaking');
+    Route::get('/my_report', [ItemReportController::class, 'myReports'])->name('item_report.my_report');
+    Route::get('/edit/{id}', [ItemReportController::class, 'edit'])->name('item_report.edit');
+    Route::put('/update/{id}', [ItemReportController::class, 'update'])->name('item_report.update');
+    Route::delete('/delete/{id}', [ItemReportController::class, 'destroy'])->name('item_report.destroy');
 });
+
+
+
+
+
+
+
+/*----------------- TEMP ROUTES -------------------*/
+
+
 
 
 // CHAT & REQUEST
