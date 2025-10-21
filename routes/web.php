@@ -43,26 +43,36 @@ Route::get('/dashboard', function () {
 
 // LOST & FOUND REPORT
 Route::middleware(['auth'])->prefix('item_report')->group(function () {
+    
+    // Report Lost Item
     Route::get('/report_lost', [ItemReportController::class, 'reportLost'])->name('item_report.report_lost');
     Route::post('/report_lost', [ItemReportController::class, 'processForm'])->name('item_report.store');
-
+    
+    // Report Found Item
     Route::get('/report_found', [ItemReportController::class, 'reportFound'])->name('item_report.report_found');
     Route::post('/report_found', [ItemReportController::class, 'processForm'])->name('item_report.store');
-
+    
+    // View All Reports
     Route::get('/view', [ItemReportController::class, 'viewReports'])
     ->middleware('auth')
     ->name('item_report.view');
 
-    Route::get('/reports/{id}', [ItemReportController::class, 'show'])->name('reports.show');
-
-
-    // temp routes
-    Route::get('/matchmaking', [ItemReportController::class, 'matchmaking'])
-    ->name('item_report.report_matchmaking');
+    // View User's Reports
     Route::get('/my_report', [ItemReportController::class, 'myReports'])->name('item_report.my_report');
+
+    // Edit Own Report
     Route::get('/edit/{id}', [ItemReportController::class, 'edit'])->name('item_report.edit');
     Route::put('/update/{id}', [ItemReportController::class, 'update'])->name('item_report.update');
+    
+    // Delete Own Report
     Route::delete('/delete/{id}', [ItemReportController::class, 'destroy'])->name('item_report.destroy');
+    
+    
+
+    // temp routes
+    Route::get('/reports/{id}', [ItemReportController::class, 'show'])->name('reports.show');
+    Route::get('/matchmaking', [ItemReportController::class, 'matchmaking'])
+    ->name('item_report.report_matchmaking');
 });
 
 

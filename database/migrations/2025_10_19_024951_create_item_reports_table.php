@@ -19,9 +19,15 @@ return new class extends Migration
             ])->default('Lost');
             $table->string('itemName');
             $table->enum('itemCategory', [
-                'Accessories',
-                'Electronics',
-                'Other'
+                'Accessories', // Keychain | Glasses | Watch | Jewelery
+                'Bags', // Backpack | Tote Bag | Luggage
+                'Books & Stationery', // Notebook | Textbook | Pen | File
+                'Clothing', // Jacket | Hoodie | Hat | Shoes | Uniform
+                'Documents', // ID Card | IC | Passport | Exam Slip | Certificate
+                'Electronics', // Phone | Laptop | Earphone | Power Bank | USB Drive
+                'Keys & Cards', // House Keys | Car Keys | Access Cards
+                'Other', // Anything that doesn't fit other categories
+                'Personal Item' // Wallet | Purse | Cosmetics | Tumbler | Umbrella | Toiletries
             ])->default('Other');
             $table->string('itemDescription');
             $table->enum('itemLocation', [

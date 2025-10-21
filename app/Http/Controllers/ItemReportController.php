@@ -36,7 +36,7 @@ class ItemReportController extends Controller
             'reportType' => 'required|in:Lost,Found',
             'itemName' => 'required|string|max:255',
             'itemCategory' => 'required|string',
-            'itemDescription' => 'nullable|string|max:255',
+            'itemDescription' => 'nullable|string',
             'itemLocation' => 'required|string',
             'reportDate' => 'required|date',
             'itemImg' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
@@ -57,7 +57,7 @@ class ItemReportController extends Controller
         $report->itemLocation = $validated['itemLocation'];
         $report->reportDate = $validated['reportDate'];
         $report->itemImg = $path;
-        $report->userID = auth()->user()->userID; // Assign logged-in user's ID
+        $report->userID = Auth::user()->userID; // Assign logged-in user's ID
         $report->save(); // Save the model
 
         // Redirect with success message
@@ -95,7 +95,7 @@ class ItemReportController extends Controller
     }
 
 
-    // -------------------- READ (User’s Reports) -------------------- //
+    // -------------------- READ (User's Reports) -------------------- //
     public function myReports()
     {
         $userReports = ItemReport::where('userID', Auth::user()->userID)
@@ -109,7 +109,11 @@ class ItemReportController extends Controller
     public function edit($id)
     {
         $report = ItemReport::findOrFail($id);
-        $this->authorizeUser($report);
+
+        // Restrict access so only the owner can edit
+        if ($report->userID !== Auth::user()->userID) {
+            abort(403, 'Unauthorized action.');
+        }
 
         $categoryEnum = $this->getEnumValues('item_reports', 'itemCategory');
         $locationEnum = $this->getEnumValues('item_reports', 'itemLocation');
@@ -121,27 +125,37 @@ class ItemReportController extends Controller
     public function update(Request $request, $id)
     {
         $report = ItemReport::findOrFail($id);
-        $this->authorizeUser($report);
 
-        $request->validate([
+        // Restrict access so only the owner can update
+        if ($report->userID !== Auth::user()->userID) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        // Validate input
+        $validated = $request->validate([
+            'reportType' => 'required|in:Lost,Found',
             'itemName' => 'required|string|max:255',
-            'itemCategory' => 'required',
-            'itemDescription' => 'required|string',
-            'itemLocation' => 'required',
+            'itemCategory' => 'required|string',
+            'itemDescription' => 'nullable|string',
+            'itemLocation' => 'required|string',
             'reportDate' => 'required|date',
             'itemImg' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
+        // Handle image update
         if ($request->hasFile('itemImg')) {
-            if ($report->itemImg) {
+            // Delete old image if exists
+            if ($report->itemImg && Storage::disk('public')->exists($report->itemImg)) {
                 Storage::disk('public')->delete($report->itemImg);
             }
-            $report->itemImg = $request->file('itemImg')->store('images/items', 'public');
+
+            $path = $request->file('itemImg')->store('images/items', 'public');
+            $validated['itemImg'] = $path;
         }
 
-        $report->update($request->except(['_token', '_method']));
+        $report->update($validated);
 
-        return redirect()->route('item_report.my_report')->with('success', 'Report updated successfully.');
+        return redirect()->route('item_report.my_report')->with('success', 'Report updated successfully!');
     }
 
     // -------------------- DELETE -------------------- //
