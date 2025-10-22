@@ -41,6 +41,7 @@ Route::middleware(['auth'])->prefix('account')->group(function () {
     Route::get('/settings', [AccountSettingsController::class, 'index'])->name('account.settings');
     Route::put('/update', [AccountSettingsController::class, 'updateProfile'])->name('account.update');
     Route::put('/update-password', [AccountSettingsController::class, 'updatePassword'])->name('account.update.password');
+    Route::delete('/account/delete', [AccountSettingsController::class, 'deleteAccount'])->name('account.delete');
 
     // Route for AJAX modal
     Route::get('/settings/modal', [AccountSettingsController::class, 'modal'])->name('account.settings.modal');

@@ -29,7 +29,7 @@
         <hr>
 
         <div class="profile-info">
-          <img src="{{ $user->profileImg ? asset('storage/' . $user->profileImg) : asset('images/default-profile.png') }}" 
+          <img src="{{ $user->profileImg ? asset('storage/' . $user->profileImg) : asset('images/profiles/user_default.png') }}" 
             class="profile-img" alt="Profile">
 
           <div class="info-text">
@@ -62,6 +62,7 @@
     <!-- FIXME: Fix Sidebar Collapse Behavior -->
     <script src="{{ asset('js/sidebar.js') }}"></script>
 
+    <!-- Popup Edit Modal -->
     <script>
       document.getElementById('editBtn').addEventListener('click', async () => {
         const modalContainer = document.getElementById('modalContainer');
@@ -70,7 +71,9 @@
         if (document.getElementById('editModal')) return;
 
         try {
+          // eslint-disable-next-line
           const response = await fetch('{{ route('account.settings.modal') }}');
+
           if (!response.ok) throw new Error('Failed to load modal');
 
           const html = await response.text();
@@ -95,6 +98,22 @@
         }
       });
 
+      // <!-- Delete Account -->
+      document.getElementById('deleteBtn').addEventListener('click', function () {
+        if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+          const form = document.createElement('form');
+          form.method = 'POST';
+          form.action = '{{ route('account.delete') }}';
+          form.innerHTML = `
+            @csrf
+            @method('DELETE')
+          `;
+          document.body.appendChild(form);
+          form.submit();
+        }
+      });
+
+      // <!-- Image Preview -->
       document.addEventListener('change', function(e) {
         if (e.target && e.target.id === 'profileImg') {
           const file = e.target.files[0];
@@ -102,7 +121,7 @@
             const reader = new FileReader();
             reader.onload = function(ev) {
               const img = document.querySelector('.profileImg');
-              img.src = ev.target.result; // 🔄 show preview instantly
+              img.src = ev.target.result; // Show preview instantly
             };
             reader.readAsDataURL(file);
           }
