@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ItemReportController;
 use App\Http\Controllers\RegistrationController;
+use App\Http\Controllers\AccountSettingsController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -35,13 +36,23 @@ Route::post('/logout', function (Request $request) {
     return redirect('/'); // landing page
 })->name('logout');
 
+// Account Settings
+Route::middleware(['auth'])->prefix('account')->group(function () {
+    Route::get('/settings', [AccountSettingsController::class, 'index'])->name('account.settings');
+    Route::put('/update', [AccountSettingsController::class, 'updateProfile'])->name('account.update');
+    Route::put('/update-password', [AccountSettingsController::class, 'updatePassword'])->name('account.update.password');
+
+    // Route for AJAX modal
+    Route::get('/settings/modal', [AccountSettingsController::class, 'modal'])->name('account.settings.modal');
+});
+
 // HOME @ DASHBOARD
 Route::get('/dashboard', function () {
     return view('user.dashboard');
 })->middleware('auth')->name('user.dashboard');
 
 
-// LOST & FOUND REPORT
+/*----------------- LOST & FOUND REPORT MODULE ROUTES -------------------*/
 Route::middleware(['auth'])->prefix('item_report')->group(function () {
     
     // Report Lost Item
