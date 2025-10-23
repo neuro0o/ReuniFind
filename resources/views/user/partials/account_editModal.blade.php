@@ -8,8 +8,8 @@
       @method('PUT')
 
       <div class="profile-section">
-        <h3>Profile Information</h3>
-        <img class="profileImg" src="{{ $user->profileImg ? asset('storage/' . $user->profileImg) : asset('images/default-profile.png') }}" 
+        <h3>Profile Information</h3> 
+        <img class="profileImg" src="{{ $user->profileImg ? asset('storage/' . $user->profileImg) : asset('images/profiles/user_default.png') }}" 
           alt="Profile"">
         <label for="profileImg" class="upload-label">
           Upload Profile Picture
