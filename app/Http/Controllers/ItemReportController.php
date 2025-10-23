@@ -36,7 +36,7 @@ class ItemReportController extends Controller
             'reportType' => 'required|in:Lost,Found',
             'itemName' => 'required|string|max:255',
             'itemCategory' => 'required|string',
-            'itemDescription' => 'nullable|string|max:255',
+            'itemDescription' => 'nullable|string',
             'itemLocation' => 'required|string',
             'reportDate' => 'required|date',
             'itemImg' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
@@ -57,7 +57,7 @@ class ItemReportController extends Controller
         $report->itemLocation = $validated['itemLocation'];
         $report->reportDate = $validated['reportDate'];
         $report->itemImg = $path;
-        $report->userID = auth()->user()->userID; // Assign logged-in user's ID
+        $report->userID = Auth::user()->userID; // Assign logged-in user's ID
         $report->save(); // Save the model
 
         // Redirect with success message
@@ -70,22 +70,33 @@ class ItemReportController extends Controller
     {
         $query = ItemReport::query();
 
+        // Keyword Filter
         if ($request->filled('keyword')) {
-            $query->where('itemName', 'like', '%' . $request->keyword . '%')
-                    ->orWhere('itemDescription', 'like', '%' . $request->keyword . '%');
+            $query->where(function ($q) use ($request) {
+                $q->where('itemName', 'like', '%' . $request->keyword . '%')
+                ->orWhere('itemDescription', 'like', '%' . $request->keyword . '%');
+            });
         }
 
+        // Status Filter (Lost / Found / All)
         if ($request->filled('status') && $request->status !== 'all') {
             $query->where('reportType', ucfirst($request->status));
         }
 
-        if ($request->filled('category') && $request->category !== '') {
+        // Category Filter
+        if ($request->filled('category') && $request->category !== 'all' && $request->category !== '') {
             $query->where('itemCategory', ucfirst($request->category));
         }
 
+        // Get all reports
         $reports = $query->orderBy('reportDate', 'desc')->get();
 
-        return view('item_report.view', compact('reports'));
+        // Get ENUM options from database
+        $statusEnum = $this->getEnumValues('item_reports', 'reportType');
+        $categoryEnum = $this->getEnumValues('item_reports', 'itemCategory');
+
+        // Pass everything to Blade View
+        return view('item_report.view', compact('reports', 'statusEnum', 'categoryEnum'));
     }
 
     public function show($id)
@@ -95,7 +106,7 @@ class ItemReportController extends Controller
     }
 
 
-    // -------------------- READ (User’s Reports) -------------------- //
+    // -------------------- READ (User's Reports) -------------------- //
     public function myReports()
     {
         $userReports = ItemReport::where('userID', Auth::user()->userID)
@@ -109,7 +120,11 @@ class ItemReportController extends Controller
     public function edit($id)
     {
         $report = ItemReport::findOrFail($id);
-        $this->authorizeUser($report);
+
+        // Restrict access so only the owner can edit
+        if ($report->userID !== Auth::user()->userID) {
+            abort(403, 'Unauthorized action.');
+        }
 
         $categoryEnum = $this->getEnumValues('item_reports', 'itemCategory');
         $locationEnum = $this->getEnumValues('item_reports', 'itemLocation');
@@ -121,27 +136,37 @@ class ItemReportController extends Controller
     public function update(Request $request, $id)
     {
         $report = ItemReport::findOrFail($id);
-        $this->authorizeUser($report);
 
-        $request->validate([
+        // Restrict access so only the owner can update
+        if ($report->userID !== Auth::user()->userID) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        // Validate input
+        $validated = $request->validate([
+            'reportType' => 'required|in:Lost,Found',
             'itemName' => 'required|string|max:255',
-            'itemCategory' => 'required',
-            'itemDescription' => 'required|string',
-            'itemLocation' => 'required',
+            'itemCategory' => 'required|string',
+            'itemDescription' => 'nullable|string',
+            'itemLocation' => 'required|string',
             'reportDate' => 'required|date',
             'itemImg' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
+        // Handle image update
         if ($request->hasFile('itemImg')) {
-            if ($report->itemImg) {
+            // Delete old image if exists
+            if ($report->itemImg && Storage::disk('public')->exists($report->itemImg)) {
                 Storage::disk('public')->delete($report->itemImg);
             }
-            $report->itemImg = $request->file('itemImg')->store('images/items', 'public');
+
+            $path = $request->file('itemImg')->store('images/items', 'public');
+            $validated['itemImg'] = $path;
         }
 
-        $report->update($request->except(['_token', '_method']));
+        $report->update($validated);
 
-        return redirect()->route('item_report.my_report')->with('success', 'Report updated successfully.');
+        return redirect()->route('item_report.my_report')->with('success', 'Report updated successfully!');
     }
 
     // -------------------- DELETE -------------------- //

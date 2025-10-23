@@ -55,6 +55,23 @@ h1 {
 
 .report-table img {
   width: 80px;
+  border-radius: 10px;
+  border: 1px solid var(--color-primary);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.na-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  background-color: var(--color-background);
+  color: var(--color-primary);
+  border-radius: 10px;
+  border: 1px solid var(--color-primary);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  font-weight: var(--fw-bold);
 }
 
 .report-table th,
@@ -150,6 +167,11 @@ h1 {
     width: 60px;
   }
 
+  .na-text {
+    width: 60px;
+    height: 60px;
+  }
+
   .report-table th,
   .report-table td {
     padding: 2rem;
@@ -220,6 +242,17 @@ h1 {
     max-width: 130px;
     border-radius: 1rem;
     display: block;
+    margin: 0.5rem auto;
+  }
+
+  .na-text {
+    width: 100%;
+    max-width: 130px;
+    border-radius: 1rem;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
     margin: 0.5rem auto;
   }
 

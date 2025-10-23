@@ -53,10 +53,10 @@
                 <td data-label="Location">{{ $report->itemLocation }}</td>
                 <td data-label="Date">{{ \Carbon\Carbon::parse($report->reportDate)->format('d/m/Y') }}</td>
                 <td data-label="Image">
-                    @if($report->itemImg)
-                        <img src="{{ asset('storage/' . $report->itemImg) }}" alt="Item Image">
+                    @if ($report->itemImg)
+                      <img src="{{ asset('storage/' . $report->itemImg) }}" alt="{{ $report->itemName }}">
                     @else
-                        N/A
+                      <div class="na-text">N/A</div>
                     @endif
                 </td>
                 <td data-label="Status">
