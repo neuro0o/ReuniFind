@@ -22,6 +22,7 @@
             <div class="page-title">
                 <h1>Welcome to ReuniFind!</h1>
                 <p>Found something? ReuniFind it! Because every lost thing deserves a way home.</p>
+                <hr>
             </div>
 
             <h1 class="section-title">Quick Action</h1>

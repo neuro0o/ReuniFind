@@ -80,8 +80,24 @@ box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
   height: 100px;
   border-radius: 10px;
   border: 1px solid var(--color-primary);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
   object-fit: cover;
 }
+
+.na-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 100px;
+  background-color: var(--color-background);
+  color: var(--color-primary);
+  border-radius: 10px;
+  border: 1px solid var(--color-primary);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  font-weight: var(--fw-bold);
+}
+
 
 .item-info {
   flex: 1;
@@ -165,17 +181,28 @@ box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
     margin-bottom: 3rem;
   }
 
-  /* Put search bar full width on top */
-  .filter-bar input {
+  /* Reorder filter elements */
+  .filter-bar input[name="keyword"] {
+    order: 1;
     width: 100%;
-    order: 1; /* appear first */
     text-align: center;
   }
 
-  /* Dropdown filters */
-  .filter-bar select {
-    width: calc(100% - 5px); /* split space evenly with gap */
+  .filter-bar select[name="status"] {
     order: 2;
+    width: 100%;
+    text-align: center;
+  }
+
+  .filter-bar select[name="category"] {
+    order: 3;
+    width: 100%;
+    text-align: center;
+  }
+
+  .filter-bar button[type="submit"] {
+    order: 4;
+    width: 100%;
     text-align: center;
   }
 

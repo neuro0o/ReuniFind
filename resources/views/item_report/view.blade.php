@@ -15,30 +15,47 @@
       <h1>All Lost & Found Item Reports</h1>
 
       <!-- FILTER BAR -->
-      <div class="filter-bar">
-        <input type="text" placeholder="Search by keyword..." />
+      <form method="GET" action="{{ route('item_report.view') }}" class="filter-bar">
+        <input 
+          type="text" 
+          name="keyword" 
+          placeholder="Search by keyword..." 
+          value="{{ request('keyword') }}"
+        />
 
+        <!-- STATUS FILTER -->
         <select name="status">
-          <option value="">-- Item Status --</option>
-          <option value="all">All</option>
-          <option value="lost">Lost</option>
-          <option value="found">Found</option>
+          <option value="all" {{ request('status') == 'all' ? 'selected' : '' }}>All</option>
+          @foreach ($statusEnum as $status)
+            <option value="{{ strtolower($status) }}" {{ request('status') == strtolower($status) ? 'selected' : '' }}>
+              {{ $status }}
+            </option>
+          @endforeach
         </select>
 
+        <!-- CATEGORY FILTER -->
         <select name="category">
-          <option value="">-- Category --</option>
-          <option value="accessories">Accessories</option>
-          <option value="electronics">Electronics</option>
-          <option value="others">Others</option>
+          <option value="all" {{ request('category') == 'all' ? 'selected' : '' }}>All</option>
+          @foreach ($categoryEnum as $category)
+            <option value="{{ strtolower($category) }}" {{ request('category') == strtolower($category) ? 'selected' : '' }}>
+              {{ $category }}
+            </option>
+          @endforeach
         </select>
-      </div>
+
+        <button type="submit" class="btn">Filter</button>
+      </form>
+
 
       <!-- ITEM REPORT GRID -->
       <div class="item-grid">
         @foreach ($reports as $report)
           <div class="item-card">
-            <img src="{{ $report->itemImg ? asset('storage/' . $report->itemImg) : asset('images/sample/placeholder.png') }}" 
-                alt="{{ $report->itemName }}">
+            @if ($report->itemImg)
+              <img src="{{ asset('storage/' . $report->itemImg) }}" alt="{{ $report->itemName }}">
+            @else
+              <div class="na-text">N/A</div>
+            @endif
             <div class="item-info">
               <h3>{{ $report->itemName }}</h3>
               <p>
@@ -68,4 +85,12 @@
 
 @section('page-js')
   <script src="{{ asset('js/sidebar.js') }}"></script>
+
+  <!-- Enable this to make filters auto submit without clicking filter button -->
+  <!-- <script>
+    document.querySelectorAll('.filter-bar select, .filter-bar input').forEach(el => {
+      el.addEventListener('change', () => el.form.submit());
+    });
+  </script> -->
+
 @endsection

@@ -70,22 +70,33 @@ class ItemReportController extends Controller
     {
         $query = ItemReport::query();
 
+        // Keyword Filter
         if ($request->filled('keyword')) {
-            $query->where('itemName', 'like', '%' . $request->keyword . '%')
-                    ->orWhere('itemDescription', 'like', '%' . $request->keyword . '%');
+            $query->where(function ($q) use ($request) {
+                $q->where('itemName', 'like', '%' . $request->keyword . '%')
+                ->orWhere('itemDescription', 'like', '%' . $request->keyword . '%');
+            });
         }
 
+        // Status Filter (Lost / Found / All)
         if ($request->filled('status') && $request->status !== 'all') {
             $query->where('reportType', ucfirst($request->status));
         }
 
-        if ($request->filled('category') && $request->category !== '') {
+        // Category Filter
+        if ($request->filled('category') && $request->category !== 'all' && $request->category !== '') {
             $query->where('itemCategory', ucfirst($request->category));
         }
 
+        // Get all reports
         $reports = $query->orderBy('reportDate', 'desc')->get();
 
-        return view('item_report.view', compact('reports'));
+        // Get ENUM options from database
+        $statusEnum = $this->getEnumValues('item_reports', 'reportType');
+        $categoryEnum = $this->getEnumValues('item_reports', 'itemCategory');
+
+        // Pass everything to Blade View
+        return view('item_report.view', compact('reports', 'statusEnum', 'categoryEnum'));
     }
 
     public function show($id)
