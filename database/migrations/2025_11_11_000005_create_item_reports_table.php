@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('item_reports', function (Blueprint $table) {
             $table->id('reportID');
             $table->enum('reportType', ['Found', 'Lost'])->default('Lost');
-            $table->date('reportDate');
+            $table->dateTime('reportDate');
             $table->enum('reportStatus', [
                 'Completed',
                 'Pending', 

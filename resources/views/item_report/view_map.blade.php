@@ -49,7 +49,7 @@ html, body {
     const reportName = @json($report->itemName);
     const reportType = @json($report->reportType);
     const reportCategory = @json($report->category->categoryName);
-    const reportDate = @json(\Carbon\Carbon::parse($report->reportDate)->format('d M Y'));
+    const reportDate = @json(\Carbon\Carbon::parse($report->reportDate)->format('d M Y, h:i A'));
     const reportDescription = @json($report->itemDescription);
     const reportImage = @json($report->itemImg ? asset('storage/' . $report->itemImg) : 'N/A');
     const locationName = @json($report->location->locationName);

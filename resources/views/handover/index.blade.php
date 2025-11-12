@@ -49,7 +49,7 @@
                                 <strong>Status:</strong> <span class="status {{ strtolower($handover->requestStatus) }}">{{ $handover->requestStatus }}</span><br>
                                 @if($isSender)
                                     <strong>To:</strong> {{ $handover->recipient->userName }}<br>
-                                    <strong>Sent at:</strong> {{ \Carbon\Carbon::parse($handover->created_at)->format('d/m/Y') }}<br>
+                                    <strong>Sent at:</strong> {{ \Carbon\Carbon::parse($handover->created_at)->format('d M Y, h:i A') }}<br>
                                 @endif
                                 @if($isRecipient)
                                     <strong>From:</strong> {{ $handover->sender->userName }}<br>

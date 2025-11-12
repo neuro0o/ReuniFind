@@ -58,7 +58,7 @@
             <p>
               <strong>Item Status:</strong> {{ $report->reportType }}&nbsp;&nbsp;
               <strong>Location:</strong> {{ $report->location?->locationName ?? 'N/A' }}
-              <br><strong>Date:</strong> {{ \Carbon\Carbon::parse($report->reportDate)->format('d/m/Y') }}
+              <br><strong>Report Date:</strong> {{ \Carbon\Carbon::parse($report->reportDate)->format('d M Y, h:i A') }}
             </p>
 
             <div class="btn-group">
@@ -69,7 +69,7 @@
                 data-category="{{ $report->category?->categoryName ?? 'N/A' }}"
                 data-status="{{ $report->reportType }}"
                 data-location="{{ $report->location?->locationName ?? 'N/A' }}"
-                data-date="{{ \Carbon\Carbon::parse($report->reportDate)->format('d M Y') }}"
+                data-date="{{ \Carbon\Carbon::parse($report->reportDate)->format('d M Y, h:i A') }}"
                 data-description="{{ $report->itemDescription }}"
                 data-image="{{ $report->itemImg ? asset('storage/' . $report->itemImg) : 'N/A' }}">
                 View More Details

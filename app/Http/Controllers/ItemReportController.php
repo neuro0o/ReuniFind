@@ -68,7 +68,11 @@ class ItemReportController extends Controller
         $report->itemCategory = $validated['itemCategory'];
         $report->itemDescription = $validated['itemDescription'];
         $report->itemLocation = $validated['itemLocation'];
-        $report->reportDate = $validated['reportDate'];
+
+        // Combine user-selected date with current time
+        $report->reportDate = Carbon::parse($validated['reportDate'])
+            ->setTimeFromTimeString(now()->format('H:i:s'));
+    
         $report->itemImg = $path;
         $report->verificationNote = $validated['verificationNote'] ?? null;
         $report->verificationImg = $verificationPath;
@@ -223,7 +227,11 @@ class ItemReportController extends Controller
         $report->itemCategory = $validated['itemCategory'];
         $report->itemDescription = $validated['itemDescription'];
         $report->itemLocation = $validated['itemLocation'];
-        $report->reportDate = $validated['reportDate'];
+
+        // Combine user-selected date with current time
+        $report->reportDate = Carbon::parse($validated['reportDate'])
+            ->setTimeFromTimeString(now()->format('H:i:s'));
+            
         $report->verificationNote = $validated['verificationNote'] ?? null;
 
         $report->save();

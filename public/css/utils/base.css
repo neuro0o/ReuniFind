@@ -266,6 +266,76 @@ button, .btn {
   transform: translateY(2px);
 }
 
+
+.status.pending { color: #f7b32b; }
+.status.published { color: #22c55e; }
+.status.rejected { color: #ef4444; }
+.status.completed { color: #7C4DFF; }
+
+
+.status-info-card {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    margin-bottom: 15px;
+    border-left: 4px solid;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    font-size: 15px;
+    color: #fff;
+    font-weight: 500;
+    background: #6c757d; /* Default grey */
+    transition: transform 0.2s ease;
+}
+
+.status-info-card span {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-bold);
+  pointer-events: none; 
+  text-decoration: none; 
+}
+
+.status-info-card i {
+    margin-right: 10px;
+    font-size: 18px;
+}
+
+/* Hover effect */
+.status-info-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Color variants per status */
+.status-info-card.pending {
+    background: #fffbea;       /* Light yellow background */
+    border-color: #facc15;     
+    color: #664d03;  
+}
+
+.status-info-card.published {
+    background: #e6ffed;       /* Light green */
+    border-color: #28a745;
+    color: #155724;
+}
+
+.status-info-card.rejected {
+    background: #fff5f5;       /* Light red/pink */
+    border-color: #dc3545;
+    color: #842029;
+}
+
+.status-info-card.completed {
+    background: #f3e8ff;       /* Light purple  */
+    border-color: #7C4DFF;     
+    color: #4b0082;            
+}
+
+/* <div class="status-info-card {{ strtolower($status) }}">
+    <i class="fas fa-info-circle"></i>
+    <span class="statusMessage">{{ $statusMessages[strtolower($status)] }}</span>
+</div> */
+
 /* Responsive layout adjustments */
 @media (max-width: 768px) {
   body{
@@ -282,20 +352,4 @@ button, .btn {
   }
 }
 
-/* 
-
-
-
-  .layout {
-    flex-direction: column;
-    height: auto;
-  }
-
-  .btn {
-    border-radius: 7rem;
-    margin: 0.5rem;
-    padding: 1rem 2rem;
-    font-size: var(--fs-md);
-    font-weight: var(--fw-regular);
- } */
 

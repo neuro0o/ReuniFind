@@ -36,6 +36,21 @@
 
     <!-- Report Table -->
     @if($userReports->count() > 0)
+      <!-- @php
+          $statusMessages = [
+              'pending'   => 'List of reports waiting for Admin approval',
+              'published' => 'List of reports approved by Admin and published',
+              'rejected'  => 'List of reports rejected by Admin and not published',
+              'completed' => 'List of reports that have been handed over'
+          ];
+      @endphp
+
+      @if(isset($status) && isset($statusMessages[strtolower($status)]))
+          <div class="status-info-card {{ strtolower($status) }}">
+              <i class="fas fa-info-circle"></i>
+              <span class="statusMessage">{{ $statusMessages[strtolower($status)] }}</span>
+          </div>
+      @endif -->
       <div class="table-container">
         <table class="report-table">
           <thead>

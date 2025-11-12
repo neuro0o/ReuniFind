@@ -110,12 +110,6 @@ h1 {
   font-weight: var(--fw-bold);
 }
 
-.status.pending { color: #f7b32b; }
-.status.published { color: #22c55e; }
-.status.rejected { color: #ef4444; }
-.status.completed { color: #7C4DFF; }
-
-
 /* Buttons */
 .btn-group {
   display: flex;
