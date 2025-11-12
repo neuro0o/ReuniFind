@@ -12,15 +12,27 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
+    protected $primaryKey = 'userID';
+    protected $keyType = 'int';
+    public $incrementing = true;
+
+    // tell Laravel which column to use for auth
+    public function getAuthIdentifierName()
+    {
+        return $this->primaryKey; // or 'userID'
+    }
+
     /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
      */
     protected $fillable = [
-        'name',
-        'email',
+        'userEmail',
+        'userName',
         'password',
+        'contactInfo',
+        'profileImg',
     ];
 
     /**
@@ -45,4 +57,23 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    
+
+    /**
+     * Get all handover requests initiated by this user (as the sender).
+     */
+    public function sentHandovers()
+    {
+        return $this->hasMany(HandoverRequest::class, 'senderID', 'userID');
+    }
+
+    /**
+     * Get all handover requests received by this user (as the recipient).
+     */
+    public function receivedHandovers()
+    {
+        return $this->hasMany(HandoverRequest::class, 'recipientID', 'userID');
+    }
+
 }

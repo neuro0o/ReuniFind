@@ -1,0 +1,169 @@
+.report-card {
+  background: var(--color-secondary);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  padding: 2rem;
+  max-width: 900px;
+  margin: 2rem auto;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.7);
+}
+
+.report-card h2 {
+  font-size: var(--fs-xl);
+  margin-bottom: 1rem;
+}
+
+.report-card .field {
+    display: flex;
+    margin-bottom: 0.8rem;
+    font-size: var(--fs-md);
+    color: var(--color-primary);
+    font-weight: var(--fw-regular);
+    gap: 1.5rem; /* space between label and value */
+    text-align: start;
+}
+
+.report-card .field strong {
+  text-align: end;
+  color: var(--color-primary);
+  font-weight: var(--fw-bold);
+}
+
+.report-card .images {
+  display: flex;
+  gap: 2rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+  font-size: var(--fs-md);
+  color: var(--color-primary);
+}
+
+.report-card .images div {
+  flex: 1 1 200px;
+}
+
+.report-card .images img {
+  max-width: 100%;
+  border-radius: 8px;
+  border: 1px solid var(--color-primary);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+}
+
+.na-text {
+  width: 100%;
+  display: flex;
+  justify-content: center;    /* horizontal center */
+  align-items: center;        /* vertical center */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: var(--color-background);
+  color: var(--color-primary);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-md)
+}
+
+/* Center button group */
+.btn-group {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center; /* center horizontally */
+  margin-top: 1.5rem;
+  align-items: center;
+}
+
+.status {
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+.status.pending { background: #FFF3CD; color: #856404; }
+.status.published { background: #D4EDDA; color: #155724; }
+.status.rejected { background: #F8D7DA; color: #721C24; }
+.status.completed { background: #E0D7FF; color: #5C00D6; }
+
+/* Rejection field */
+#rejectionContainer {
+  display: none;
+  margin-top: 1rem;
+}
+
+#rejectionContainer input {
+  width: 90%;
+  padding: 10px 12px;
+  border: 2px solid var(--color-secondary);
+  border-radius: 10px;
+  outline: none;
+  margin-bottom: 15px;
+  font-size: var(--fs-md);
+  color: var(--color-primary);
+  background-color: var(--color-background);
+}
+
+#rejectionContainer input:hover {
+  border: 2px solid var(--color-primary);
+}
+
+#rejectionContainer input:focus {
+  border: 2px solid var(--color-primary);
+  background-color: var(--color-secondary);
+}
+
+/* Tablet view */
+@media (max-width: 769px) {
+    .report-card {
+        padding: 1.5rem;
+        max-width: 95%;
+    }
+
+    .report-card .field {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.3rem;
+    }
+
+    .report-card .field strong {
+        text-align: left;
+    }
+
+    .report-card .images {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .btn-group {
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+}
+
+/* Mobile view */
+@media (max-width: 376px) {
+    .report-card {
+        padding: 1rem;
+        max-width: 100%;
+    }
+
+    .report-card h2 {
+        font-size: 1.2rem;
+    }
+
+    .report-card .field {
+        font-size: var(--fs-sm);
+    }
+
+    #rejectionContainer input {
+        font-size: 0.9rem;
+        padding: 6px 8px;
+    }
+
+    .btn-group {
+        gap: 0.6rem;
+    }
+
+    .report-card .images img,
+    .na-text {
+        height: auto; /* allow images/N/A boxes to scale naturally */
+    }
+}

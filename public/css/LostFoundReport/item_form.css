@@ -1,0 +1,301 @@
+/* CSS FOR ITEM REPORT FORM */
+.content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  min-height: 100vh; /* full height for centering */
+  background-color: var(--color-background);
+}
+
+.form-card {
+  background-color: var(--color-secondary);
+  border-radius: 2rem;
+  margin: 2.7rem;
+  padding: 60px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  text-align: left;
+  width: min(800px, 90%); /* responsive max width */
+}
+
+#form-title {
+  text-align: center;
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-bold);
+  padding-bottom: 1.5rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr; /* left: upload (1), right: form (2) */
+  gap: 2rem;
+  align-items: center;
+}
+
+/* --- UPLOAD GRID SECTION --- */
+.upload-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.upload-box {
+  position: relative;
+  width: 100%;
+  height: 250px;
+  border: 2px dashed var(--color-primary);
+  border-radius: 1rem;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-background);
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.upload-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: scale-down;
+  display: none; /* hidden until an image is selected */
+}
+
+.upload-box:hover {
+  border: 2px solid var(--color-primary);
+}
+
+.upload-btn {
+  position: absolute;
+  color: var(--color-background);
+  padding: 0.8rem 1.5rem;
+  border: 2px solid var(--color-primary);
+  border-radius: 1rem;
+  font-weight: var(--fw-bold);
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.upload-btn:hover {
+  background-color: var(--color-primary);
+  color: var(--color-secondary);
+}
+
+/* --- FORM GRID SECTION --- */
+.form-card label {
+  display: block;
+  color: var(--color-primary);
+  font-size: var(--fs-md);
+  font-weight: var(--fw-medium);
+}
+
+.form-card input {
+  width: 90%;
+  padding: 10px 12px;
+  border: 2px solid var(--color-secondary);
+  border-radius: 10px;
+  outline: none;
+  margin-bottom: 15px;
+  font-size: var(--fs-md);
+  color: var(--color-primary);
+  background-color: var(--color-background);
+}
+
+.form-card input:hover {
+  border: 2px solid var(--color-primary);
+}
+
+.form-card input:focus {
+  border: 2px solid var(--color-primary);
+  background-color: var(--color-secondary);
+}
+
+.form-card button {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-bold);
+  width: 95%;
+  border-radius: 7rem;
+  margin: 1.5rem 0;
+  padding: 1rem 0rem;
+}
+
+.form-card p {
+  margin: 1rem 0;
+  text-align: center;
+  font-size: var(--fs-sm);
+  color: var(--color-primary);
+  font-weight: var(--fw-semibold);
+}
+
+.text-muted {
+  font-size: var(--fs-sm);
+  font-style: italic;
+  color: var(--color-primary);
+  font-weight: var(--fw-regular);
+}
+
+.form-card select {
+  width: 95%;
+  padding: 12px 14px;
+  border: 2px solid var(--color-secondary);
+  border-radius: 10px;
+  background-color: var(--color-background);
+  color: var(--color-primary);
+  font-size: var(--fs-md);
+  appearance: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  margin-bottom: 15px;
+}
+
+.form-card select:hover {
+  border-color: var(--color-primary);
+  background-color: var(--color-secondary);
+}
+
+.form-card select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
+}
+
+.form-card select option {
+  background-color: var(--color-secondary);
+  color: var(--color-primary);
+  font-size: var(--fs-md);
+  font-weight: var(--fw-medium);
+  padding: 10px;
+}
+
+/* Force dropdown to be scrollable if too long */
+.form-card select[size],
+.form-card select[multiple] {
+  height: auto;
+  max-height: 180px; /* limit height */
+  overflow-y: auto; /* enable scrolling */
+}
+
+/* For normal select (single) when dropdown opens */
+.form-card select::-webkit-scrollbar {
+  width: 8px;
+}
+
+.form-card select::-webkit-scrollbar-thumb {
+  background-color: var(--color-primary);
+  border-radius: 10px;
+}
+
+/* CSS FOR EDIT ITEM FORM */
+.upload-box-edit {
+  position: relative;
+  width: 100%;
+  height: 250px;
+  border: 2px dashed var(--color-primary);
+  border-radius: 1rem;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-background);
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.upload-box-edit img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block !important;
+}
+
+.upload-box-edit:hover {
+  border: 2px solid var(--color-primary);
+}
+
+
+/* Responsive layout adjustments */
+@media (max-width: 1024px) {
+  .form-card {
+    border-radius: 2rem;
+    margin: 2rem;
+    padding: 60px;
+  }
+}
+
+@media (max-width: 900px) {
+  .form-grid {
+    grid-template-columns: 1fr; /* Stack vertically on small screens */
+  }
+
+  .upload-box, .upload-box-edit {
+    height: 150px;
+    margin-bottom: 2rem;
+  }
+
+  .form-card {
+    margin-top: 2rem;
+    margin-bottom: 9rem;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    padding: 35px;
+  }
+}
+
+@media (max-width: 768px) {
+  .form-card {
+    margin: 2.5rem, 5rem, 0, 0;
+    width: 90%;
+  }
+
+  .form-card select {
+    width: 100%;
+    font-size: var(--fs-sm);
+  }
+
+  .form-card option {
+    font-size: var(--fs-sm);
+  }
+
+  /* Prevent clipping of dropdown */
+  .form-card {
+    overflow: visible;
+  }
+}
+
+@media (max-width: 376px) {
+  .logo img {
+  width: 70px;
+  }
+
+  .form-card {
+    margin: 0.8rem 0;
+    width: 70%;
+    padding: 20px 20px;
+  }
+
+  #form-title {
+    font-size: var(--fs-sm);
+  }
+
+  .form-card label {
+    font-size: var(--fs-sm);
+  }
+
+  .form-card input {
+  padding: 10px 12px;
+  font-size: var(--fs-sm);
+}
+
+  .form-card button {
+    padding: 1.5rem 0rem;
+  }
+}
+
+.error-msg {
+  color: var(--color-error);
+  font-size: 1.2rem;
+  display: block;
+  margin-top: 5px;
+  text-align: left;
+}

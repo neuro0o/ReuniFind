@@ -1,0 +1,86 @@
+/* item_modal.css */
+
+/* ---------- MODAL BODY: IMAGE ---------- */
+.modal-body {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.item-image {
+  flex: 0 0 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.item-image img {
+  max-width: 150px;
+  max-height: 150px;
+  border-radius: 10px;
+  object-fit: cover;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.modal-image-na {
+  display: none;
+  width: 150px;
+  height: 150px;
+  background-color: var(--color-background);
+  color: var(--color-primary);
+  border-radius: 10px;
+  border: 1px solid var(--color-primary);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+  font-weight: var(--fw-bold);
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* ---------- ITEM DETAILS ---------- */
+.item-details {
+  flex: 1;
+  text-align: start;
+  padding: 0 2rem;
+}
+
+.item-details h2 {
+  font-size: var(--fs-lg);
+  color: var(--color-primary);
+  font-weight: var(--fw-bold);
+  margin-bottom: 0px;
+  
+}
+
+.item-details p {
+  font-size: var(--fs-md);
+  color: var(--color-primary);
+  font-weight: var(--fw-regular);
+  margin: 6px 0;
+}
+
+strong {
+  font-weight: var(--fw-bold);
+}
+
+span:hover {
+  background: transparent; /* remove any highlight on hover */
+  color: inherit; /* keep text color unchanged */
+}
+
+/* ---------- FOOTER / ACTION BUTTON ---------- */
+.modal-footer {
+  text-align: center;
+}
+
+.modal-footer .btn {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: none;
+  font-size: var(--fs-md);
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 0.5rem;
+}
+

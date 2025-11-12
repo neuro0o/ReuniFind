@@ -1,0 +1,105 @@
+.button-groups {
+  display: flex;
+  gap: 1rem; /* space between buttons */
+  justify-content: center; /* center buttons horizontally */
+  flex-wrap: wrap; /* wrap on smaller screens */
+}
+
+.button-groups a {
+  font-weight: var(--fw-bold);
+}
+
+.feature-list {
+  min-width:  50%;
+  margin: 0 auto;
+  height: 100%;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  /* TODO: REMOVE LATER */
+  /* border: 1px solid red; */
+}
+
+#feature-desc {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-semibold);
+}
+
+/* Grid container for feature cards */
+.feature-groups {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 per row on desktop */
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+/* Individual feature card */
+.feature-card {
+  display: flex;
+  flex-direction: row; /* image left, text right */
+  align-items: center;
+  padding: 1.5rem 1rem;
+  background-color: var(--color-tertiary);
+  border-radius: 10rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Image styling */
+.feature-card img {
+  width: 7rem;
+  height: auto;
+  margin-right: 1rem;
+}
+
+/* Text container */
+.feature-text h5 {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-bold);
+}
+
+.feature-text p {
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-medium);
+}
+
+/* Optional hover effect */
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 12px rgba(0,0,0,0.75);
+}
+
+/* ---------- Responsive Grids ---------- */
+@media (max-width: 1024px) {
+  .feature-groups {
+    grid-template-columns: repeat(2, 1fr); /* 2 per row on tablet */
+  }
+}
+
+@media (max-width: 768px) {
+  .feature-groups {
+    grid-template-columns: 1fr; /* 1 per row on mobile */
+  }
+}
+
+/* Make it stack vertically on small screens */
+@media (max-width: 480px) {
+  .feature-card {
+    flex-direction: column; /* image on top, text below */
+    text-align: center;
+  }
+}
+
+/* On small screens remove right margin */
+@media (max-width: 480px) {
+  .feature-card img {
+    margin-right: 0;
+    margin-bottom: 1rem;
+  }
+}
+
+
