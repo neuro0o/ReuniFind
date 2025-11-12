@@ -1,0 +1,287 @@
+.main-content {
+  padding-left: 2rem;
+}
+
+h1 {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
+  margin-bottom: 1.5rem;
+}
+
+/* Tabs */
+.filter-tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 5rem;
+}
+
+.tab-btn {
+  background: var(--color-tertiary);
+  border: 2px solid var(--color-primary);
+  border-radius: 1rem;
+  padding: 0.5rem 1.5rem;
+  font-size: var(--fs-md);
+  font-weight: var(--fw-bold);
+  color: var(--color-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none; /* remove underline */
+}
+
+.tab-btn.active {
+  background: var(--color-primary);
+  color: var(--color-secondary);
+}
+
+.tab-btn:hover {
+  background: var(--color-primary);
+  color: var(--color-secondary);
+}
+
+/* Table */
+.table-container {
+  overflow-x: auto;
+}
+
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--color-secondary);
+  border-radius: 1.5rem;
+  margin-bottom: 10rem;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.report-table img {
+  width: 80px;
+  border-radius: 10px;
+  border: 1px solid var(--color-primary);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.na-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  background-color: var(--color-background);
+  color: var(--color-primary);
+  border-radius: 10px;
+  border: 1px solid var(--color-primary);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  font-weight: var(--fw-bold);
+}
+
+.report-table th,
+.report-table td {
+  text-align: center;
+  padding: 1.5rem 1.5rem;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+.report-table th {
+  background-color: var(--color-tertiary);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-md);
+  color: var(--color-primary);
+}
+
+.report-table td {
+  background-color: var(--color-secondary);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-md);
+  color: var(--color-primary);
+}
+
+.report-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Prevent hover highlighting for status */
+.report-table td .status {
+  pointer-events: none; 
+  text-decoration: none; 
+}
+
+/* Status colors */
+.status {
+  font-weight: var(--fw-bold);
+}
+
+.status.pending { color: #f7b32b; }
+.status.published { color: #22c55e; }
+.status.rejected { color: #ef4444; }
+.status.completed { color: #7C4DFF; }
+
+
+/* Buttons */
+.btn-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn {
+  border: 1.5px solid transparent;
+  border-radius: 1rem;
+  padding: 0.6rem 1.2rem;
+  font-weight: var(--fw-bold);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn.edit {
+  border-color: #22c55e;
+  color: #22c55e;
+  background: transparent;
+}
+
+.btn.delete {
+  border-color: #ef4444;
+  color: #ef4444;
+  background: transparent;
+}
+
+.btn.reason {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  background: transparent;
+}
+
+.btn.edit:hover {
+  background: #4caf50;
+  color: white;
+}
+
+.btn.delete:hover {
+  background: #e53935;
+  color: white;
+}
+
+.btn.reason:hover {
+  background: var(--color-primary);
+  color: white;
+}
+
+.empty-text {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-regular);
+  color: #888;
+  font-style: italic;
+  text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .main-content {
+    padding: 5rem;
+  }
+
+  h1 {
+    font-size: var(--fs-lg);
+    font-weight: var(--fw-bold);
+  }
+
+  .report-table img {
+    width: 60px;
+  }
+
+  .na-text {
+    width: 60px;
+    height: 60px;
+  }
+
+  .report-table th,
+  .report-table td {
+    padding: 2rem;
+  }
+
+  .btn {
+    padding: 0.2rem 0.8rem;
+    font-weight: var(--fw-bold);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+}
+
+@media (max-width: 426px) {
+  /* Hide the original table headers */
+  .report-table thead {
+    display: none;
+  }
+
+  /* Make table and tbody full width */
+  .report-table,
+  .report-table tbody {
+    display: block;
+    width: 100%;
+    background-color: var(--color-background);
+  }
+
+  /* Each row = card */
+  .report-table tr {
+    display: block; /* make only tr block */
+    background: var(--color-secondary);
+    margin-bottom: 1rem;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 1rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    padding: 3rem;
+  }
+
+  /* Each cell inside card */
+  .report-table td {
+    display: flex;
+    flex-direction: column;
+    color: rgba(58, 89, 135, 0.7);
+    font-size: var(--fs-md);
+    font-weight: var(--fw-regular);
+    padding: 0.4rem 0;
+    border: none;
+    text-align: center;
+  }
+
+  /* Add labels */
+  .report-table td::before {
+    content: attr(data-label);
+    display: block;
+    color: var(--color-primary);
+    font-weight: var(--fw-bold);
+    margin-bottom: 0.2rem;
+  }
+
+  /* Center image properly */
+  .report-table td[data-label="Image"] {
+    justify-content: center;
+    align-items: center;
+  }
+
+  .report-table img {
+    width: 100%;
+    max-width: 130px;
+    border-radius: 1rem;
+    display: block;
+    margin: 0.5rem auto;
+  }
+
+  .na-text {
+    width: 100%;
+    max-width: 130px;
+    border-radius: 1rem;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin: 0.5rem auto;
+  }
+
+  /* Button group */
+  .btn-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.8rem;
+  }
+}

@@ -1,0 +1,129 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logo img {
+  width: 120px;
+  margin: 20px 0;
+}
+
+.form-card {
+  background-color: var(--color-secondary);
+  border-radius: 2rem;
+  margin: 2rem 0;
+  padding: 60px 60px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  width: 30%;
+  text-align: left;
+}
+
+#form-title {
+  text-align: center;
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-bold);
+  padding-bottom: 1.5rem;
+}
+
+.form-card label {
+  display: block;
+  color: var(--color-primary);
+  font-size: var(--fs-md);
+  font-weight: var(--fw-medium);
+}
+
+.form-card input {
+  width: 90%;
+  padding: 10px 12px;
+  border: 2px solid var(--color-secondary);
+  border-radius: 10px;
+  outline: none;
+  margin-bottom: 15px;
+  font-size: var(--fs-md);
+  color: var(--color-primary);
+  background-color: var(--color-background);
+}
+
+.form-card input:focus {
+  border: 2px solid var(--color-primary);
+  background-color: var(--color-secondary);
+}
+
+.form-card button {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-bold);
+  width: 95%;
+  border-radius: 7rem;
+  margin: 1.5rem 0;
+  padding: 1rem 0rem;
+}
+
+.form-card p {
+  margin: 1rem 0;
+  text-align: center;
+  font-size: var(--fs-sm);
+  color: var(--color-primary);
+  font-weight: var(--fw-semibold);
+}
+
+/* Responsive layout adjustments */
+@media (max-width: 769px) {
+  .logo img {
+  width: 90px;
+  }
+
+  .form-card {
+    margin: 1.5rem 0;
+    width: 70%;
+  }
+
+  #form-title {
+    font-size: var(--fs-lg);
+  }
+
+  .form-card label {
+    font-size: var(--fs-md);
+  }
+
+  .form-card button {
+    padding: 1.5rem 0rem;
+  }
+}
+
+@media (max-width: 376px) {
+  .logo img {
+  width: 70px;
+  }
+
+  .form-card {
+    margin: 0.8rem 0;
+    width: 70%;
+    padding: 20px 20px;
+  }
+
+  #form-title {
+    font-size: var(--fs-sm);
+  }
+
+  .form-card label {
+    font-size: var(--fs-sm);
+  }
+
+  .form-card input {
+  padding: 10px 12px;
+  font-size: var(--fs-sm);
+}
+
+  .form-card button {
+    padding: 1.5rem 0rem;
+  }
+}
+
+.error-msg {
+  color: var(--color-error);
+  font-size: 1.2rem;
+  display: block;
+  margin-top: 5px;
+  text-align: left;
+}

@@ -1,0 +1,301 @@
+/* ==========================================
+   ReuniFind Global Design Config
+   ========================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap');
+
+/* ---------- Root Variables ---------- */
+:root {
+  /* ReuniFind Brand Colors */
+  --color-primary: #3A5987;
+  --color-secondary: #F1F4FB;
+  --color-tertiary: #D5DEEF;
+  --color-background: #E4E9F7;
+
+  /* Alerts */
+  --color-success: #22c55e;
+  --color-error: #ef4444;
+  --color-warning: #facc15;
+
+  /* Font Families */
+  --font-heading: 'Quicksand', 'Segoe UI', sans-serif;
+  --font-body: 'Inter', 'Poppins', 'Segoe UI', sans-serif;
+
+  /* Font Weights */
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+
+  /* Base Font Sizes (in rems, 1rem = 10px) */
+  --fs-sm: 1.4rem;    /* 14px */
+  --fs-md: 1.6rem;    /* 16px */
+  --fs-lg: 2rem;      /* 20px */
+  --fs-xl: 2.8rem;    /* 28px */
+  --fs-xxl: 4rem;     /* 40px */
+}
+
+/* ---------- Default Element Styles ---------- */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 62.5%; /* 1rem = 10px */
+  line-height: 1.5rem;
+}
+
+body{
+  min-height: 100vh;
+  min-height: 100dvh;
+  background-color: var(--color-background);
+  color: #1e293b;
+  font-family: var(--font-body);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+  scroll-behavior: smooth;
+  display: grid;
+  grid-template-columns: auto 1fr;
+}
+
+main{
+  padding: min(0px, 7%);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  color: var(--color-primary);
+  margin-top: 0;
+}
+
+h1, h2, h3 {
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-xxl);
+}
+
+h4, h5 {
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-xl);
+}
+
+h6 {
+  font-weight: var(--fw-medium);
+  font-size: var(--fs-sm);
+}
+
+button, .btn {
+  font-family: var(--font-heading);
+  font-weight: var(--fw-medium);
+}
+
+/* ---------- Responsive Font Sizes ---------- */
+/* Mobile Small (<=320px) */
+@media (max-width: 320px) {
+  :root {
+    --fs-sm: 1.2rem;  /* 12px */
+    --fs-md: 1.4rem;  /* 14px */
+    --fs-lg: 1.6rem;  /* 16px */
+    --fs-xl: 2rem;    /* 20px */
+    --fs-xxl: 2.4rem; /* 24px */
+  }
+}
+
+/* Mobile Large (321px - 425px) */
+@media (min-width: 321px) and (max-width: 425px) {
+  :root {
+    --fs-sm: 1.4rem;  /* 14px */
+    --fs-md: 1.6rem;  /* 16px */
+    --fs-lg: 1.8rem;  /* 18px */
+    --fs-xl: 2.4rem;  /* 24px */
+    --fs-xxl: 3.2rem; /* 32px */
+  }
+}
+
+/* Tablet (426px - 768px) */
+@media (min-width: 426px) and (max-width: 768px) {
+  :root {
+    --fs-sm: 1.4rem;  /* 14px */
+    --fs-md: 1.8rem;  /* 18px */
+    --fs-lg: 2.4rem;  /* 24px */
+    --fs-xl: 3.2rem;  /* 32px */
+    --fs-xxl: 4rem;   /* 40px */
+  }
+}
+
+/* Laptop (769px - 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  :root {
+    --fs-sm: 1.4rem;  /* 14px */
+    --fs-md: 2rem;    /* 20px */
+    --fs-lg: 2.8rem;  /* 28px */
+    --fs-xl: 4rem;    /* 40px */
+    --fs-xxl: 4.8rem; /* 48px */
+  }
+}
+
+/* Desktop (1025px - 1440px) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+  :root {
+    --fs-sm: 1.4rem;  /* 14px */
+    --fs-md: 2rem;    /* 20px */
+    --fs-lg: 2.8rem;  /* 28px */
+    --fs-xl: 4rem;    /* 40px */
+    --fs-xxl: 5.6rem; /* 56px */
+  }
+}
+
+/* Large Desktop (1441px+) */
+@media (min-width: 1441px) {
+  :root {
+    --fs-sm: 1.4rem;  /* 14px */
+    --fs-md: 2rem;    /* 20px */
+    --fs-lg: 3.2rem;  /* 32px */
+    --fs-xl: 4.8rem;  /* 48px */
+    --fs-xxl: 6.4rem; /* 64px */
+  }
+}
+
+/* ---------- Default Layout ---------- */
+/* Layout */
+.layout {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* Main Content */
+.main-content {
+  width: 80%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: min(3em, 15%);
+  h2, p { margin-top: 1em }
+
+  /* TODO: REMOVE LATER */
+  /* border: 1px solid var(--color-primary); */
+}
+
+/* Hero Section */
+.hero-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 15rem 0;
+
+  /* TODO: REMOVE LATER */
+  /* border: 1px solid var(--color-primary); */
+}
+
+.hero-content h1 {
+  line-height: 1em;
+}
+
+.hero-content p {
+  margin: 3rem 0rem 5rem 0;
+  font-size: var(--fs-md);
+  font-weight: var(--fw-medium);
+}
+
+.hero-content img {
+  width: 130px;
+  margin-bottom: 3rem;
+}
+
+.hero-title {
+  font-size: var(--fs-xxl);
+  font-weight: var(--fw-bold);
+  margin-bottom: 1rem;
+}
+
+.hero-subtitle {
+  font-size: var(--fs-lg);
+  color: #334155;
+  margin-bottom: 2rem;
+}
+
+/* Buttons */
+.btn {
+  border: none;
+  border-radius: 7rem;
+  margin: 0.5rem;
+  padding: 2rem 3rem;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: var(--fs-md);
+  font-weight: var(--fw-medium);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #566FA5; /* soft hover */
+  transform: translateY(-3px);
+}
+
+.btn-primary:active {
+  transform: translateY(2px);
+}
+
+.btn-secondary {
+  background-color: var(--color-tertiary);
+  color: var(--color-primary);
+}
+
+.btn-secondary:hover {
+  background-color: #EFF2FA;
+  transform: translateY(-3px);
+}
+
+.btn-secondary:active {
+  transform: translateY(2px);
+}
+
+/* Responsive layout adjustments */
+@media (max-width: 768px) {
+  body{
+    grid-template-columns: 1fr;
+  }
+
+  .main-content{
+    border: none;
+    padding: 0;
+  }
+
+  .layout {
+    justify-content: center;
+  }
+}
+
+/* 
+
+
+
+  .layout {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .btn {
+    border-radius: 7rem;
+    margin: 0.5rem;
+    padding: 1rem 2rem;
+    font-size: var(--fs-md);
+    font-weight: var(--fw-regular);
+ } */
+
