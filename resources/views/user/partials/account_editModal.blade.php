@@ -9,8 +9,13 @@
 
       <div class="profile-section">
         <h3>Profile Information</h3> 
-        <img class="profileImg" src="{{ $user->profileImg ? asset('storage/' . $user->profileImg) : asset('images/profiles/user_default.png') }}" 
-          alt="Profile"">
+        <img class="profileImg" 
+          src="{{ $user->profileImg
+              ? asset('storage/' . $user->profileImg)
+              : asset($user->userRole === 'Admin'
+                  ? 'images/profiles/admin_default.png'
+                  : 'images/profiles/user_default.png') }}" 
+          alt="Profile">
         <label for="profileImg" class="upload-label">
           Upload Profile Picture
         </label>

@@ -87,8 +87,7 @@
 
       <!-- User Profile -->
       <div class="user-profile">
-          <img 
-              src="{{ Auth::check() && Auth::user()->profileImg 
+          <img src="{{ Auth::check() && Auth::user()->profileImg 
                     ? asset('storage/' . Auth::user()->profileImg) 
                     : asset('images/profiles/user_default.png') }}"
 

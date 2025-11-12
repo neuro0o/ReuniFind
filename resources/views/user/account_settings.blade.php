@@ -33,8 +33,13 @@
         <hr>
 
         <div class="profile-info">
-          <img src="{{ $user->profileImg ? asset('storage/' . $user->profileImg) : asset('images/profiles/user_default.png') }}" 
-            class="profile-img" alt="Profile">
+          <img src="{{ $user->profileImg
+              ? asset('storage/' . $user->profileImg)
+              : asset($user->userRole === 'Admin'
+                  ? 'images/profiles/admin_default.png'
+                  : 'images/profiles/user_default.png') }}"
+          class="profile-img" alt="Profile">
+
 
           <div class="info-text">
             <p><strong>Username:</strong> {{ $user->userName }}</p>
@@ -45,7 +50,10 @@
 
         <div class="actions">
           <button id="editBtn" class="btn btn-edit">Edit</button>
-          <button id="deleteBtn" class="btn btn-delete">Delete</button>
+          
+          @if(Auth::user()->userRole !== 'Admin')
+              <button id="deleteBtn" class="btn btn-delete">Delete</button>
+          @endif
         </div>
       </div>
 
@@ -104,17 +112,24 @@
 
         // <!-- Delete Account -->
         document.getElementById('deleteBtn').addEventListener('click', function () {
-          if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = '{{ route('account.delete') }}';
-            form.innerHTML = `
-              @csrf
-              @method('DELETE')
-            `;
-            document.body.appendChild(form);
-            form.submit();
-          }
+            const isAdmin = "{{ Auth::user()->userRole }}" === "Admin";
+
+            if (isAdmin) {
+                alert("Admin accounts cannot be deleted.");
+                return; // stop execution
+            }
+
+            if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '{{ route('account.delete') }}';
+                form.innerHTML = `
+                    @csrf
+                    @method('DELETE')
+                `;
+                document.body.appendChild(form);
+                form.submit();
+            }
         });
 
         // <!-- Image Preview -->

@@ -52,13 +52,11 @@
 
       <!-- Admin Profile -->
       <div class="user-profile">
-          <img 
-              src="{{ Auth::check() && Auth::user()->profileImg 
-                    ? asset('storage/' . Auth::user()->profileImg) 
-                    : asset('images/profiles/user_default.png') }}"
+          <img src="{{ Auth::user()->profileImg
+              ? asset('storage/' . Auth::user()->profileImg)
+              : asset('images/profiles/admin_default.png') }}"
+          alt="Admin" class="user-pic">
 
-              alt="Admin" 
-              class="user-pic">
 
           <div class="user-info">
               <span class="username">{{ Auth::user()->userName ?? 'Admin' }}</span><br>

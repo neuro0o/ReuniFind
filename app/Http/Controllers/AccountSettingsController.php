@@ -82,6 +82,11 @@ class AccountSettingsController extends Controller
         /** @var \App\Models\User $user */
         $user = Auth::user();
 
+        // Prevent admins from deleting their account
+        if ($user->userRole === 'Admin') {
+            return back()->with('error', 'Admin accounts cannot be deleted.');
+        }
+
         // Delete profile image if exists
         if ($user->profileImg && Storage::disk('public')->exists($user->profileImg)) {
             Storage::disk('public')->delete($user->profileImg);
@@ -100,6 +105,7 @@ class AccountSettingsController extends Controller
         // Redirect to homepage or login
         return redirect('/')->with('success', 'Your account has been deleted successfully.');
     }
+
 
 
     // AJAX modal

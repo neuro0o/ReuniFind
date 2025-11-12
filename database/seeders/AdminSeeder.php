@@ -25,7 +25,7 @@ class AdminSeeder extends Seeder
                 'password'    => Hash::make('admin'), // default password
                 'userRole'    => 'Admin',
                 'contactInfo' => 'N/A',
-                'profileImg'  => $imagePath, // store only relative path
+                'profileImg'  => NULL, // no image defined
                 'created_at'  => now(),
                 'updated_at'  => now(),
             ]
