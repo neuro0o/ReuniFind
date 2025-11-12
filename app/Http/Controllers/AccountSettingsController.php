@@ -5,8 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
-
-use App\Models\User; // make sure this is imported at the top
+use App\Models\User;
 
 class AccountSettingsController extends Controller
 {
@@ -17,7 +16,7 @@ class AccountSettingsController extends Controller
         return view('user.account_settings', compact('user'));
     }
 
-    // UPDATE PROFILE INFO (name, email, password, contact, profile image)
+    // Update Profile Info (name, email, password, contact, profile image)
     public function updateProfile(Request $request)
     {   
         /** @var User $user */

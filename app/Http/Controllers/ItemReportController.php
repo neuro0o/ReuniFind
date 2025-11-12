@@ -327,7 +327,7 @@ class ItemReportController extends Controller
             }
         }
 
-        // --- FETCH MATCHES BY STATUS ---
+        // -------------------- FETCH SUGGESTED MATCHES BY STATUS -------------------- //
         $allStatuses = ['suggested', 'pending', 'accepted', 'dismissed', 'completed'];
         $matchesByStatus = [];
 
@@ -369,7 +369,7 @@ class ItemReportController extends Controller
     }
 
 
-    // -------------------- Helper -------------------- //
+    // -------------------- HELPER -------------------- //
     private function getEnumValues($table, $column)
     {
         $type = DB::select("SHOW COLUMNS FROM {$table} WHERE Field = '{$column}'")[0]->Type;
