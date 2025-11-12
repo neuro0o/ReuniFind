@@ -10,9 +10,9 @@ return new class extends Migration
     {
         Schema::create('match_suggestions', function (Blueprint $table) {
             $table->id('suggestionID');
-            $table->unsignedBigInteger('reportID');          // The report created by the user
+            $table->unsignedBigInteger('reportID');          // The involved report created by the user
             $table->unsignedBigInteger('matchedReportID');   // The matching report found
-            $table->unsignedBigInteger('userID');            // The user who owns this suggestion (the one who generates the matches)
+            $table->unsignedBigInteger('userID');            // The user who owns this suggestion (the one who generates this match)
             $table->enum('matchStatus',[
                 'suggested', // auto-generated matches
                 'pending', // user has started a handover request for this pair

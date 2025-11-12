@@ -14,13 +14,13 @@ return new class extends Migration
         Schema::create('handover_messages', function (Blueprint $table) {
             $table->id('messageID'); // Primary key
 
-            $table->unsignedBigInteger('requestID'); // Link to handover_requests
-            $table->unsignedBigInteger('senderID');  // Who sent this message
+            $table->unsignedBigInteger('requestID'); // Related Handover Request
+            $table->unsignedBigInteger('senderID');  // User who sent this message
 
-            $table->string('message')->nullable();      // Text content
-            $table->string('messageImage')->nullable(); // Optional image (proof/photo)
+            $table->string('messageText')->nullable();      // Text content of the message
+            $table->string('messageImg')->nullable(); // Image content of the message
 
-            $table->timestamps(); // created_at and updated_at
+            $table->dateTime('created_at'); // Timestamp for when this message is created and sent
 
             /**
              * Foreign key constraints

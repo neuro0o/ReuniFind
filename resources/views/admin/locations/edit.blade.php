@@ -3,64 +3,64 @@
 @section('title', 'Edit Item Location')
 
 @section('page-css')
-  <link rel="stylesheet" href="{{ asset('css/utils/admin_sidebar.css') }}">
-  <link rel="stylesheet" href="{{ asset('css/LostFoundReport/item_form.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/utils/admin_sidebar.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/LostFoundReport/item_form.css') }}">
 
-  <style>
-  .content {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 20px;
-  }
+    <style>
+        .content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
 
-  .form-card {
-      width: 90%;
-      max-width: 700px;
-      padding: 30px;
-      border-radius: 1rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      background-color: white;
-      box-sizing: border-box;
-  }
+        .form-card {
+            width: 90%;
+            max-width: 700px;
+            padding: 30px;
+            border-radius: 1rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            background-color: white;
+            box-sizing: border-box;
+        }
 
-  .button-stack {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      width: 100%;
-      margin-top: 20px;
-  }
+        .button-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+            margin-top: 20px;
+        }
 
-  #update-location-btn {
-      background-color: white;
-      color: #4CAF50;
-      border: 2px solid #4CAF50;
-  }
+        #update-location-btn {
+            background-color: white;
+            color: #4CAF50;
+            border: 2px solid #4CAF50;
+        }
 
-  #update-location-btn:hover {
-      background-color: #45a049;
-      color: white;
-  }
+        #update-location-btn:hover {
+            background-color: #45a049;
+            color: white;
+        }
 
-  #cancel-location-btn {
-      background-color: white;
-      color: #ef4444;
-      border: 2px solid #ef4444;
-  }
+        #cancel-location-btn {
+            background-color: white;
+            color: #ef4444;
+            border: 2px solid #ef4444;
+        }
 
-  #cancel-location-btn:hover {
-      background-color: #ef4444;
-      color: white;
-  }
+        #cancel-location-btn:hover {
+            background-color: #ef4444;
+            color: white;
+        }
 
-  .form-card input,
-  .button-stack button {
-      width: 100%;
-      box-sizing: border-box;
-  }
-  </style>
+        .form-card input,
+        .button-stack button {
+            width: 100%;
+            box-sizing: border-box;
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -101,5 +101,5 @@
 @endsection
 
 @section('page-js')
-  <script src="{{ asset('js/admin_sidebar.js') }}"></script>
+    <script src="{{ asset('js/admin_sidebar.js') }}"></script>
 @endsection

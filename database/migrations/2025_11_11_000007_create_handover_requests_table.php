@@ -55,8 +55,8 @@ return new class extends Migration
              */
             $table->enum('requestStatus', ['Pending', 'Approved', 'Rejected', 'Completed'])->default('Pending');
 
-            // Optional rejection note if recipient rejects the request
-            $table->string('rejectionNote')->nullable();
+            // Rejection note if recipient rejects the request
+            $table->string('rejectionNote');
 
             // created_at and updated_at
             $table->timestamps();

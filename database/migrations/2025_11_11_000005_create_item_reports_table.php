@@ -29,9 +29,9 @@ return new class extends Migration
             $table->string('itemImg')->nullable();
 
             // Verification + status fields
-            $table->string('verificationNote')->nullable(); // User’s note to support verification for item report's validity
+            $table->string('verificationNote'); // User’s note to support verification for item report's validity
             $table->string('verificationImg')->nullable(); // User’s uploaded proof image for item report's validity
-            $table->string('rejectionNote')->nullable(); // Admin’s reason for rejection
+            $table->string('rejectionNote')->nullable(); // Admin’s reason for rejecting item report from being published in the system
 
             $table->foreignId('userID')->constrained('users', 'userID')->onDelete('cascade');
         });

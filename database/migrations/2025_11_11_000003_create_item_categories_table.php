@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('item_categories', function (Blueprint $table) {
             $table->id('categoryID');
             $table->string('categoryName')->unique();
-            $table->string('description'); // useful for admin to add category notes
+            $table->string('description'); // Short description of the Item Category
         });
     }
 

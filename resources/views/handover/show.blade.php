@@ -120,7 +120,7 @@
         @csrf
         @method('PUT')
         <input type="hidden" name="handoverStatus" value="Rejected">
-        <input type="text" name="rejectionNote" placeholder="Reason (optional)" class="reject-note">
+        <input type="text" name="rejectionNote" placeholder="Reason for handover request rejection" class="reject-note" required>
         <button type="submit" class="btn-reject">Reject</button>
       </form>
       @endif
