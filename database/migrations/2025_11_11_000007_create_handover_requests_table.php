@@ -56,7 +56,10 @@ return new class extends Migration
             $table->enum('requestStatus', ['Pending', 'Approved', 'Rejected', 'Completed'])->default('Pending');
 
             // Rejection note if recipient rejects the request
-            $table->string('rejectionNote');
+            $table->string('rejectionNote')->nullable();
+
+            // Store Handover Form Completion
+            $table->string('handoverForm')->nullable();
 
             // created_at and updated_at
             $table->timestamps();

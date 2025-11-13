@@ -20,4 +20,16 @@ class ItemLocation extends Model
     {
         return $this->hasMany(ItemReport::class, 'itemLocation', 'locationID');
     }
+
+    // Optional: convenience for Lost reports
+    public function lostReports()
+    {
+        return $this->itemReports()->where('reportType', 'Lost');
+    }
+
+    // Optional: convenience for Found reports
+    public function foundReports()
+    {
+        return $this->itemReports()->where('reportType', 'Found');
+    }
 }

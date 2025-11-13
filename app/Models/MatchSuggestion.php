@@ -41,4 +41,9 @@ class MatchSuggestion extends Model
     {
         return $this->matchStatus === 'completed';
     }
+
+    public function item()
+    {
+        return $this->belongsTo(ItemReport::class, 'reportID', 'reportID');
+    }
 }

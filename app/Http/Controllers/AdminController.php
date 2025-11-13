@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Models\User;
+use App\Models\ItemCategory;
 use App\Models\ItemReport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,7 +21,92 @@ class AdminController extends Controller
             abort(403, 'Unauthorized access.');
         }
 
-        return view('admin.admin_dashboard');
+        $currentMonth = Carbon::now()->month;
+        $currentYear = Carbon::now()->year;
+
+        $totalUsers = User::count();
+        $totalLostReports = ItemReport::where('reportType','Lost')->count();
+        $totalFoundReports = ItemReport::where('reportType','Found')->count();
+
+        $pendingLostReports = ItemReport::where('reportType', 'Lost')
+            ->where('reportStatus', 'Pending')
+            ->count();
+
+        $pendingFoundReports = ItemReport::where('reportType', 'Found')
+            ->where('reportStatus', 'Pending')
+            ->count();
+
+        $publishedLostReports = ItemReport::where('reportType', 'Lost')
+            ->where('reportStatus', 'Published')
+            ->count();
+
+        $publishedFoundReports = ItemReport::where('reportType', 'Found')
+            ->where('reportStatus', 'Published')
+            ->count();
+
+
+        $unresolvedCases = ItemReport::where('reportStatus','!=','Completed')->count();
+        $completedCases = ItemReport::where('reportStatus','Completed')->count();
+
+        // Monthly reports
+        $totalReportsThisMonth = ItemReport::whereMonth('reportDate',$currentMonth)
+            ->whereYear('reportDate',$currentYear)->count();
+        $lostReportsThisMonth = ItemReport::where('reportType','Lost')
+            ->whereMonth('reportDate',$currentMonth)
+            ->whereYear('reportDate',$currentYear)->count();
+        $foundReportsThisMonth = ItemReport::where('reportType','Found')
+            ->whereMonth('reportDate',$currentMonth)
+            ->whereYear('reportDate',$currentYear)->count();
+
+        $unresolvedCasesThisMonth = ItemReport::where('reportStatus','!=','Completed')
+            ->whereMonth('reportDate',$currentMonth)
+            ->whereYear('reportDate',$currentYear)->count();
+        $completedCasesThisMonth = ItemReport::where('reportStatus','Completed')
+            ->whereMonth('reportDate',$currentMonth)
+            ->whereYear('reportDate',$currentYear)->count();
+
+
+        // Top Lost Categories
+        $topLostCategories = ItemCategory::withCount(['itemReports as lost_reports_count' => function($query) {
+            $query->where('reportType', 'Lost');
+        }])
+        ->orderByDesc('lost_reports_count')
+        ->take(5)
+        ->get();
+
+        // Top Found Categories
+        $topFoundCategories = ItemCategory::withCount(['itemReports as found_reports_count' => function($query) {
+            $query->where('reportType', 'Found');
+        }])
+        ->orderByDesc('found_reports_count')
+        ->take(5)
+        ->get();
+
+        // Top Lost Locations
+        $topLostLocations = \App\Models\ItemLocation::withCount(['lostReports as lost_reports_count'])
+            ->orderByDesc('lost_reports_count')
+            ->take(5)
+            ->get();
+
+        // Top Found Locations
+        $topFoundLocations = \App\Models\ItemLocation::withCount(['foundReports as found_reports_count'])
+            ->orderByDesc('found_reports_count')
+            ->take(5)
+            ->get();
+
+        return view('admin.admin_dashboard', compact(
+            'totalUsers','totalLostReports','totalFoundReports',
+            'publishedLostReports','publishedFoundReports',
+            'pendingLostReports','pendingFoundReports',
+            'unresolvedCases','completedCases',
+            'totalReportsThisMonth','lostReportsThisMonth','foundReportsThisMonth',
+            'unresolvedCasesThisMonth','completedCasesThisMonth',
+            'topLostCategories',
+            'topFoundCategories',
+            'topLostLocations',
+            'topFoundLocations'
+        ));
+
     }
 
     /**

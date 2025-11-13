@@ -21,12 +21,11 @@
         <div class="content">
             <div class="page-title">
                 <h1>Welcome to ReuniFind Admin Dashboard</h1>
-                <hr>
             </div>
 
             <h1 class="section-title">Quick Action</h1>
+            <hr>
             <div class="quick-actions">
-
                 <a href="{{ route('categories.index') }}" class="action-btn">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="24px" fill="#e3e3e3"><path d="M104 112C90.7 112 80 122.7 80 136L80 184C80 197.3 90.7 208 104 208L152 208C165.3 208 176 197.3 176 184L176 136C176 122.7 165.3 112 152 112L104 112zM256 128C238.3 128 224 142.3 224 160C224 177.7 238.3 192 256 192L544 192C561.7 192 576 177.7 576 160C576 142.3 561.7 128 544 128L256 128zM256 288C238.3 288 224 302.3 224 320C224 337.7 238.3 352 256 352L544 352C561.7 352 576 337.7 576 320C576 302.3 561.7 288 544 288L256 288zM256 448C238.3 448 224 462.3 224 480C224 497.7 238.3 512 256 512L544 512C561.7 512 576 497.7 576 480C576 462.3 561.7 448 544 448L256 448zM80 296L80 344C80 357.3 90.7 368 104 368L152 368C165.3 368 176 357.3 176 344L176 296C176 282.7 165.3 272 152 272L104 272C90.7 272 80 282.7 80 296zM104 432C90.7 432 80 442.7 80 456L80 504C80 517.3 90.7 528 104 528L152 528C165.3 528 176 517.3 176 504L176 456C176 442.7 165.3 432 152 432L104 432z"/></svg>
                     <span>Manage Item Category</span>
@@ -52,6 +51,123 @@
                     <span>Search Items</span>
                 </a>
             </div>
+
+
+            <h1 class="section-title">System Summary</h1>
+            <hr>
+            <div class="activity-summary">
+
+                <!-- ------------------ System Summary ------------------ -->
+                <h2 class="summary-group-title">SYSTEM SUMMARY</h2><br>
+                <div class="summary-grid">
+                    <div class="summary-card">
+                        <h3>Total Users</h3>
+                        <span>{{ $totalUsers }}</span>
+                    </div>
+                    <div class="summary-card">
+                        <h3>Total Lost Item Reports</h3>
+                        <span>{{ $totalLostReports }}</span>
+                    </div>
+                    <div class="summary-card">
+                        <h3>Total Found Item Reports</h3>
+                        <span>{{ $totalFoundReports }}</span>
+                    </div>
+                    <div class="summary-card">
+                        <h3>Pending Lost Item Reports</h3>
+                        <span>{{ $pendingLostReports }}</span>
+                    </div>
+                    <div class="summary-card">
+                        <h3>Pending Found Item Reports</h3>
+                        <span>{{ $pendingFoundReports }}</span>
+                    </div>
+                    <div class="summary-card">
+                        <h3>Published Lost Item Reports</h3>
+                        <span>{{ $publishedLostReports }}</span>
+                    </div>
+                    <div class="summary-card">
+                        <h3>Published Found Item Reports</h3>
+                        <span>{{ $publishedFoundReports }}</span>
+                    </div>
+                    <div class="summary-card">
+                        <h3>Unresolved Cases</h3>
+                        <span>{{ $unresolvedCases }}</span>
+                    </div>
+                    <div class="summary-card">
+                        <h3>Completed Cases</h3>
+                        <span>{{ $completedCases }}</span>
+                    </div>
+                </div><br><br>
+
+                <!-- ------------------ Monthly Report ------------------ -->
+                <h2 class="summary-group-title">MONTHLY REPORT</h2><br>
+                <div class="summary-grid">
+                    <div class="summary-card">
+                        <h3>Total Item Reports This Month</h3>
+                        <span>{{ $totalReportsThisMonth }}</span>
+                    </div>
+                    <div class="summary-card">
+                        <h3>Total Lost Reports This Month</h3>
+                        <span>{{ $lostReportsThisMonth }}</span>
+                    </div>
+                    <div class="summary-card">
+                        <h3>Total Found Reports This Month</h3>
+                        <span>{{ $foundReportsThisMonth }}</span>
+                    </div>
+                    <div class="summary-card">
+                        <h3>Unresolved Cases This Month</h3>
+                        <span>{{ $unresolvedCasesThisMonth }}</span>
+                    </div>
+                    <div class="summary-card">
+                        <h3>Completed Cases This Month</h3>
+                        <span>{{ $completedCasesThisMonth }}</span>
+                    </div>
+                </div><br><br>
+
+                <!-- ------------------ Top Reports Charts ------------------ -->
+                <!-- <h2 class="summary-group-title">TOP REPORTS</h2>
+
+                <div class="chart-card">
+                    <h3>Top Lost Categories</h3>
+                    <canvas id="topLostCategoriesChart"></canvas>
+                </div>
+
+                <div class="chart-card">
+                    <h3>Top Found Categories</h3>
+                    <canvas id="topFoundCategoriesChart"></canvas>
+                </div>
+
+                <div class="chart-card">
+                    <h3>Top Lost Locations</h3>
+                    <canvas id="topLostLocationsChart"></canvas>
+                </div>
+
+                <div class="chart-card">
+                    <h3>Top Found Locations</h3>
+                    <canvas id="topFoundLocationsChart"></canvas>
+                </div> -->
+
+                <h2 class="summary-group-title">TOP REPORTS</h2>
+
+                <div class="charts-grid">
+                <div class="chart-card">
+                    <h3>Top Lost Categories</h3>
+                    <canvas id="topLostCategoriesChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h3>Top Found Categories</h3>
+                    <canvas id="topFoundCategoriesChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h3>Top Lost Locations</h3>
+                    <canvas id="topLostLocationsChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h3>Top Found Locations</h3>
+                    <canvas id="topFoundLocationsChart"></canvas>
+                </div>
+            </div>
+            </div>
+
         </div>
     </div>
 @endsection
@@ -61,9 +177,81 @@
 @section('footer')
     
 @endsection
-
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <!-- PAGE SPECIFIC JS -->
 @section('page-js')
     <!-- FIXME: Fix Sidebar Collapse Behavior -->
     <script src="{{ asset('js/admin_sidebar.js') }}"></script>
+
+
+    <script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+function renderBarChart(canvasId, labels, data, labelText, bgColor, borderColor) {
+    new Chart(document.getElementById(canvasId).getContext('2d'), {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: labelText,
+                data: data,
+                backgroundColor: bgColor,
+                borderColor: borderColor,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: { beginAtZero: true, ticks: { stepSize: 1 } }
+            }
+        }
+    });
+}
+
+// Top Lost Categories
+renderBarChart(
+    'topLostCategoriesChart',
+    {!! json_encode($topLostCategories->pluck('categoryName')) !!},
+    {!! json_encode($topLostCategories->pluck('lost_reports_count')) !!},
+    'Lost Reports',
+    'rgba(220, 53, 69, 0.7)',
+    'rgba(220, 53, 69, 1)'
+);
+
+// Top Found Categories
+renderBarChart(
+    'topFoundCategoriesChart',
+    {!! json_encode($topFoundCategories->pluck('categoryName')) !!},
+    {!! json_encode($topFoundCategories->pluck('found_reports_count')) !!},
+    'Found Reports',
+    'rgba(40, 167, 69, 0.7)',
+    'rgba(40, 167, 69, 1)'
+);
+
+// Top Lost Locations
+renderBarChart(
+    'topLostLocationsChart',
+    {!! json_encode($topLostLocations->pluck('locationName')) !!},
+    {!! json_encode($topLostLocations->pluck('lost_reports_count')) !!},
+    'Lost Reports',
+    'rgba(220, 53, 69, 0.7)',
+    'rgba(220, 53, 69, 1)'
+);
+
+// Top Found Locations
+renderBarChart(
+    'topFoundLocationsChart',
+    {!! json_encode($topFoundLocations->pluck('locationName')) !!},
+    {!! json_encode($topFoundLocations->pluck('found_reports_count')) !!},
+    'Found Reports',
+    'rgba(40, 167, 69, 0.7)',
+    'rgba(40, 167, 69, 1)'
+);
+</script>
+
+
+    </script>
+
 @endsection

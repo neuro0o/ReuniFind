@@ -6,6 +6,7 @@ use App\Http\Controllers\HandoverRequestController;
 use App\Http\Controllers\HandoverMessageController;
 use App\Http\Controllers\ItemReportController;
 use App\Http\Controllers\RegistrationController;
+use App\Http\Controllers\UserDashboardController;
 use App\Http\Controllers\AccountSettingsController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
@@ -55,6 +56,11 @@ Route::middleware(['auth'])->prefix('account')->group(function () {
 Route::get('/dashboard', function () {
     return view('user.dashboard');
 })->middleware('auth')->name('user.dashboard');
+
+// USER HOME @ DASHBOARD STATISTICS
+Route::get('/dashboard', [UserDashboardController::class, 'index'])
+    ->middleware('auth')
+    ->name('user.dashboard');
 
 
 /*----------------- ADMIN ROUTES -------------------*/
