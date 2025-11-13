@@ -34,7 +34,7 @@
 
     <!-- We Boast Section -->
     <section class="we-boast">
-        <h2>We Boast</h2>
+        <h2>ReuniFind Highlights</h2>
         <div class="boast-cards">
             <div class="boast-card">
                 <!-- <div class="boast-icon">👥</div> -->

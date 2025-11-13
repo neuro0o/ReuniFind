@@ -199,6 +199,7 @@
 
 .cta-content p {
   font-size: var(--fs-md);
+  font-style: italic;
   color: var(--color-primary);
   margin-bottom: 3rem;
 }
