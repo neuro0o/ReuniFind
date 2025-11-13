@@ -1,105 +1,258 @@
+/* ==========================================
+   ReuniFind Landing Page Styles (Enhanced)
+   ========================================== */
+.hero {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.hero-content img {
+  width: 120px;
+  margin-bottom: 2rem;
+}
+
+.hero-content h1 {
+  font-family: var(--font-heading);
+  font-size: var(--fs-xxl);
+  color: var(--color-primary);
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.hero-content p {
+  font-size: var(--fs-md);
+  color: #475569;
+  font-style: italic;
+  margin-bottom: 3rem;
+}
+
 .button-groups {
   display: flex;
-  gap: 1rem; /* space between buttons */
-  justify-content: center; /* center buttons horizontally */
-  flex-wrap: wrap; /* wrap on smaller screens */
+  gap: 1.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .button-groups a {
   font-weight: var(--fw-bold);
 }
 
-.feature-list {
-  min-width:  50%;
-  margin: 0 auto;
-  height: 100%;
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+/* ---------- We Boast Section ---------- */
+.we-boast {
+  padding: 6rem 2rem;
   text-align: center;
-
-  /* TODO: REMOVE LATER */
-  /* border: 1px solid red; */
+  background: linear-gradient(180deg, #F8FAFC 0%, #E4E9F7 100%);
 }
 
-#feature-desc {
-  font-size: var(--fs-md);
-  font-weight: var(--fw-semibold);
+.we-boast h2 {
+  font-size: var(--fs-xl);
+  color: var(--color-primary);
+  margin-bottom: 4rem;
+  position: relative;
 }
 
-/* Grid container for feature cards */
-.feature-groups {
+.we-boast h2::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 4px;
+  background: var(--color-primary);
+  margin: 1rem auto 0;
+  border-radius: 2px;
+}
+
+.boast-cards {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 per row on desktop */
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 2rem;
-  margin-top: 2rem;
+  justify-content: center;
 }
 
-/* Individual feature card */
-.feature-card {
-  display: flex;
-  flex-direction: row; /* image left, text right */
-  align-items: center;
-  padding: 1.5rem 1rem;
-  background-color: var(--color-tertiary);
-  border-radius: 10rem;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+.boast-card {
+  background: #fff;
+  border-radius: 1.6rem;
+  padding: 2.5rem 1rem;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Image styling */
-.feature-card img {
-  width: 7rem;
-  height: auto;
-  margin-right: 1rem;
+.boast-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.12);
 }
 
-/* Text container */
-.feature-text h5 {
-  font-size: var(--fs-md);
+.boast-card .boast-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.boast-card h3 {
+  font-size: 2.2rem;
+  color: var(--color-primary);
   font-weight: var(--fw-bold);
 }
 
-.feature-text p {
-    font-size: var(--fs-sm);
-    font-weight: var(--fw-medium);
+.boast-card p {
+  color: #475569;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
 }
 
-/* Optional hover effect */
+/* ---------- Features Section ---------- */
+.feature {
+  padding: 7rem 3rem;
+  text-align: center;
+  background-color: #fff;
+}
+
+.feature h2 {
+  font-size: var(--fs-xl);
+  color: var(--color-primary);
+  margin-bottom: 4rem;
+  position: relative;
+}
+
+.feature h2::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 4px;
+  background: var(--color-primary);
+  margin: 1rem auto 0;
+  border-radius: 2px;
+}
+
+/* Responsive flexible layout similar to quick-actions */
+.feature-groups {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+  align-items: stretch;
+  width: 100%;
+  margin: 0 auto;
+  max-width: 1200px;
+}
+
+.feature-card {
+  flex: 1 1 260px; /* flexible base width */
+  max-width: 360px;
+  background: var(--color-secondary);
+  border-radius: 1.6rem;
+  padding: 2.5rem 2rem;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: default;
+  position: relative;
+}
+
 .feature-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 12px rgba(0,0,0,0.75);
+  transform: translateY(-8px);
+  background: #fff;
+  box-shadow: 0 10px 25px rgba(58, 89, 135, 0.15);
 }
 
-/* ---------- Responsive Grids ---------- */
+.feature-card img {
+  width: 4.5rem;
+  height: auto;
+  margin-bottom: 1.2rem;
+}
+
+.feature-text h5 {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-semibold);
+  color: var(--color-primary);
+  margin-bottom: 0.5rem;
+}
+
+.feature-text p {
+  font-size: var(--fs-sm);
+  color: #475569;
+  font-weight: var(--fw-medium);
+  line-height: 1.6;
+}
+
+/* ---------- Responsive ---------- */
 @media (max-width: 1024px) {
-  .feature-groups {
-    grid-template-columns: repeat(2, 1fr); /* 2 per row on tablet */
+  .feature {
+    padding: 6rem 2rem;
+  }
+  .feature-card {
+    flex: 1 1 240px;
   }
 }
 
 @media (max-width: 768px) {
+  .hero {
+    padding: 0rem 2rem;
+  }
+
+  .hero-content h1 {
+    font-size: 2.4rem;
+  }
+
+  .boast-cards {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .feature {
+    padding: 5rem 2rem;
+  }
+
+  .feature h2 {
+    text-align: center;
+    margin-left: 0;
+  }
+
   .feature-groups {
-    grid-template-columns: 1fr; /* 1 per row on mobile */
+    gap: 1.5rem;
+  }
+
+  .feature-card {
+    flex: 1 1 200px;
+    max-width: 300px;
   }
 }
 
-/* Make it stack vertically on small screens */
 @media (max-width: 480px) {
-  .feature-card {
-    flex-direction: column; /* image on top, text below */
+  .boast-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .feature-groups {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-content img {
+    width: 90px;
+  }
+
+  /* Stack login/register buttons vertically */
+  .button-groups {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .button-groups a {
+    width: 80%;
     text-align: center;
   }
-}
 
-/* On small screens remove right margin */
-@media (max-width: 480px) {
-  .feature-card img {
-    margin-right: 0;
-    margin-bottom: 1rem;
+  .feature {
+    padding: 4rem 1.5rem;
+  }
+
+  .feature-groups {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .feature-card {
+    width: 90%;
+    padding: 2rem 1.5rem;
   }
 }
-
-
