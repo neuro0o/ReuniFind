@@ -1,5 +1,5 @@
 /* ==========================================
-   ReuniFind Landing Page Styles (Enhanced)
+  ReuniFind Landing Page Styles (Enhanced)
    ========================================== */
 .hero {
   display: flex;
@@ -23,7 +23,7 @@
 
 .hero-content p {
   font-size: var(--fs-md);
-  color: #475569;
+  color: var(--color-primary);
   font-style: italic;
   margin-bottom: 3rem;
 }
@@ -43,12 +43,12 @@
 .we-boast {
   padding: 6rem 2rem;
   text-align: center;
-  background: linear-gradient(180deg, #F8FAFC 0%, #E4E9F7 100%);
+  background: var(--color-primary);
 }
 
 .we-boast h2 {
   font-size: var(--fs-xl);
-  color: var(--color-primary);
+  color: var(--color-secondary);
   margin-bottom: 4rem;
   position: relative;
 }
@@ -58,7 +58,7 @@
   display: block;
   width: 60px;
   height: 4px;
-  background: var(--color-primary);
+  background: var(--color-secondary);
   margin: 1rem auto 0;
   border-radius: 2px;
 }
@@ -71,7 +71,7 @@
 }
 
 .boast-card {
-  background: #fff;
+  background: var(--color-background);
   border-radius: 1.6rem;
   padding: 2.5rem 1rem;
   box-shadow: 0 6px 20px rgba(0,0,0,0.08);
@@ -80,23 +80,24 @@
 
 .boast-card:hover {
   transform: translateY(-8px);
+  background: var(--color-secondary);
   box-shadow: 0 10px 25px rgba(0,0,0,0.12);
 }
 
 .boast-card .boast-icon {
-  font-size: 3rem;
+  font-size: var(--fs-lg);
   margin-bottom: 1rem;
 }
 
 .boast-card h3 {
-  font-size: 2.2rem;
+  font-size: var(--fs-lg);
   color: var(--color-primary);
   font-weight: var(--fw-bold);
 }
 
 .boast-card p {
   color: #475569;
-  font-size: var(--fs-sm);
+  font-size: var(--fs-md);
   font-weight: var(--fw-medium);
 }
 
@@ -104,7 +105,7 @@
 .feature {
   padding: 7rem 3rem;
   text-align: center;
-  background-color: #fff;
+  background-color: var(--color-background);
 }
 
 .feature h2 {
@@ -151,12 +152,18 @@
 
 .feature-card:hover {
   transform: translateY(-8px);
-  background: #fff;
+  background: var(--color-primary);
   box-shadow: 0 10px 25px rgba(58, 89, 135, 0.15);
 }
 
+/* Change text color when card is hovered */
+.feature-card:hover .feature-text h5,
+.feature-card:hover .feature-text p {
+  color: var(--color-secondary);
+}
+
 .feature-card img {
-  width: 4.5rem;
+  width: 5.5rem;
   height: auto;
   margin-bottom: 1.2rem;
 }
@@ -169,10 +176,42 @@
 }
 
 .feature-text p {
-  font-size: var(--fs-sm);
+  font-size: var(--fs-md);
   color: #475569;
   font-weight: var(--fw-medium);
   line-height: 1.6;
+}
+
+/* ---------- CTA Section ---------- */
+.cta {
+  background: var(--color-secondary);
+  color: var(--color-primary);
+  text-align: center;
+  padding: 6rem 2rem;
+}
+
+.cta-content h2 {
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-bold);
+  margin-bottom: 1rem;
+  color: var(--color-primary);
+}
+
+.cta-content p {
+  font-size: var(--fs-md);
+  color: var(--color-primary);
+  margin-bottom: 3rem;
+}
+
+.cta .button-groups {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.cta .button-groups a {
+  font-weight: var(--fw-bold);
 }
 
 /* ---------- Responsive ---------- */
@@ -191,7 +230,7 @@
   }
 
   .hero-content h1 {
-    font-size: 2.4rem;
+    font-size: var(--fs-xl);
   }
 
   .boast-cards {
@@ -232,16 +271,20 @@
 
   /* Stack login/register buttons vertically */
   .button-groups {
+    width: 100%;
+    display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: center; /* center horizontally */
+    justify-content: center;
     gap: 1rem;
+    margin-top: 1rem;
   }
 
   .button-groups a {
     width: 80%;
+    max-width: 280px;
     text-align: center;
   }
-
   .feature {
     padding: 4rem 1.5rem;
   }
@@ -254,5 +297,20 @@
   .feature-card {
     width: 90%;
     padding: 2rem 1.5rem;
+  }
+
+  .cta {
+    padding: 4rem 1.5rem;
+  }
+
+  .cta .button-groups {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .cta .button-groups a {
+    width: 80%;
+    text-align: center;
   }
 }

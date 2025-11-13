@@ -37,22 +37,22 @@
         <h2>We Boast</h2>
         <div class="boast-cards">
             <div class="boast-card">
-                <div class="boast-icon">👥</div>
+                <!-- <div class="boast-icon">👥</div> -->
                 <h3>{{ $totalUsers ?? '0' }}</h3>
                 <p>Active Users</p>
             </div>
             <div class="boast-card">
-                <div class="boast-icon">📄</div>
+                <!-- <div class="boast-icon">📄</div> -->
                 <h3>{{ $totalLost ?? '0' }}</h3>
                 <p>Lost Reports</p>
             </div>
             <div class="boast-card">
-                <div class="boast-icon">🔍</div>
+                <!-- <div class="boast-icon">🔍</div> -->
                 <h3>{{ $totalFound ?? '0' }}</h3>
                 <p>Found Reports</p>
             </div>
             <div class="boast-card">
-                <div class="boast-icon">✅</div>
+                <!-- <div class="boast-icon">✅</div> -->
                 <h3>{{ $totalHandover ?? '0' }}</h3>
                 <p>Successful Handovers</p>
             </div>
@@ -65,20 +65,20 @@
         <div class="feature-groups">
             @php
             $features = [
-                ['icon'=>'report.svg','title'=>'Lost/Found Item Reporting','desc'=>'Submit lost or found items easily through our platform.'],
-                ['icon'=>'admin-verify.svg','title'=>'Verified by Admin','desc'=>'Ensure credibility with admin verification before publishing.'],
-                ['icon'=>'map.svg','title'=>'Interactive Campus Map','desc'=>'Pin last-seen or found locations on our interactive map.'],
-                ['icon'=>'match.svg','title'=>'Item Matchmaking','desc'=>'Automatic suggestions to match lost and found items.'],
-                ['icon'=>'qr-tag.svg','title'=>'QR-Tag Registry','desc'=>'Register your items with QR tags for easier identification.'],
-                ['icon'=>'analytics.svg','title'=>'Report Insights & Analytics','desc'=>'Get statistics and insights from reports to track trends.'],
-                ['icon'=>'help.svg','title'=>'Help Center & Feedback','desc'=>'Reach out to our team for help or provide feedback.'],
-                ['icon'=>'forum.svg','title'=>'Community Tips & Forum','desc'=>'Share tips, stories, and advice with the ReuniFind community.'],
+                ['icon'=>'Lost_Found_Reporting_Feature.svg','title'=>'Lost/Found Item Reporting','desc'=>'Submit lost or found items easily through our platform.'],
+                ['icon'=>'Verified_By_Admin.svg','title'=>'Verified by Admin','desc'=>'Ensure item report credibility with admin verification before publishing.'],
+                ['icon'=>'Interactive_Campus_Map_Feature.svg','title'=>'Interactive Campus Map','desc'=>'Pin last-seen or found locations on our interactive map.'],
+                ['icon'=>'Item_Matchmaking_Feature.svg','title'=>'Item Matchmaking','desc'=>'Automatic suggestions to match your lost and found items.'],
+                ['icon'=>'QR_Tagged_Item_Registry_Feature.svg','title'=>'QR-Tag Registry','desc'=>'Register your items with QR tags for easier identification.'],
+                ['icon'=>'Report_Insights_Analytics_Feature.svg','title'=>'Report Insights & Analytics','desc'=>'Get statistics and insights from reports to track trends.'],
+                ['icon'=>'Help_Center_Feedback_Feature.svg','title'=>'Help Center & Feedback','desc'=>'Reach out to our team for help or provide feedback.'],
+                ['icon'=>'Community_Tips_Forum_Feature.svg','title'=>'Community Tips & Forum','desc'=>'Share tips, stories, and advice with the ReuniFind community.'],
             ];
             @endphp
 
             @foreach($features as $feature)
             <div class="feature-card">
-                <img src="{{ asset('images/icons/'.$feature['icon']) }}" alt="{{ $feature['title'] }}">
+                <img src="{{ asset('images/features/'.$feature['icon']) }}" alt="{{ $feature['title'] }}">
                 <div class="feature-text">
                     <h5>{{ $feature['title'] }}</h5>
                     <p>{{ $feature['desc'] }}</p>
@@ -87,6 +87,19 @@
             @endforeach
         </div>
     </section>
+
+    <!-- Call-To-Action Section -->
+    <section class="cta">
+        <div class="cta-content">
+            <h2>Ready to ReuniFind?</h2>
+            <p>Join our community today and help reunite lost items with their rightful owners.</p>
+            <div class="button-groups">
+                <a href="{{ route('register') }}" class="btn btn-secondary">Register Now</a>
+                <a href="{{ route('login') }}" class="btn btn-primary">Login</a>
+            </div>
+        </div>
+    </section>
+
 @endsection
 
 
