@@ -58,7 +58,7 @@ class ItemReportController extends Controller
         // Handle verification image upload
         $verificationPath = null;
         if ($request->hasFile('verificationImg')) {
-            $verificationPath = $request->file('verificationImg')->store('images/verification', 'public');
+            $verificationPath = $request->file('verificationImg')->store('images/verifications', 'public');
         }
 
         // Create new report
@@ -218,7 +218,7 @@ class ItemReportController extends Controller
             if ($report->verificationImg && Storage::disk('public')->exists($report->verificationImg)) {
                 Storage::disk('public')->delete($report->verificationImg);
             }
-            $report->verificationImg = $request->file('verificationImg')->store('images/verification', 'public');
+            $report->verificationImg = $request->file('verificationImg')->store('images/verifications', 'public');
         }
 
         // Update other fields, including verification note

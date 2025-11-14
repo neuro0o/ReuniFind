@@ -25,7 +25,7 @@
     <form method="GET" action="{{ route('item_report.view') }}" class="filter-bar">
       <input type="text" name="keyword" placeholder="Search by keyword..." value="{{ request('keyword') }}" />
       <select name="status">
-        <option value="all" {{ request('status') == 'all' ? 'selected' : '' }}>All</option>
+        <option value="all" {{ request('status') == 'all' ? 'selected' : '' }}>All Report</option>
         @foreach ($statusEnum as $status)
           <option value="{{ strtolower($status) }}" {{ request('status') == strtolower($status) ? 'selected' : '' }}>
             {{ $status }}
@@ -33,7 +33,7 @@
         @endforeach
       </select>
       <select name="category">
-        <option value="all" {{ request('category') == 'all' ? 'selected' : '' }}>All</option>
+        <option value="all" {{ request('category') == 'all' ? 'selected' : '' }}>All Category</option>
         @foreach ($categories as $category)
           <option value="{{ $category->categoryID }}" {{ request('category') == $category->categoryID ? 'selected' : '' }}>
             {{ $category->categoryName }}
