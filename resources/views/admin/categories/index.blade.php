@@ -12,7 +12,7 @@
     @include('layouts.partials.admin_sidebar')
 
     <div class="main-content">
-        <h1>Item Categories</h1>
+        <h1>Manage Item Category</h1>
 
         <a href="{{ route('categories.create') }}" class="btn btn-primary" style="margin-bottom: 1rem;">+ Add Category</a>
 

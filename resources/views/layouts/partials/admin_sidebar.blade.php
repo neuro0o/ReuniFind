@@ -28,7 +28,7 @@
         </button>
         <ul class="sub-menu">
             <div>
-              <li><a href="{{ route('categories.index') }}">Manage Item Categories</a></li>
+              <li><a href="{{ route('categories.index') }}">Manage Item Category</a></li>
               <li><a href="{{ route('locations.index') }}">Manage Item Location</a></li>
             </div>
           </ul>

@@ -12,7 +12,7 @@
     @include('layouts.partials.admin_sidebar')
 
     <div class="main-content">
-        <h1>Item Locations</h1>
+        <h1>Manage Item Location</h1>
 
         <a href="{{ route('locations.create') }}" class="btn btn-primary" style="margin-bottom: 1rem;">+ Add Location</a>
 
