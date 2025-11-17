@@ -265,7 +265,10 @@ class ItemReportController extends Controller
     public function matchmaking()
     {
         $userID = Auth::user()->userID;
-        $userReports = ItemReport::where('userID', $userID)->get();
+        $userReports = ItemReport::where('userID', $userID)
+            ->where('reportStatus', 'Published')
+            ->get();
+
 
         // If user has no reports
         if ($userReports->isEmpty()) {
@@ -283,6 +286,7 @@ class ItemReportController extends Controller
             // Get all possible matches from other users
             $potentialMatches = ItemReport::where('reportType', $oppositeType)
                 ->where('userID', '!=', $userID)
+                ->where('reportStatus', 'Published') // only published reports
                 ->get();
 
             // Extract all words from this report
