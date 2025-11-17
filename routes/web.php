@@ -67,6 +67,19 @@ Route::get('/dashboard', [UserDashboardController::class, 'index'])
 Route::middleware(['auth', 'isAdmin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.admin_dashboard');
 
+    // user managements
+    Route::get('/admin/users', [AdminController::class, 'manageUsers'])->name('admin.users.index');
+
+    Route::get('/admin/users/create', [AdminController::class, 'createUser'])->name('admin.users.create');
+    Route::post('/admin/users', [AdminController::class, 'storeUser'])->name('admin.users.store');
+
+    Route::get('/admin/users/{id}/edit', [AdminController::class, 'editUser'])->name('admin.users.edit');
+    Route::put('/admin/users/{id}', [AdminController::class, 'updateUser'])->name('admin.users.update');
+    Route::put('/admin/users/{id}/reset-profile', [AdminController::class, 'resetProfile'])->name('admin.users.resetProfile');
+
+
+    Route::delete('/admin/users/{id}', [AdminController::class, 'deleteUser'])->name('admin.users.delete');
+
     // Item Category CRUD
     Route::resource('categories', \App\Http\Controllers\ItemCategoryController::class);
 

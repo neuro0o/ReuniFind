@@ -7,6 +7,7 @@ use App\Models\ItemCategory;
 use App\Models\ItemReport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -109,6 +110,7 @@ class AdminController extends Controller
 
     }
 
+    // -------------------- User Management -------------------- //
     /**
      * Show all users (optional — for future feature).
      */
@@ -118,11 +120,116 @@ class AdminController extends Controller
             abort(403, 'Unauthorized access.');
         }
 
-        $users = \App\Models\User::all();
+        $users = User::orderBy('userID', 'asc')->get();
         return view('admin.users.index', compact('users'));
     }
 
-    // -------------------- Item Category -------------------- //
+    public function createUser()
+    {
+        return view('admin.users.create');
+    }
+
+    public function storeUser(Request $request)
+    {
+        $validated = $request->validate([
+            'userName' => 'required|string|max:255',
+            'userEmail' => 'required|email|max:255|unique:users,userEmail',
+            'password' => 'required|min:3|confirmed',
+            'contactInfo' => 'nullable|string|max:50',
+            'userRole' => 'required|in:Admin,User',
+            'profileImg' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
+
+        if ($request->hasFile('profileImg')) {
+            $validated['profileImg'] = $request->file('profileImg')
+                ->store('/images/profiles', 'public');
+        }
+
+        $validated['password'] = Hash::make($validated['password']);
+
+        User::create($validated);
+
+        return redirect()->route('admin.users.index')
+            ->with('success', 'New user created successfully.');
+    }
+
+    public function editUser($id)
+    {
+        $user = User::findOrFail($id);
+        return view('admin.users.edit', compact('user'));
+    }
+
+    public function updateUser(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        $validated = $request->validate([
+            'userName' => 'required|string|max:255',
+            'userEmail' => 'required|email|max:255|unique:users,userEmail,' . $id . ',userID',
+            'password' => 'nullable|min:3|confirmed',
+            'contactInfo' => 'nullable|string|max:50',
+            'userRole' => 'required|in:Admin,User',
+            'profileImg' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
+
+        if ($request->hasFile('profileImg')) {
+            if ($user->profileImg && Storage::disk('public')->exists($user->profileImg)) {
+                Storage::disk('public')->delete($user->profileImg);
+            }
+
+            $validated['profileImg'] = $request->file('profileImg')
+                ->store('/images/profiles', 'public');
+        }
+
+        if (!empty($validated['password'])) {
+            $validated['password'] = Hash::make($validated['password']);
+        } else {
+            unset($validated['password']);
+        }
+
+        $user->update($validated);
+
+        return redirect()->route('admin.users.index')
+            ->with('success', 'User updated successfully.');
+    }
+
+    public function resetProfile($id)
+    {
+        $user = User::findOrFail($id);
+        
+        // Delete the uploaded file if exists
+        if ($user->profileImg && Storage::exists($user->profileImg)) {
+            Storage::delete($user->profileImg);
+        }
+        
+        $user->profileImg = null;
+        $user->save();
+
+        return back()->with('success', 'Profile image reset to default.');
+    }
+
+    public function deleteUser($id)
+    {
+        $user = User::findOrFail($id);
+
+        if ($user->userRole === 'Admin') {
+            return back()->with('error', 'Admin accounts cannot be deleted.');
+        }
+
+        if ($user->profileImg && Storage::disk('public')->exists($user->profileImg)) {
+            Storage::disk('public')->delete($user->profileImg);
+        }
+
+        $user->delete();
+
+        return redirect()->route('admin.users.index')
+            ->with('success', 'User deleted successfully.');
+    }
+
+
+
+
+
     
 
 

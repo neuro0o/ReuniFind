@@ -25,6 +25,13 @@
             box-sizing: border-box; /* include padding in width calculation */
         }
 
+        .form-card h1 {
+            margin-bottom: 1.5rem;
+            color: var(--color-primary);
+            font-size: var(--fs-lg);
+            text-align: center;
+        }
+
         .button-stack {
             display: flex;
             flex-direction: column;
@@ -69,7 +76,7 @@
 
     <div class="content">
         <div class="form-card">
-            <h2>Add New Category</h2><br>
+            <h1>Add New Category</h1><br>
 
             <form action="{{ route('categories.store') }}" method="POST">
                 @csrf
