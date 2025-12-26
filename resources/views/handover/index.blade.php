@@ -68,14 +68,14 @@
                             <div class="btn-group">
                                 <a href="{{ route('handover.show', $handover->requestID) }}" class="btn view">View</a>
 
-                                @if($handover->requestStatus === 'Approved')
-                                    <a href="{{ route('handover.chat', $handover->requestID) }}" class="btn chat">Chat</a>
+                                @if($handover->requestStatus === 'Approved' || $handover->requestStatus === 'Completed')
+                                    <a href="{{ route('handover.chat.show', $handover->requestID) }}" class="btn chat">Chat</a>
                                 @endif
 
                                 @if($isRecipient && $handover->requestStatus === 'Pending')
                                     <form action="{{ route('handover.update', $handover->requestID) }}" method="POST" class="inline-form">
                                         @csrf
-                                        @method('PUT')
+                                        @method('PATCH')
                                         <input type="hidden" name="handoverStatus" value="Approved">
                                         <button type="submit" class="btn accept">Accept</button>
                                     </form>
@@ -83,7 +83,7 @@
                                     <!-- Reject Form -->
                                     <form action="{{ route('handover.update', $handover->requestID) }}" method="POST" class="inline-form reject-form">
                                         @csrf
-                                        @method('PUT')
+                                        @method('PATCH')
                                         <input type="hidden" name="handoverStatus" value="Rejected">
                                         <div class="reject-input-container" style="display:none;">
                                             <input type="text" name="rejectionNote" placeholder="Enter rejection reason">

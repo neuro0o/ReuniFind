@@ -10,6 +10,7 @@ class HandoverRequest extends Model
     use HasFactory;
 
     // Primary key
+    protected $table = 'handover_requests';
     protected $primaryKey = 'requestID';
 
     // Fields that can be mass-assigned
@@ -23,6 +24,12 @@ class HandoverRequest extends Model
         'proofImg',
         'requestStatus',
         'rejectionNote',
+        'handoverForm',
+    ];
+
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 
     /**

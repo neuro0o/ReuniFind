@@ -9,28 +9,35 @@ class HandoverMessage extends Model
 {
     use HasFactory;
 
-    // Primary key
+    protected $table = 'handover_messages';
     protected $primaryKey = 'messageID';
-
-    // Fields that can be mass-assigned
+    
+    // Disable updated_at since we only need created_at
+    public $timestamps = false;
+    
     protected $fillable = [
         'requestID',
         'senderID',
-        'message',
-        'messageImage',
+        'messageText',
+        'messageImg',
+        'created_at',
+    ];
+
+    protected $casts = [
+        'created_at' => 'datetime',
     ];
 
     /**
-     * RELATIONSHIPS
+     * Relationship: Message belongs to a handover request
      */
-
-    // Each message belongs to a specific handover request
-    public function request()
+    public function handoverRequest()
     {
         return $this->belongsTo(HandoverRequest::class, 'requestID', 'requestID');
     }
 
-    // Each message is sent by a user
+    /**
+     * Relationship: Message belongs to a sender (User)
+     */
     public function sender()
     {
         return $this->belongsTo(User::class, 'senderID', 'userID');

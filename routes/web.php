@@ -161,8 +161,7 @@ Route::middleware(['auth'])->prefix('handover')->group(function () {
 
     // Fetch opposite-type reports
     Route::get('/opposite-reports/{reportID}', [HandoverRequestController::class, 'getOppositeReports'])
-        ->middleware('auth')
-        ->name('handover.opposite_reports');;
+        ->name('handover.opposite_reports');
     
     // Store new handover request
     Route::post('/store', [HandoverRequestController::class, 'store'])
@@ -172,12 +171,11 @@ Route::middleware(['auth'])->prefix('handover')->group(function () {
         ->name('handover.instant');
 
     // Cancel handover request (sender only)
-    Route::delete('/handover/{id}/cancel', [HandoverRequestController::class, 'cancel'])
-        ->name('handover.cancel')
-        ->middleware('auth');
+    Route::delete('/{id}/cancel', [HandoverRequestController::class, 'cancel'])
+        ->name('handover.cancel');
 
     // Show details of a handover
-    Route::get('/{id}', [HandoverRequestController::class, 'show'])
+    Route::get('/{id}/details', [HandoverRequestController::class, 'show'])
         ->name('handover.show');
 
     // Update handover status (approve, reject, complete)
@@ -185,17 +183,21 @@ Route::middleware(['auth'])->prefix('handover')->group(function () {
         ->name('handover.update');
 
     /* ----- CHAT MESSAGES ----- */
-    // Show chat page for a handover
-    // Route::get('/{handoverID}/chat', [HandoverMessageController::class, 'show'])
-    //     ->name('handover.chat.show');
+    // Show chat list (all conversations)
+    Route::get('/chat', [HandoverMessageController::class, 'index'])
+        ->name('handover.chat.index');
     
-    Route::get('/handover/chat', function () {
-        return 'Chat placeholder page';
-    })->name('handover.chat');
-
+    // Show specific chat conversation
+    Route::get('/chat/{requestID}', [HandoverMessageController::class, 'show'])
+        ->name('handover.chat.show');
+    
     // Send message in chat
-    Route::post('/{handoverID}/chat', [HandoverMessageController::class, 'store'])
+    Route::post('/chat/{requestID}', [HandoverMessageController::class, 'store'])
         ->name('handover.chat.store');
+    
+    // Fetch messages via AJAX (for real-time updates)
+    Route::get('/chat/{requestID}/fetch', [HandoverMessageController::class, 'fetchMessages'])
+        ->name('handover.chat.fetch');
 });
 
 
