@@ -29,7 +29,7 @@
                 @foreach($chats as $chat)
                     <a href="{{ route('handover.chat.show', $chat['handover']->requestID) }}" class="chat-item">
                         <div class="chat-avatar">
-                            <img src="{{ $chat['otherUser']->profileImg ? asset('storage/' . $chat['otherUser']->profileImg) : asset('images/profiles/user_default.png') }}" 
+                            <img src="{{ $chat['otherUser']->userImg ? asset('storage/' . $chat['otherUser']->userImg) : asset('images/profiles/user_default.png') }}" 
                                  alt="{{ $chat['otherUser']->userName }}">
                             @if($chat['handover']->requestStatus === 'Completed')
                                 <span class="status-indicator completed"></span>

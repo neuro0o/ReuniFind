@@ -11,7 +11,7 @@
 <div class="layout">
     @include('layouts.partials.sidebar')
 
-    <div class="main-content">
+    <div class="chat-content">
         <!-- Chat Header -->
         <div class="chat-header">
             <a href="{{ route('handover.chat.index') }}" class="back-btn">

@@ -1,17 +1,13 @@
 /* Chat List Layout */
 .main-content {
-    width: 100%;
-    max-width: 100%;
-    margin: 0;
-    padding: 3rem 4rem;
-    min-height: 100vh;
+    width: 80%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
 }
 
 .chat-list-header {
     margin-bottom: 3rem;
-    max-width: 1200px;
-    margin-left: auto;
-    margin-right: auto;
 }
 
 .chat-list-header h1 {
@@ -35,8 +31,6 @@
     background: var(--color-secondary);
     border-radius: 2rem;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    max-width: 1200px;
-    margin: 0 auto;
 }
 
 .empty-icon {
@@ -84,8 +78,6 @@
     border-radius: 2rem;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    max-width: 1200px;
-    margin: 0 auto;
 }
 
 .chat-item {
@@ -247,16 +239,10 @@
 }
 
 /* Responsive Design */
-@media (max-width: 1024px) {
-    .main-content {
-        padding: 2.5rem 3rem;
-    }
-}
-
 @media (max-width: 768px) {
     .main-content {
-        width: 100%;
-        padding: 2rem 1.5rem;
+        width: 95%;
+        padding: 2rem 1rem;
     }
 
     .chat-list-header h1 {
@@ -295,16 +281,8 @@
 }
 
 @media (max-width: 426px) {
-    .main-content {
-        padding: 1.5rem 1rem;
-    }
-
     .chat-list-header {
         margin-bottom: 2rem;
-    }
-
-    .chat-item {
-        padding: 1.2rem 1rem;
     }
 
     .chat-preview {
