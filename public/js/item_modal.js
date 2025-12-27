@@ -45,7 +45,6 @@ document.addEventListener("DOMContentLoaded", function() {
         }
       }
 
-
       // Store report info
       actionBtn.dataset.reportId = this.dataset.reportId;
       actionBtn.dataset.reportType = this.dataset.status;
@@ -58,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function() {
   closeBtn.onclick = () => modal.classList.remove("show");
   window.onclick = e => { if (e.target === modal) modal.classList.remove("show"); };
 
-  // ---------- HANOVER MODAL TRIGGER ----------
+  // ---------- HANDOVER MODAL TRIGGER (from item modal action button) ----------
   actionBtn.addEventListener('click', () => {
     const reportId = actionBtn.dataset.reportId;
     if (!reportId) return;

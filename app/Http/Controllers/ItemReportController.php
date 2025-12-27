@@ -348,7 +348,13 @@ class ItemReportController extends Controller
         $matchesByStatus = [];
 
         foreach ($allStatuses as $status) {
-            $matchesByStatus[$status] = MatchSuggestion::with(['report', 'matchedReport', 'user'])
+            $matchesByStatus[$status] = MatchSuggestion::with([
+                'report.category', 
+                'report.location',
+                'matchedReport.category', 
+                'matchedReport.location', 
+                'user'
+            ])
                 ->whereIn('reportID', $userReports->pluck('reportID'))
                 ->where('matchStatus', $status)
                 ->latest('matchedAt')
