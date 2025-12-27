@@ -1,8 +1,13 @@
+span:hover {
+  background: transparent; /* remove any highlight on hover */
+  color: inherit; /* keep text color unchanged */
+}
+
 /* Chat List Layout */
 .main-content {
     width: 90%;
     max-width: 100%;
-    margin: 0;
+    margin: 0 auto;
     padding: 0;
     min-height: 100vh;
     display: flex;
@@ -30,7 +35,7 @@
     display: flex;
     gap: 0;
     justify-content: center;
-    margin-bottom: 3rem;
+    margin: 0 auto 3rem auto;
     width: 100%;
     max-width: 1000px;
     padding: 0 2rem;
@@ -120,11 +125,12 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-/* Chat List - Figma Style */
+/* Chat List - CENTERED */
 .chat-list {
     width: 100%;
     max-width: 1000px;
     padding: 0 2rem 3rem 2rem;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
@@ -137,7 +143,7 @@
     padding: 2rem 2.5rem;
     text-decoration: none;
     color: inherit;
-    background: white;
+    background: var(--color-tertiary);
     border-radius: 1.5rem;
     border: 2px solid var(--color-tertiary);
     transition: all 0.2s ease;
@@ -147,13 +153,19 @@
 
 .chat-item:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-    border-color: var(--color-primary);
+    border: 2px solid var(--color-primary);
 }
 
+/* BRIGHTER UNREAD STYLING */
 .chat-item.has-unread {
-    background: rgba(58, 89, 135, 0.03);
-    border-color: var(--color-primary);
+    background: var(--color-secondary);
+    box-shadow: 0 3px 10px rgba(58, 89, 135, 0.15);
+    transition: all 0.2s ease;
+}
+
+.chat-item.has-unread:hover {
+    border: 2px solid var(--color-primary);
+    transform: translateY(-2px);
 }
 
 /* Chat Avatar */
@@ -173,7 +185,7 @@
 
 .chat-item.has-unread .chat-avatar img {
     border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px rgba(58, 89, 135, 0.1);
+    box-shadow: 0 0 0 3px rgba(58, 89, 135, 0.2);
 }
 
 /* Chat Info */
@@ -201,16 +213,17 @@
 
 .chat-time {
     font-size: var(--fs-sm);
-    color: rgba(58, 89, 135, 0.6);
+    font-weight: var(--fw-bold);
+    color: rgba(58, 89, 135, 0.9);
     flex-shrink: 0;
     margin-left: 1.5rem;
-    font-weight: var(--fw-medium);
 }
 
 .chat-preview-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    text-align: start;
     gap: 1.5rem;
 }
 
@@ -222,11 +235,11 @@
 .last-message {
     margin: 0;
     font-size: var(--fs-sm);
-    color: rgba(58, 89, 135, 0.7);
+    color: rgba(58, 89, 135, 0.9);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    font-weight: var(--fw-regular);
+    font-weight: var(--fw-semibold);
     line-height: 1.5;
 }
 

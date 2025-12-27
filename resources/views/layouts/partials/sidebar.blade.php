@@ -46,13 +46,8 @@
         </button>
         <ul class="sub-menu">
           <div>
-            <li><a href="{{ route('handover.index') }}">My Handover</a></li>
-            <li>
-              <a href="{{ route('handover.chat.index') }}" class="nav-item {{ Request::is('handover/chat*') ? 'active' : '' }}">
-                  <img src="{{ asset('images/icons/Chat & Request.svg') }}" alt="Chat & Request">
-                  <span>Chat & Request</span>
-              </a>
-            </li>
+            <li><a href="{{ route('handover.index') }}">Handover List</a></li>
+            <li><a href="{{ route('handover.chat.index') }}" class="nav-item {{ Request::is('handover/chat*') ? 'active' : '' }}">Private Chat</a></li>
           </div>
         </ul>
       </li>
