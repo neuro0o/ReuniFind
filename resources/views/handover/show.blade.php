@@ -18,12 +18,12 @@
 
         // Determine items and headers dynamically
         if ($isSender) {
-            $ownItem = $handover->senderReport ?? null;      // Sender's offered item
-            $otherItem = $handover->report;                 // Recipient's item
+            $ownItem = $handover->senderReport ?? null;
+            $otherItem = $handover->report;
             $header = '';
         } elseif ($isRecipient) {
-            $ownItem = $handover->report;                   // Recipient's item
-            $otherItem = $handover->senderReport ?? null;   // Sender's offered item
+            $ownItem = $handover->report;
+            $otherItem = $handover->senderReport ?? null;
             $header = '';
         }
     @endphp
@@ -57,10 +57,8 @@
         <div class="item-block">
           <h3>
             @if($isSender)
-                {{-- Sender sees the other item as "item they lost / item they found" --}}
                 {{ $otherItem->reportType === 'Lost' ? 'Item they lost' : 'Item they found' }}
             @else
-                {{-- Recipient sees the other item from the perspective of what the sender want from you --}}
                 {{ $ownItem->reportType === 'Lost' ? 'They want to return' : 'They want to claim' }}
             @endif
           </h3>
@@ -71,7 +69,6 @@
           <p><strong>Type:</strong> {{ $otherItem->reportType }}</p>
         </div>
         @endif
-
 
       </div>
     </div>
@@ -105,36 +102,41 @@
       @endif
     </div>
 
-    {{-- Actions for Recipient --}}
-    @if($isRecipient)
+    {{-- Actions (Bottom) --}}
     <div class="card action-card">
-      @if($handover->requestStatus === 'Pending')
-      <form action="{{ route('handover.update', $handover->requestID) }}" method="POST" class="inline-form">
-        @csrf
-        @method('PUT')
-        <input type="hidden" name="handoverStatus" value="Approved">
-        <button type="submit" class="btn-accept">Accept Request</button>
-      </form>
+      @if($isRecipient && $handover->requestStatus === 'Pending')
+        <div class="action-buttons">
+          <form action="{{ route('handover.update', $handover->requestID) }}" method="POST" class="inline-form">
+            @csrf
+            @method('PATCH')
+            <input type="hidden" name="handoverStatus" value="Approved">
+            <button type="submit" class="btn-accept">Accept Request</button>
+          </form>
 
-      <form action="{{ route('handover.update', $handover->requestID) }}" method="POST" class="inline-form">
-        @csrf
-        @method('PUT')
-        <input type="hidden" name="handoverStatus" value="Rejected">
-        <input type="text" name="rejectionNote" placeholder="Reason for handover request rejection" class="reject-note" required>
-        <button type="submit" class="btn-reject">Reject</button>
-      </form>
+          <button type="button" class="btn-reject-toggle" id="showRejectForm">Reject</button>
+        </div>
+
+        {{-- Rejection Form (Hidden Initially) --}}
+        <form action="{{ route('handover.update', $handover->requestID) }}" method="POST" class="reject-form" id="rejectForm" style="display:none;">
+          @csrf
+          @method('PATCH')
+          <input type="hidden" name="handoverStatus" value="Rejected">
+          <div class="reject-input-group">
+            <label for="rejectionNote">Why are you rejecting this request?</label>
+            <textarea name="rejectionNote" id="rejectionNote" placeholder="Please provide a reason for rejection..." required></textarea>
+            <div class="reject-actions">
+              <button type="submit" class="btn-reject-submit">Submit Rejection</button>
+              <button type="button" class="btn-cancel" id="cancelReject">Cancel</button>
+            </div>
+          </div>
+        </form>
       @endif
 
-      <a href="{{ route('handover.index') }}" class="btn-back">Back to List</a>
+      <!-- {{-- Back Button (Always at Bottom) --}}
+      <div class="back-button-wrapper">
+        <a href="{{ route('handover.index') }}" class="btn-back">Back to Handovers</a>
+      </div> -->
     </div>
-    @endif
-
-    {{-- Back Button for Sender Only --}}
-    @if($isSender)
-    <div class="card action-card">
-      <a href="{{ route('handover.index') }}" class="btn-back">Back to List</a>
-    </div>
-    @endif
 
   </div>
 </div>
@@ -142,4 +144,31 @@
 
 @section('page-js')
 <script src="{{ asset('js/sidebar.js') }}"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const showRejectBtn = document.getElementById('showRejectForm');
+  const rejectForm = document.getElementById('rejectForm');
+  const cancelRejectBtn = document.getElementById('cancelReject');
+  const actionButtons = document.querySelector('.action-buttons');
+
+  if (showRejectBtn && rejectForm) {
+    // Show rejection form
+    showRejectBtn.addEventListener('click', function() {
+      actionButtons.style.display = 'none';
+      rejectForm.style.display = 'block';
+      document.getElementById('rejectionNote').focus();
+    });
+
+    // Cancel rejection
+    if (cancelRejectBtn) {
+      cancelRejectBtn.addEventListener('click', function() {
+        rejectForm.style.display = 'none';
+        actionButtons.style.display = 'flex';
+        document.getElementById('rejectionNote').value = '';
+      });
+    }
+  }
+});
+</script>
 @endsection
