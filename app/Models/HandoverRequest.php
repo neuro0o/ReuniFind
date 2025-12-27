@@ -25,11 +25,15 @@ class HandoverRequest extends Model
         'requestStatus',
         'rejectionNote',
         'handoverForm',
+        'sender_last_read_at',
+        'recipient_last_read_at',
     ];
 
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
+        'sender_last_read_at' => 'datetime',
+        'recipient_last_read_at' => 'datetime',
     ];
 
     /**

@@ -13,29 +13,39 @@
 
     <div class="main-content">
         <div class="chat-list-header">
-            <h1>Messages</h1>
-            <p class="subtitle">Chat with users about handover requests</p>
+            <h1>Private Chat</h1>
+        </div>
+
+        <!-- Filter Tabs: All / Unread -->
+        <div class="filter-tabs">
+            <a href="{{ route('handover.chat.index', ['filter' => 'all']) }}" 
+               class="tab-btn {{ (!request('filter') || request('filter') === 'all') ? 'active' : '' }}">
+                All
+            </a>
+            <a href="{{ route('handover.chat.index', ['filter' => 'unread']) }}" 
+               class="tab-btn {{ request('filter') === 'unread' ? 'active' : '' }}">
+                Unread
+            </a>
         </div>
 
         @if($chats->isEmpty())
             <div class="empty-state">
                 <img src="{{ asset('images/icons/Chat & Request.svg') }}" alt="No chats" class="empty-icon">
-                <h3>No active chats</h3>
-                <p>Accept handover requests to start chatting with other users</p>
-                <a href="{{ route('handover.index') }}" class="btn primary">View Handover Requests</a>
+                <h3>No {{ request('filter') === 'unread' ? 'unread' : '' }} chats</h3>
+                <p>{{ request('filter') === 'unread' ? 'All caught up! No unread messages.' : 'Accept handover requests to start chatting with other users' }}</p>
+                @if(request('filter') !== 'unread')
+                    <a href="{{ route('handover.index') }}" class="btn primary">View Handover Requests</a>
+                @endif
             </div>
         @else
-            <div class="chat-list">
+            <div class="chat-list" id="chatList">
                 @foreach($chats as $chat)
-                    <a href="{{ route('handover.chat.show', $chat['handover']->requestID) }}" class="chat-item">
+                    <a href="{{ route('handover.chat.show', $chat['handover']->requestID) }}" 
+                       class="chat-item {{ $chat['unreadCount'] > 0 ? 'has-unread' : '' }}"
+                       data-request-id="{{ $chat['handover']->requestID }}">
                         <div class="chat-avatar">
-                            <img src="{{ $chat['otherUser']->userImg ? asset('storage/' . $chat['otherUser']->userImg) : asset('images/profiles/user_default.png') }}" 
+                            <img src="{{ $chat['otherUser']->profileImg ? asset('storage/' . $chat['otherUser']->profileImg) : asset('images/profiles/user_default.png') }}" 
                                  alt="{{ $chat['otherUser']->userName }}">
-                            @if($chat['handover']->requestStatus === 'Completed')
-                                <span class="status-indicator completed"></span>
-                            @else
-                                <span class="status-indicator active"></span>
-                            @endif
                         </div>
 
                         <div class="chat-info">
@@ -43,7 +53,7 @@
                                 <h3 class="chat-name">{{ $chat['otherUser']->userName }}</h3>
                                 <span class="chat-time">
                                     @if($chat['lastActivity']->isToday())
-                                        {{ $chat['lastActivity']->format('h:i A') }}
+                                        {{ $chat['lastActivity']->format('H:i') }}
                                     @elseif($chat['lastActivity']->isYesterday())
                                         Yesterday
                                     @else
@@ -53,21 +63,17 @@
                             </div>
 
                             <div class="chat-preview-row">
-                                <div class="chat-preview">
-                                    <span class="item-badge">{{ $chat['handover']->report->itemName }}</span>
+                                <div class="chat-message-preview">
                                     @if($chat['lastMessage'])
-                                        <span class="last-message">
-                                            @if($chat['lastMessage']->senderID === auth()->id())
-                                                You: 
-                                            @endif
+                                        <p class="last-message {{ $chat['unreadCount'] > 0 ? 'unread' : '' }}">
                                             @if($chat['lastMessage']->messageText)
-                                                {{ Str::limit($chat['lastMessage']->messageText, 50) }}
+                                                {{ Str::limit($chat['lastMessage']->messageText, 60) }}
                                             @elseif($chat['lastMessage']->messageImg)
                                                 📷 Photo
                                             @endif
-                                        </span>
+                                        </p>
                                     @else
-                                        <span class="last-message empty">No messages yet</span>
+                                        <p class="last-message empty">No messages yet</p>
                                     @endif
                                 </div>
 
@@ -75,10 +81,6 @@
                                     <span class="unread-badge">{{ $chat['unreadCount'] }}</span>
                                 @endif
                             </div>
-                        </div>
-
-                        <div class="chat-arrow">
-                            <img src="{{ asset('images/icons/Arrow Down.svg') }}" alt="View" style="transform: rotate(-90deg);">
                         </div>
                     </a>
                 @endforeach
@@ -90,4 +92,96 @@
 
 @section('page-js')
 <script src="{{ asset('js/sidebar.js') }}"></script>
+<script>
+// Live update chat list every 5 seconds
+let isUpdating = false;
+
+function updateChatList() {
+    if (isUpdating) return;
+    isUpdating = true;
+
+    const currentFilter = new URLSearchParams(window.location.search).get('filter') || 'all';
+    
+    fetch(`{{ route('handover.chat.updates') }}?filter=${currentFilter}`)
+        .then(response => response.json())
+        .then(data => {
+            updateChats(data.chats);
+            isUpdating = false;
+        })
+        .catch(error => {
+            console.error('Error updating chat list:', error);
+            isUpdating = false;
+        });
+}
+
+function updateChats(chats) {
+    const chatList = document.getElementById('chatList');
+    if (!chatList) return;
+
+    // Store current scroll position
+    const scrollPos = window.scrollY;
+
+    // Update each chat item
+    chats.forEach(chat => {
+        const chatItem = document.querySelector(`[data-request-id="${chat.requestID}"]`);
+        if (!chatItem) return;
+
+        // Update unread badge
+        const unreadBadge = chatItem.querySelector('.unread-badge');
+        const lastMessage = chatItem.querySelector('.last-message');
+        const chatPreview = chatItem.querySelector('.chat-preview-row');
+
+        // Update unread count
+        if (chat.unreadCount > 0) {
+            chatItem.classList.add('has-unread');
+            
+            if (unreadBadge) {
+                unreadBadge.textContent = chat.unreadCount;
+            } else {
+                // Create badge if it doesn't exist
+                const badge = document.createElement('span');
+                badge.className = 'unread-badge';
+                badge.textContent = chat.unreadCount;
+                chatPreview.appendChild(badge);
+            }
+
+            if (lastMessage) {
+                lastMessage.classList.add('unread');
+            }
+        } else {
+            chatItem.classList.remove('has-unread');
+            if (unreadBadge) {
+                unreadBadge.remove();
+            }
+            if (lastMessage) {
+                lastMessage.classList.remove('unread');
+            }
+        }
+
+        // Update last message text
+        if (chat.lastMessage && lastMessage && !lastMessage.classList.contains('empty')) {
+            lastMessage.textContent = chat.lastMessage;
+        }
+
+        // Update time
+        const timeElement = chatItem.querySelector('.chat-time');
+        if (timeElement && chat.time) {
+            timeElement.textContent = chat.time;
+        }
+    });
+
+    // Restore scroll position
+    window.scrollTo(0, scrollPos);
+}
+
+// Update every 5 seconds
+setInterval(updateChatList, 5000);
+
+// Also update when page becomes visible (user switches back to tab)
+document.addEventListener('visibilitychange', function() {
+    if (!document.hidden) {
+        updateChatList();
+    }
+});
+</script>
 @endsection

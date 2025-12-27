@@ -187,25 +187,39 @@ function closeImageModal() {
     document.getElementById('imageModal').style.display = 'none';
 }
 
-// Auto-refresh messages every 5 seconds
+// Track last message count to detect new messages
+let lastMessageCount = document.querySelectorAll('.message').length;
+let isUpdatingMessages = false;
+
+// Auto-refresh messages every 3 seconds
 setInterval(function() {
+    if (isUpdatingMessages) return;
+    
+    isUpdatingMessages = true;
+    
     fetch('{{ route("handover.chat.fetch", $handover->requestID) }}')
         .then(response => response.json())
         .then(messages => {
             updateMessages(messages);
+            isUpdatingMessages = false;
         })
-        .catch(error => console.error('Error fetching messages:', error));
-}, 5000);
+        .catch(error => {
+            console.error('Error fetching messages:', error);
+            isUpdatingMessages = false;
+        });
+}, 3000);
 
 function updateMessages(messages) {
     const container = document.getElementById('messagesContainer');
     const currentScrollPos = container.scrollTop;
     const isScrolledToBottom = container.scrollHeight - container.clientHeight <= currentScrollPos + 50;
     
-    // Only update if there are new messages
+    // Check if there are new messages
     const currentMessageCount = container.querySelectorAll('.message').length;
-    if (messages.length > currentMessageCount) {
-        container.innerHTML = messages.map(msg => `
+    
+    if (messages.length !== currentMessageCount) {
+        // Clear and rebuild
+        container.innerHTML = messages.length > 0 ? messages.map(msg => `
             <div class="message ${msg.isOwn ? 'own' : 'other'}">
                 <div class="message-avatar">
                     <img src="${msg.senderImg}" alt="${msg.senderName}">
@@ -215,16 +229,91 @@ function updateMessages(messages) {
                         <span class="sender-name">${msg.senderName}</span>
                         <span class="message-time">${msg.created_at}</span>
                     </div>
-                    ${msg.messageText ? `<div class="message-text">${msg.messageText}</div>` : ''}
+                    ${msg.messageText ? `<div class="message-text">${escapeHtml(msg.messageText)}</div>` : ''}
                     ${msg.messageImg ? `<div class="message-image"><img src="${msg.messageImg}" alt="Shared image" onclick="openImageModal('${msg.messageImg}')"></div>` : ''}
                 </div>
             </div>
-        `).join('');
+        `).join('') : '<div class="no-messages"><p>No messages yet. Start the conversation!</p></div>';
         
-        if (isScrolledToBottom) {
-            scrollToBottom();
+        // Scroll to bottom if user was already at bottom OR if it's their own message
+        if (isScrolledToBottom || messages.length > lastMessageCount) {
+            setTimeout(scrollToBottom, 100);
         }
+        
+        lastMessageCount = messages.length;
     }
 }
+
+// Helper function to escape HTML
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// Send message via AJAX for instant feedback
+const messageForm = document.getElementById('messageForm');
+messageForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    const submitBtn = this.querySelector('.send-btn');
+    
+    // Disable send button
+    submitBtn.disabled = true;
+    submitBtn.style.opacity = '0.5';
+    
+    fetch(this.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '{{ csrf_token() }}'
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            // Clear form
+            textarea.value = '';
+            textarea.style.height = 'auto';
+            removeImage();
+            
+            // Immediately fetch new messages
+            return fetch('{{ route("handover.chat.fetch", $handover->requestID) }}')
+                .then(res => res.json())
+                .then(messages => {
+                    updateMessages(messages);
+                    scrollToBottom();
+                });
+        } else {
+            throw new Error('Failed to send message');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to send message. Please try again.');
+    })
+    .finally(() => {
+        // Re-enable send button
+        submitBtn.disabled = false;
+        submitBtn.style.opacity = '1';
+    });
+});
+
+// Update when page becomes visible
+document.addEventListener('visibilitychange', function() {
+    if (!document.hidden && !isUpdatingMessages) {
+        isUpdatingMessages = true;
+        fetch('{{ route("handover.chat.fetch", $handover->requestID) }}')
+            .then(response => response.json())
+            .then(messages => {
+                updateMessages(messages);
+                isUpdatingMessages = false;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                isUpdatingMessages = false;
+            });
+    }
+});
 </script>
 @endsection

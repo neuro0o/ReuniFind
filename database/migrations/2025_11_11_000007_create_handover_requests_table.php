@@ -64,6 +64,9 @@ return new class extends Migration
             // created_at and updated_at
             $table->timestamps();
 
+            $table->timestamp('sender_last_read_at')->nullable();
+            $table->timestamp('recipient_last_read_at')->nullable();
+
             /**
              * Foreign key constraints
              * - reportID → item_reports.reportID (recipient's item)

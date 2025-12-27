@@ -7,6 +7,7 @@ use App\Models\HandoverRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class HandoverMessageController extends Controller
 {
@@ -14,9 +15,10 @@ class HandoverMessageController extends Controller
      * Display list of all chats (approved handovers)
      * Like WhatsApp chat list
      */
-    public function index()
+    public function index(Request $request)
     {
         $userId = Auth::id();
+        $filter = $request->get('filter', 'all'); // 'all' or 'unread'
 
         // Get all approved or completed handovers where user is involved
         $chats = HandoverRequest::with(['sender', 'recipient', 'report', 'messages'])
@@ -36,8 +38,17 @@ class HandoverMessageController extends Controller
                 // Get last message
                 $lastMessage = $handover->messages()->latest('created_at')->first();
 
-                // Count unread messages (you can implement this later if needed)
-                $unreadCount = 0;
+                // Determine user's last read timestamp
+                $isSender = $handover->senderID === $userId;
+                $lastReadAt = $isSender ? $handover->sender_last_read_at : $handover->recipient_last_read_at;
+
+                // Count unread messages: messages from OTHER user created AFTER last read
+                $unreadCount = $handover->messages()
+                    ->where('senderID', '!=', $userId)
+                    ->when($lastReadAt, function($query) use ($lastReadAt) {
+                        return $query->where('created_at', '>', $lastReadAt);
+                    })
+                    ->count();
 
                 return [
                     'handover' => $handover,
@@ -49,7 +60,93 @@ class HandoverMessageController extends Controller
             })
             ->sortByDesc('lastActivity');
 
+        // Filter by unread if requested
+        if ($filter === 'unread') {
+            $chats = $chats->filter(function($chat) {
+                return $chat['unreadCount'] > 0;
+            });
+        }
+
         return view('handover.chat_list', compact('chats'));
+    }
+
+    /**
+     * Get chat updates for live refresh (AJAX endpoint)
+     */
+    public function getChatUpdates(Request $request)
+    {
+        $userId = Auth::id();
+        $filter = $request->get('filter', 'all');
+
+        // Get all approved or completed handovers
+        $chats = HandoverRequest::with(['sender', 'recipient', 'report', 'messages'])
+            ->where(function($query) use ($userId) {
+                $query->where('senderID', $userId)
+                      ->orWhere('recipientID', $userId);
+            })
+            ->whereIn('requestStatus', ['Approved', 'Completed'])
+            ->orderBy('updated_at', 'desc')
+            ->get()
+            ->map(function($handover) use ($userId) {
+                $otherUser = ($handover->senderID === $userId) 
+                    ? $handover->recipient 
+                    : $handover->sender;
+
+                $lastMessage = $handover->messages()->latest('created_at')->first();
+
+                $isSender = $handover->senderID === $userId;
+                $lastReadAt = $isSender ? $handover->sender_last_read_at : $handover->recipient_last_read_at;
+
+                $unreadCount = $handover->messages()
+                    ->where('senderID', '!=', $userId)
+                    ->when($lastReadAt, function($query) use ($lastReadAt) {
+                        return $query->where('created_at', '>', $lastReadAt);
+                    })
+                    ->count();
+
+                $lastActivity = $lastMessage ? $lastMessage->created_at : $handover->updated_at;
+
+                // Format last message
+                $lastMessageText = '';
+                if ($lastMessage) {
+                    if ($lastMessage->messageText) {
+                        $lastMessageText = Str::limit($lastMessage->messageText, 60);
+                    } elseif ($lastMessage->messageImg) {
+                        $lastMessageText = '📷 Photo';
+                    }
+                }
+
+                // Format time
+                $time = '';
+                if ($lastActivity->isToday()) {
+                    $time = $lastActivity->format('H:i');
+                } elseif ($lastActivity->isYesterday()) {
+                    $time = 'Yesterday';
+                } else {
+                    $time = $lastActivity->format('d/m/Y');
+                }
+
+                return [
+                    'requestID' => $handover->requestID,
+                    'unreadCount' => $unreadCount,
+                    'lastMessage' => $lastMessageText,
+                    'time' => $time,
+                ];
+            })
+            ->sortByDesc(function($chat) {
+                return $chat['unreadCount'];
+            });
+
+        // Filter by unread if requested
+        if ($filter === 'unread') {
+            $chats = $chats->filter(function($chat) {
+                return $chat['unreadCount'] > 0;
+            });
+        }
+
+        return response()->json([
+            'chats' => $chats->values()
+        ]);
     }
 
     /**
@@ -83,6 +180,14 @@ class HandoverMessageController extends Controller
         $otherUser = ($handover->senderID === $userId) 
             ? $handover->recipient 
             : $handover->sender;
+
+        // Mark messages as read by updating last_read_at timestamp
+        $isSender = $handover->senderID === $userId;
+        if ($isSender) {
+            $handover->update(['sender_last_read_at' => now()]);
+        } else {
+            $handover->update(['recipient_last_read_at' => now()]);
+        }
 
         return view('handover.chat', compact('handover', 'messages', 'otherUser'));
     }

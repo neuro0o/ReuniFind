@@ -187,6 +187,10 @@ Route::middleware(['auth'])->prefix('handover')->group(function () {
     Route::get('/chat', [HandoverMessageController::class, 'index'])
         ->name('handover.chat.index');
     
+    // Get chat updates for live refresh (AJAX)
+    Route::get('/chat/updates', [HandoverMessageController::class, 'getChatUpdates'])
+        ->name('handover.chat.updates');
+    
     // Show specific chat conversation
     Route::get('/chat/{requestID}', [HandoverMessageController::class, 'show'])
         ->name('handover.chat.show');
