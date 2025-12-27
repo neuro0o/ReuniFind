@@ -17,8 +17,9 @@ return new class extends Migration
                 'suggested', // auto-generated matches
                 'pending', // user has started a handover request for this pair
                 'accepted', // pair is approved during handover request
+                'rejected',   // pair is rejected during handover request
                 'completed', // item handover completed
-                'dismissed' // user explicitly dismissed the suggestion or pair is rejected during handover request
+                'dismissed' // user explicitly dismissed the suggestion pair
                 ])->default('suggested');
             $table->timestamp('matchedAt')->nullable();       // When this match was generated
             $table->timestamps();                             // created_at, updated_at

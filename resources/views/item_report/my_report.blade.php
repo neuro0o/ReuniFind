@@ -90,7 +90,30 @@
             
                 <td data-label="Action">
                   <div class="btn-group">
-                    @if(strtolower($report->reportStatus) === 'rejected')
+                    @if(strtolower($report->reportStatus) === 'completed')
+                        <!-- View Handover Form for Completed Reports -->
+                        @php
+                            $completedHandover = \App\Models\HandoverRequest::where(function ($query) use ($report) {
+                                $query->where('reportID', $report->reportID)
+                                      ->orWhere('senderReportID', $report->reportID);
+                            })
+                            ->whereNotNull('handoverForm')
+                            ->latest()
+                            ->first();
+                        @endphp
+
+
+                        @if($completedHandover && $completedHandover->handoverForm)
+                            <a href="{{ route('handover.form.view', $completedHandover->requestID) }}" 
+                               class="btn view-form" 
+                               target="_blank">
+                                View Form
+                            </a>
+                        @else
+                            <span class="btn disabled">No Form</span>
+                        @endif
+
+                    @elseif(strtolower($report->reportStatus) === 'rejected')
                         <!-- View Rejection Reason -->
                         <button type="button" class="btn reason" 
                             data-reason="{{ $report->rejectionNote ?? 'No reason provided' }}">

@@ -22,11 +22,12 @@
         <!-- Tabs -->
         <div class="filter-tabs">
             @php
-                $tabStatuses = ['suggested','pending','accepted','dismissed','completed'];
+                $tabStatuses = ['suggested','pending','accepted','rejected','dismissed','completed'];
                 $tabLabels = [
                     'suggested' => 'Suggested Matches',
                     'pending' => 'Pending Matches',
                     'accepted' => 'Accepted Matches',
+                    'rejected' => 'Rejected Matches',
                     'dismissed' => 'Dismissed Matches',
                     'completed' => 'Completed Matches'
                 ];
@@ -47,6 +48,7 @@
                             'suggested' => 'Suggested on',
                             'pending' => 'Handover requested on',
                             'accepted' => 'Handover accepted on',
+                            'rejected' => 'Rejected on',
                             'dismissed' => 'Dismissed on',
                             'completed' => 'Completed on'
                         ];
@@ -90,21 +92,72 @@
 
                                         <!-- Actions -->
                                         <div class="actions">
-                                          <!-- View More Details -->
-                                          <a href="javascript:void(0);" 
-                                            class="btn view-details-btn {{ in_array($match->matchStatus, ['pending','accepted','dismissed','completed']) ? 'no-action-btn' : '' }}"
-                                            data-report-id="{{ $match->matchedReport->reportID }}"
-                                            data-image="{{ $match->matchedReport->itemImg ? asset('storage/' . $match->matchedReport->itemImg) : 'N/A' }}"
-                                            data-name="{{ $match->matchedReport->itemName }}"
-                                            data-category="{{ $match->matchedReport->itemCategory }}"
-                                            data-status="{{ $match->matchedReport->reportType }}"
-                                            data-location="{{ $match->matchedReport->itemLocation }}"
-                                            data-date="{{ $match->matchedReport->reportDate->format('d M Y') }}"
-                                            data-description="{{ $match->matchedReport->itemDescription ?? '-' }}">
-                                            View More Details
-                                          </a>
+                                            @if($match->matchStatus === 'completed')
+                                                {{-- View Handover Form Button --}}
+                                                @php
+                                                    $completedHandover = \App\Models\HandoverRequest::where(function($query) use ($match) {
+                                                        $query->where('reportID', $match->reportID)
+                                                              ->where('senderReportID', $match->matchedReportID);
+                                                    })->orWhere(function($query) use ($match) {
+                                                        $query->where('reportID', $match->matchedReportID)
+                                                              ->where('senderReportID', $match->reportID);
+                                                    })
+                                                    ->where('requestStatus', 'Completed')
+                                                    ->whereNotNull('handoverForm')
+                                                    ->first();
+                                                @endphp
 
+                                                @if($completedHandover && $completedHandover->handoverForm)
+                                                    <a href="{{ route('handover.form.view', $completedHandover->requestID) }}" 
+                                                       class="btn view-form-btn" 
+                                                       target="_blank">
+                                                        📄 View Handover Form
+                                                    </a>
+                                                @else
+                                                    <span class="btn disabled-btn">No Form Available</span>
+                                                @endif
 
+                                            @elseif($match->matchStatus === 'rejected')
+                                                {{-- View Rejection Reason Button ONLY --}}
+                                                @php
+                                                    $rejectedHandover = \App\Models\HandoverRequest::where(function($query) use ($match) {
+                                                        $query->where('reportID', $match->reportID)
+                                                              ->where('senderReportID', $match->matchedReportID);
+                                                    })->orWhere(function($query) use ($match) {
+                                                        $query->where('reportID', $match->matchedReportID)
+                                                              ->where('senderReportID', $match->reportID);
+                                                    })
+                                                    ->where('requestStatus', 'Rejected')
+                                                    ->first();
+                                                @endphp
+
+                                                @if($rejectedHandover && $rejectedHandover->rejectionNote)
+                                                    <button type="button" 
+                                                            class="btn rejection-reason-btn" 
+                                                            onclick="alert('Rejection Reason:\n\n{{ addslashes($rejectedHandover->rejectionNote) }}')">
+                                                        View Rejection Reason
+                                                    </button>
+                                                @else
+                                                    <span class="btn disabled-btn">No Reason Provided</span>
+                                                @endif
+
+                                            @else
+                                                {{-- View More Details for other statuses --}}
+                                                <a href="javascript:void(0);" 
+                                                    class="btn view-details-btn {{ in_array($match->matchStatus, ['pending','accepted','dismissed']) ? 'no-action-btn' : '' }}"
+                                                    data-report-id="{{ $match->matchedReport->reportID }}"
+                                                    data-image="{{ $match->matchedReport->itemImg ? asset('storage/' . $match->matchedReport->itemImg) : 'N/A' }}"
+                                                    data-name="{{ $match->matchedReport->itemName }}"
+                                                    data-category="{{ $match->matchedReport->itemCategory }}"
+                                                    data-status="{{ $match->matchedReport->reportType }}"
+                                                    data-location="{{ $match->matchedReport->itemLocation }}"
+                                                    data-date="{{ $match->matchedReport->reportDate->format('d M Y') }}"
+                                                    data-description="{{ $match->matchedReport->itemDescription ?? '-' }}">
+                                                    View More Details
+                                                </a>
+                                            @endif
+
+                                            {{-- Dismiss/Undo Buttons --}}
                                             @if($match->matchStatus === 'suggested')
                                                 <form action="{{ route('item_report.dismiss_match', $match->suggestionID) }}" method="POST" style="display:inline;">
                                                     @csrf

@@ -71,16 +71,14 @@ class HandoverRequestController extends Controller
             'requestStatus'  => 'Pending',
         ]);
 
-        // Update MatchSuggestion to 'pending' if coming from suggested matches
-        \App\Models\MatchSuggestion::where(function($q) use ($eligibleSenderReport, $recipientReport, $senderID, $recipientID) {
-            $q->where(function($q2) use ($eligibleSenderReport, $recipientReport, $senderID) {
+        // Update BOTH users' match suggestions to pending
+        \App\Models\MatchSuggestion::where(function($q) use ($eligibleSenderReport, $recipientReport) {
+            $q->where(function($q2) use ($eligibleSenderReport, $recipientReport) {
                 $q2->where('reportID', $eligibleSenderReport->reportID)
-                ->where('matchedReportID', $recipientReport->reportID)
-                ->where('userID', $senderID);
-            })->orWhere(function($q3) use ($eligibleSenderReport, $recipientReport, $recipientID) {
+                   ->where('matchedReportID', $recipientReport->reportID);
+            })->orWhere(function($q3) use ($eligibleSenderReport, $recipientReport) {
                 $q3->where('reportID', $recipientReport->reportID)
-                ->where('matchedReportID', $eligibleSenderReport->reportID)
-                ->where('userID', $recipientID);
+                   ->where('matchedReportID', $eligibleSenderReport->reportID);
             });
         })->update(['matchStatus' => 'pending']);
 
@@ -137,16 +135,14 @@ class HandoverRequestController extends Controller
             'requestStatus'  => 'Pending',
         ]);
 
-        // Update MatchSuggestion to 'pending' if coming from suggested matches
-        \App\Models\MatchSuggestion::where(function($q) use ($senderReport, $recipientReport, $senderID, $recipientID) {
-            $q->where(function($q2) use ($senderReport, $recipientReport, $senderID) {
+        // Update BOTH users' match suggestions to pending
+        \App\Models\MatchSuggestion::where(function($q) use ($senderReport, $recipientReport) {
+            $q->where(function($q2) use ($senderReport, $recipientReport) {
                 $q2->where('reportID', $senderReport->reportID)
-                ->where('matchedReportID', $recipientReport->reportID)
-                ->where('userID', $senderID);
-            })->orWhere(function($q3) use ($senderReport, $recipientReport, $recipientID) {
+                   ->where('matchedReportID', $recipientReport->reportID);
+            })->orWhere(function($q3) use ($senderReport, $recipientReport) {
                 $q3->where('reportID', $recipientReport->reportID)
-                ->where('matchedReportID', $senderReport->reportID)
-                ->where('userID', $recipientID);
+                   ->where('matchedReportID', $senderReport->reportID);
             });
         })->update(['matchStatus' => 'pending']);
 
@@ -164,16 +160,14 @@ class HandoverRequestController extends Controller
             abort(403, 'Unauthorized');
         }
 
-        // Revert MatchSuggestion to 'suggested'
+        // Revert BOTH users' match suggestions to 'suggested'
         \App\Models\MatchSuggestion::where(function($q) use ($handover) {
             $q->where(function($q2) use ($handover) {
                 $q2->where('reportID', $handover->senderReportID)
-                ->where('matchedReportID', $handover->reportID)
-                ->where('userID', $handover->senderID);
+                   ->where('matchedReportID', $handover->reportID);
             })->orWhere(function($q3) use ($handover) {
                 $q3->where('reportID', $handover->reportID)
-                ->where('matchedReportID', $handover->senderReportID)
-                ->where('userID', $handover->recipientID);
+                   ->where('matchedReportID', $handover->senderReportID);
             });
         })->update(['matchStatus' => 'suggested']);
 
@@ -214,25 +208,44 @@ class HandoverRequestController extends Controller
         if ($request->handoverStatus === 'Rejected') {
             $handover->rejectionNote = $request->rejectionNote;
 
-            // Update matchStatus to dismissed
-            \App\Models\MatchSuggestion::where('reportID', $handover->senderReportID)
-                ->where('matchedReportID', $handover->reportID)
-                ->where('userID', $handover->senderID)
-                ->update(['matchStatus' => 'dismissed']);
+            // Update BOTH users' match suggestions to 'rejected'
+            \App\Models\MatchSuggestion::where(function($q) use ($handover) {
+                $q->where(function($q2) use ($handover) {
+                    $q2->where('reportID', $handover->senderReportID)
+                       ->where('matchedReportID', $handover->reportID);
+                })->orWhere(function($q3) use ($handover) {
+                    $q3->where('reportID', $handover->reportID)
+                       ->where('matchedReportID', $handover->senderReportID);
+                });
+            })->update(['matchStatus' => 'rejected']);
 
         } elseif ($request->handoverStatus === 'Approved') {
-            // Update matchStatus to accepted
-            \App\Models\MatchSuggestion::where('reportID', $handover->senderReportID)
-                ->where('matchedReportID', $handover->reportID)
-                ->where('userID', $handover->senderID)
-                ->update(['matchStatus' => 'accepted']);
+            // Update BOTH users' match suggestions to accepted
+            \App\Models\MatchSuggestion::where(function($q) use ($handover) {
+                $q->where(function($q2) use ($handover) {
+                    $q2->where('reportID', $handover->senderReportID)
+                       ->where('matchedReportID', $handover->reportID);
+                })->orWhere(function($q3) use ($handover) {
+                    $q3->where('reportID', $handover->reportID)
+                       ->where('matchedReportID', $handover->senderReportID);
+                });
+            })->update(['matchStatus' => 'accepted']);
 
         } elseif ($request->handoverStatus === 'Completed') {
-            // Update matchStatus to completed
-            \App\Models\MatchSuggestion::where('reportID', $handover->senderReportID)
-                ->where('matchedReportID', $handover->reportID)
-                ->where('userID', $handover->senderID)
-                ->update(['matchStatus' => 'completed']);
+            // Update BOTH users' match suggestions to completed
+            \App\Models\MatchSuggestion::where(function($q) use ($handover) {
+                $q->where(function($q2) use ($handover) {
+                    $q2->where('reportID', $handover->senderReportID)
+                       ->where('matchedReportID', $handover->reportID);
+                })->orWhere(function($q3) use ($handover) {
+                    $q3->where('reportID', $handover->reportID)
+                       ->where('matchedReportID', $handover->senderReportID);
+                });
+            })->update(['matchStatus' => 'completed']);
+
+            // Update BOTH item reports to Completed
+            ItemReport::whereIn('reportID', [$handover->reportID, $handover->senderReportID])
+                ->update(['reportStatus' => 'Completed']);
         }
 
         $handover->save();
@@ -321,11 +334,20 @@ class HandoverRequestController extends Controller
             'requestStatus' => 'Completed',
         ]);
 
-        // Update matchStatus to completed
-        \App\Models\MatchSuggestion::where('reportID', $handover->senderReportID)
-            ->where('matchedReportID', $handover->reportID)
-            ->where('userID', $handover->senderID)
-            ->update(['matchStatus' => 'completed']);
+        // Update BOTH users' match suggestions to completed
+        \App\Models\MatchSuggestion::where(function($q) use ($handover) {
+            $q->where(function($q2) use ($handover) {
+                $q2->where('reportID', $handover->senderReportID)
+                   ->where('matchedReportID', $handover->reportID);
+            })->orWhere(function($q3) use ($handover) {
+                $q3->where('reportID', $handover->reportID)
+                   ->where('matchedReportID', $handover->senderReportID);
+            });
+        })->update(['matchStatus' => 'completed']);
+
+        // Update BOTH item reports to Completed
+        ItemReport::whereIn('reportID', [$handover->reportID, $handover->senderReportID])
+            ->update(['reportStatus' => 'Completed']);
         
         return back()->with('success', 'Handover form uploaded successfully! Handover marked as completed.');
     }

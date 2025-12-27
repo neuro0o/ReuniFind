@@ -266,20 +266,32 @@ class ItemReportController extends Controller
     {
         $userID = Auth::user()->userID;
         $userReports = ItemReport::where('userID', $userID)
-            ->where('reportStatus', 'Published')
+            ->whereIn('reportStatus', ['Published', 'Completed']) // Include completed reports
             ->get();
 
 
         // If user has no reports
         if ($userReports->isEmpty()) {
             return view('item_report.suggested_matches', [
-                'matchesByStatus' => [],
+                'matchesByStatus' => [
+                    'suggested' => collect(),
+                    'pending' => collect(),
+                    'accepted' => collect(),
+                    'rejected' => collect(),
+                    'dismissed' => collect(),
+                    'completed' => collect(),
+                ],
                 'message' => 'You have no reports yet.'
             ]);
         }
 
         // --- MAIN MATCHING LOGIC ---
         foreach ($userReports as $report) {
+            // Skip matching logic for completed reports
+            if ($report->reportStatus === 'Completed') {
+                continue;
+            }
+
             // 1. Check opposite report type
             $oppositeType = $report->reportType === 'Lost' ? 'Found' : 'Lost';
 
@@ -332,7 +344,7 @@ class ItemReportController extends Controller
         }
 
         // -------------------- FETCH SUGGESTED MATCHES BY STATUS -------------------- //
-        $allStatuses = ['suggested', 'pending', 'accepted', 'dismissed', 'completed'];
+        $allStatuses = ['suggested', 'pending', 'accepted', 'rejected', 'dismissed', 'completed'];
         $matchesByStatus = [];
 
         foreach ($allStatuses as $status) {
