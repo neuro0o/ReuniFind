@@ -182,6 +182,28 @@ Route::middleware(['auth'])->prefix('handover')->group(function () {
     Route::patch('/{id}/update', [HandoverRequestController::class, 'update'])
         ->name('handover.update');
 
+    // Handover Form Routes
+    // Route::get('/{id}/generate-form', [HandoverRequestController::class, 'generateHandoverForm'])
+    //     ->name('handover.generateForm');
+    // Route::post('/{id}/upload-form', [HandoverRequestController::class, 'uploadHandoverForm'])
+    //     ->name('handover.uploadForm');
+    // Route::get('/{id}/view-form', [HandoverRequestController::class, 'viewHandoverForm'])
+    //     ->name('handover.viewForm');
+
+    // Handover Form Routes (must be approved)
+    Route::get('/handover/{requestID}/form/download', [HandoverRequestController::class, 'downloadHandoverForm'])
+        ->name('handover.form.download')
+        ->middleware('auth');
+
+    Route::post('/handover/{requestID}/form/upload', [HandoverRequestController::class, 'uploadHandoverForm'])
+        ->name('handover.form.upload')
+        ->middleware('auth');
+
+    Route::get('/handover/{requestID}/form/view', [HandoverRequestController::class, 'viewHandoverForm'])
+        ->name('handover.form.view')
+        ->middleware('auth');
+
+
     /* ----- CHAT MESSAGES ----- */
     // Show chat list (all conversations)
     Route::get('/chat', [HandoverMessageController::class, 'index'])

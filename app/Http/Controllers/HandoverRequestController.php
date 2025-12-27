@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\HandoverRequest;
 use App\Models\ItemReport;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Storage;
 
 class HandoverRequestController extends Controller
 {
@@ -70,14 +72,14 @@ class HandoverRequestController extends Controller
         ]);
 
         // Update MatchSuggestion to 'pending' if coming from suggested matches
-        \App\Models\MatchSuggestion::where(function($q) use ($senderReport, $recipientReport, $senderID, $recipientID) {
-            $q->where(function($q2) use ($senderReport, $recipientReport, $senderID) {
-                $q2->where('reportID', $senderReport->reportID)
+        \App\Models\MatchSuggestion::where(function($q) use ($eligibleSenderReport, $recipientReport, $senderID, $recipientID) {
+            $q->where(function($q2) use ($eligibleSenderReport, $recipientReport, $senderID) {
+                $q2->where('reportID', $eligibleSenderReport->reportID)
                 ->where('matchedReportID', $recipientReport->reportID)
                 ->where('userID', $senderID);
-            })->orWhere(function($q3) use ($senderReport, $recipientReport, $recipientID) {
+            })->orWhere(function($q3) use ($eligibleSenderReport, $recipientReport, $recipientID) {
                 $q3->where('reportID', $recipientReport->reportID)
-                ->where('matchedReportID', $senderReport->reportID)
+                ->where('matchedReportID', $eligibleSenderReport->reportID)
                 ->where('userID', $recipientID);
             });
         })->update(['matchStatus' => 'pending']);
@@ -177,7 +179,7 @@ class HandoverRequestController extends Controller
 
         $handover->delete();
 
-        return redirect()->route('handover.index')->with('success', 'Handover request suggested successfully.');
+        return redirect()->route('handover.index')->with('success', 'Handover request cancelled successfully.');
     }
 
 
@@ -210,13 +212,13 @@ class HandoverRequestController extends Controller
         $handover->requestStatus = $request->handoverStatus;
 
         if ($request->handoverStatus === 'Rejected') {
-        $handover->rejectionNote = $request->rejectionNote;
+            $handover->rejectionNote = $request->rejectionNote;
 
-        // Update matchStatus to dismissed
-        \App\Models\MatchSuggestion::where('reportID', $handover->senderReportID)
-            ->where('matchedReportID', $handover->reportID)
-            ->where('userID', $handover->senderID)
-            ->update(['matchStatus' => 'dismissed']);
+            // Update matchStatus to dismissed
+            \App\Models\MatchSuggestion::where('reportID', $handover->senderReportID)
+                ->where('matchedReportID', $handover->reportID)
+                ->where('userID', $handover->senderID)
+                ->update(['matchStatus' => 'dismissed']);
 
         } elseif ($request->handoverStatus === 'Approved') {
             // Update matchStatus to accepted
@@ -236,6 +238,116 @@ class HandoverRequestController extends Controller
         $handover->save();
 
         return back()->with('success', 'Handover status updated.');
+    }
+
+    /**
+     * Download handover form PDF (blank template with item details)
+     */
+    public function downloadHandoverForm($requestID)
+    {
+        $handover = HandoverRequest::with(['sender', 'recipient', 'report.category', 'report.location'])
+            ->findOrFail($requestID);
+        
+        $userId = Auth::id();
+        
+        // Verify user is part of this handover
+        if ($handover->senderID !== $userId && $handover->recipientID !== $userId) {
+            abort(403, 'Unauthorized');
+        }
+
+        // Must be approved to download form
+        if ($handover->requestStatus !== 'Approved') {
+            return back()->with('error', 'Handover form can only be downloaded for approved requests.');
+        }
+        
+        // Determine who is finder and who is owner based on request type
+        if ($handover->requestType === 'Claim') {
+            // Sender is claiming (owner), Recipient found the item (finder)
+            $finder = $handover->recipient;
+            $owner = $handover->sender;
+        } else {
+            // Return: Sender is returning (finder), Recipient lost the item (owner)
+            $finder = $handover->sender;
+            $owner = $handover->recipient;
+        }
+        
+        $data = [
+            'handover' => $handover,
+            'report' => $handover->report,
+            'finder' => $finder,
+            'owner' => $owner,
+            'dateClaimed' => now()->format('d/m/Y'),
+        ];
+        
+        $pdf = Pdf::loadView('handover.handover_form_pdf', $data);
+        
+        return $pdf->download('ReuniFind_Handover_Form_' . $handover->report->itemName . '.pdf');
+    }
+
+    /**
+     * Upload signed handover form (auto-completes handover)
+     */
+    public function uploadHandoverForm(Request $request, $requestID)
+    {
+        $handover = HandoverRequest::findOrFail($requestID);
+        $userId = Auth::id();
+        
+        // Verify user is part of this handover
+        if ($handover->senderID !== $userId && $handover->recipientID !== $userId) {
+            abort(403, 'Unauthorized');
+        }
+
+        // Must be approved to upload form
+        if ($handover->requestStatus !== 'Approved') {
+            return back()->with('error', 'Handover form can only be uploaded for approved requests.');
+        }
+        
+        // Validate the uploaded file
+        $request->validate([
+            'handoverForm' => 'required|file|mimes:pdf|max:10240', // 10MB max
+        ]);
+        
+        // Delete old form if exists
+        if ($handover->handoverForm) {
+            Storage::disk('public')->delete($handover->handoverForm);
+        }
+        
+        // Store the new form
+        $path = $request->file('handoverForm')->store('handover_forms', 'public');
+        
+        // Update handover with form path and mark as completed
+        $handover->update([
+            'handoverForm' => $path,
+            'requestStatus' => 'Completed',
+        ]);
+
+        // Update matchStatus to completed
+        \App\Models\MatchSuggestion::where('reportID', $handover->senderReportID)
+            ->where('matchedReportID', $handover->reportID)
+            ->where('userID', $handover->senderID)
+            ->update(['matchStatus' => 'completed']);
+        
+        return back()->with('success', 'Handover form uploaded successfully! Handover marked as completed.');
+    }
+
+    /**
+     * View/Download uploaded handover form
+     */
+    public function viewHandoverForm($requestID)
+    {
+        $handover = HandoverRequest::findOrFail($requestID);
+        $userId = Auth::id();
+        
+        // Verify user is part of this handover
+        if ($handover->senderID !== $userId && $handover->recipientID !== $userId) {
+            abort(403, 'Unauthorized');
+        }
+        
+        if (!$handover->handoverForm) {
+            return back()->with('error', 'No handover form has been uploaded yet.');
+        }
+        
+        return Storage::disk('public')->download($handover->handoverForm);
     }
 
     

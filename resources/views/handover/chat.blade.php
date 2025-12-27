@@ -27,9 +27,19 @@
                 </div>
             </div>
             <div class="handover-status">
-                <span class="status-badge {{ strtolower($handover->requestStatus) }}">
-                    {{ $handover->requestStatus }}
-                </span>
+                @if($handover->requestStatus === 'Approved')
+                    <button class="status-badge approved clickable" onclick="openHandoverFormModal()">
+                        📋 Form Pending
+                    </button>
+                @elseif($handover->requestStatus === 'Completed')
+                    <button class="status-badge completed clickable" onclick="openHandoverFormModal()">
+                        ✅ Completed
+                    </button>
+                @else
+                    <span class="status-badge {{ strtolower($handover->requestStatus) }}">
+                        {{ $handover->requestStatus }}
+                    </span>
+                @endif
             </div>
         </div>
 
@@ -114,20 +124,96 @@
                 </div>
             </form>
         </div>
-
-        <!-- Mark as Completed Section -->
-        @if($handover->requestStatus === 'Approved')
-            <div class="complete-handover-section">
-                <form action="{{ route('handover.update', $handover->requestID) }}" method="POST">
-                    @csrf
-                    @method('PATCH')
-                    <input type="hidden" name="handoverStatus" value="Completed">
-                    <button type="submit" class="btn complete-btn">Mark Handover as Completed</button>
-                </form>
-            </div>
-        @endif
     </div>
 </div>
+
+<!-- Handover Form Modal -->
+@if($handover->requestStatus === 'Approved' || ($handover->requestStatus === 'Completed' && $handover->handoverForm))
+<div id="handoverFormModal" class="handover-modal" onclick="closeHandoverFormModal(event)">
+    <div class="handover-modal-content" onclick="event.stopPropagation()">
+        <div class="handover-modal-header">
+            <h2>
+                @if($handover->requestStatus === 'Approved')
+                    📋 Handover Form
+                @else
+                    ✅ Handover Completed
+                @endif
+            </h2>
+            <button class="close-modal-btn" onclick="closeHandoverFormModal()">&times;</button>
+        </div>
+
+        <div class="handover-modal-body">
+            @if($handover->requestStatus === 'Approved')
+                <p class="modal-description">Download the handover form, sign it, and upload the completed document to finalize the process.</p>
+                
+                <div class="modal-actions">
+                    <!-- Download Form -->
+                    <a href="{{ route('handover.form.download', $handover->requestID) }}" 
+                       class="modal-btn download-btn" 
+                       target="_blank">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        Download Handover Form
+                    </a>
+
+                    <div class="divider">
+                        <span>OR</span>
+                    </div>
+
+                    <!-- Upload Form -->
+                    <form action="{{ route('handover.form.upload', $handover->requestID) }}" 
+                          method="POST" 
+                          enctype="multipart/form-data"
+                          id="uploadFormModal">
+                        @csrf
+                        
+                        <label for="handoverFormFile" class="upload-area">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="17 8 12 3 7 8"></polyline>
+                                <line x1="12" y1="3" x2="12" y2="15"></line>
+                            </svg>
+                            <span id="uploadText">Click to upload signed form (PDF)</span>
+                            <span id="fileNameDisplay" style="display: none;"></span>
+                        </label>
+                        <input type="file" 
+                               name="handoverForm" 
+                               id="handoverFormFile" 
+                               accept=".pdf"
+                               required
+                               style="display: none;"
+                               onchange="handleModalFileSelect(this)">
+                        
+                        <button type="submit" class="modal-btn submit-btn" id="modalSubmitBtn" style="display: none;">
+                            Submit Form
+                        </button>
+                    </form>
+                </div>
+            @else
+                <p class="modal-description">The handover has been completed successfully. You can download the signed form below.</p>
+                
+                <div class="modal-actions">
+                    <a href="{{ route('handover.form.view', $handover->requestID) }}" 
+                       class="modal-btn view-btn" 
+                       target="_blank">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                        View Uploaded Form
+                    </a>
+                </div>
+            @endif
+        </div>
+    </div>
+</div>
+@endif
 
 <!-- Image Modal -->
 <div id="imageModal" class="image-modal" onclick="closeImageModal()">
@@ -166,6 +252,44 @@ function removeImage() {
     document.getElementById('messageImg').value = '';
     document.getElementById('imagePreview').style.display = 'none';
 }
+
+// Handover Form Modal Functions
+function openHandoverFormModal() {
+    document.getElementById('handoverFormModal').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
+function closeHandoverFormModal(event) {
+    if (!event || event.target.id === 'handoverFormModal' || event.target.classList.contains('close-modal-btn')) {
+        document.getElementById('handoverFormModal').style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+}
+
+// Handle file selection in modal
+function handleModalFileSelect(input) {
+    const uploadText = document.getElementById('uploadText');
+    const fileNameDisplay = document.getElementById('fileNameDisplay');
+    const submitBtn = document.getElementById('modalSubmitBtn');
+    
+    if (input.files && input.files[0]) {
+        uploadText.style.display = 'none';
+        fileNameDisplay.style.display = 'block';
+        fileNameDisplay.textContent = '📄 ' + input.files[0].name;
+        submitBtn.style.display = 'block';
+    } else {
+        uploadText.style.display = 'block';
+        fileNameDisplay.style.display = 'none';
+        submitBtn.style.display = 'none';
+    }
+}
+
+// Close modal on Escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeHandoverFormModal();
+    }
+});
 
 // Scroll to bottom of messages
 function scrollToBottom() {
