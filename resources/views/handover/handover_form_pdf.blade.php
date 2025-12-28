@@ -10,7 +10,7 @@
         }
         
         body {
-            font-family: 'DejaVu Sans', sans-serif;
+            font-family: 'Quicksand', 'Segoe UI', sans-serif;
             margin: 0;
             padding: 0;
             font-size: 11px;
@@ -37,17 +37,6 @@
             margin: 0 auto 8px;
             position: relative;
         }
-        
-        /* .logo-inner {
-            width: 30px;
-            height: 30px;
-            background: #F1F4FB;
-            border-radius: 50%;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        } */
         
         .title {
             color: #3A5987;
@@ -188,6 +177,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <!-- Header -->

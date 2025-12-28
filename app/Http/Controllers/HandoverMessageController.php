@@ -13,7 +13,6 @@ class HandoverMessageController extends Controller
 {
     /**
      * Display list of all chats (approved handovers)
-     * Like WhatsApp chat list
      */
     public function index(Request $request)
     {

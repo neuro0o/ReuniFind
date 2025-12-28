@@ -12,7 +12,7 @@ class HandoverMessage extends Model
     protected $table = 'handover_messages';
     protected $primaryKey = 'messageID';
     
-    // Disable updated_at since we only need created_at
+    // Disable updated_at, only need created_at
     public $timestamps = false;
     
     protected $fillable = [

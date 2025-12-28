@@ -19,7 +19,7 @@
   color: var(--color-primary);
   font-size: var(--fs-lg);
   font-weight: var(--fw-bold);
-  text-align: center; /* only H3 centered */
+  text-align: center;
 }
 
 /* ---------- FORM STYLING ---------- */
@@ -43,7 +43,7 @@
 #handoverModal #handoverForm select,
 #handoverModal #handoverForm input[type="text"],
 #handoverModal #handoverForm input[type="file"] {
-  width: 100%; /* match form width */
+  width: 100%;
   padding: 0.6rem 0.8rem;
   border-radius: 8px;
   border: 1px solid #ccc;
@@ -51,7 +51,7 @@
   font-size: var(--fs-md);
   font-weight: var(--fw-regular);
   margin-bottom: 0.5rem;
-  box-sizing: border-box; /* ensure width doesn't overflow */
+  box-sizing: border-box;
 }
 
 #handoverModal #handoverForm select:focus,
@@ -77,7 +77,7 @@
   margin-top: 1rem;
   width: 100%;
   display: flex;
-  justify-content: flex-start; /* align with inputs */
+  justify-content: flex-start;
 }
 
 #handoverModal .modal-footer .btn {
@@ -88,13 +88,12 @@
   font-weight: var(--fw-bold);
   cursor: pointer;
   transition: all 0.2s ease;
-  width: 100%; /* spans full width */
+  width: 100%;
 }
 
 #handoverModal .modal-footer .btn:hover {
   background-color: var(--color-primary);
   color: var(--color-secondary);
-  /* background-color: #2563eb; */
 }
 
 /* ---------- CLOSE BUTTON ---------- */

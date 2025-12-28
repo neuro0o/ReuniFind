@@ -1,14 +1,7 @@
 /* ==========================================
    Admin Feedback Management 
    ========================================== */
-
-hr {
-margin-bottom: 2.5rem;
-border: 3px dashed var(--color-primary);
-border-radius: 1rem;
-}
-
-   /* Main Content */
+/* Main Content */
 .main-content {
     width: 90%;
     max-width: 100%;

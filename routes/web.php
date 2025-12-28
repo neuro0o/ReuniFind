@@ -78,7 +78,6 @@ Route::middleware(['auth', 'isAdmin'])->prefix('admin')->group(function () {
     Route::put('/admin/users/{id}', [AdminController::class, 'updateUser'])->name('admin.users.update');
     Route::put('/admin/users/{id}/reset-profile', [AdminController::class, 'resetProfile'])->name('admin.users.resetProfile');
 
-
     Route::delete('/admin/users/{id}', [AdminController::class, 'deleteUser'])->name('admin.users.delete');
 
     // Item Category CRUD
@@ -252,17 +251,6 @@ Route::prefix('tag')->group(function () {
         return view('tag.my');
     })->name('tag.my');
 });
-
-// // HELP CENTER
-// Route::prefix('help')->group(function () {
-//     Route::get('/faq', function () {
-//         return view('help.faq');
-//     })->name('help.faq');
-
-//     Route::get('/feedback', function () {
-//         return view('help.feedback');
-//     })->name('help.feedback');
-// });
 
 // COMMUNITY FORUM
 Route::get('/forum', function () {

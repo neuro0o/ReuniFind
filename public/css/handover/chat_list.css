@@ -30,7 +30,7 @@ span:hover {
     color: var(--color-primary);
 }
 
-/* Filter Tabs - Figma Style */
+/* Filter Tabs */
 .filter-tabs {
     display: flex;
     gap: 0;
@@ -125,7 +125,7 @@ span:hover {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-/* Chat List - CENTERED */
+/* Chat List */
 .chat-list {
     width: 100%;
     max-width: 1000px;
@@ -156,7 +156,7 @@ span:hover {
     border: 2px solid var(--color-primary);
 }
 
-/* BRIGHTER UNREAD STYLING */
+/* Unread Chat Styling */
 .chat-item.has-unread {
     background: var(--color-secondary);
     box-shadow: 0 3px 10px rgba(58, 89, 135, 0.15);

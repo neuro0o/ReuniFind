@@ -86,8 +86,6 @@ class HandoverRequestController extends Controller
         return redirect()->back()->with('success', 'Handover request sent!');
     }
 
-
-
     // ------------------ STORE HANDOVER ------------------ //
     public function store(Request $request)
     {
@@ -145,8 +143,6 @@ class HandoverRequestController extends Controller
                    ->where('matchedReportID', $senderReport->reportID);
             });
         })->update(['matchStatus' => 'pending']);
-
-
 
         return redirect()->back()->with('success', 'Handover request sent!');
     }
