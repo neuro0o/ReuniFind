@@ -3,6 +3,10 @@ span:hover {
   color: inherit; /* keep text color unchanged */
 }
 
+.empty-icon {
+    filter: brightness(0) saturate(0%) invert(29%) sepia(28%) saturate(1251%) hue-rotate(189deg) brightness(95%) contrast(90%);
+}
+
 /* Chat List Layout */
 .main-content {
     width: 90%;
