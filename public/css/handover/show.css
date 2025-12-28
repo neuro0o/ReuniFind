@@ -196,6 +196,39 @@
     width: 100%;
 }
 
+/* Chat Button Wrapper */
+.chat-button-wrapper {
+    width: 100%;
+    max-width: 500px;
+}
+
+.btn-chat-action {
+    background: var(--color-primary);
+    border: 2px solid var(--color-primary);
+    color: white;
+    display: inline-block;
+    width: 100%;
+    padding: 1rem 2.5rem;
+    border-radius: 7rem;
+    text-decoration: none;
+    font-weight: var(--fw-semibold);
+    font-size: var(--fs-md);
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.btn-chat-action:hover {
+    background: #566FA5;
+    border-color: #566FA5;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.btn-chat-action:active {
+    transform: translateY(2px);
+}
+
 /* Reject Form (Hidden Initially) */
 .reject-form {
     width: 100%;
@@ -392,6 +425,7 @@
     .btn-reject-toggle,
     .btn-reject-submit,
     .btn-cancel,
+    .btn-chat-action,
     .btn-back {
         padding: 0.8rem 2rem;
         font-size: var(--fs-sm);

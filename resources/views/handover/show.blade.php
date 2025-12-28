@@ -132,10 +132,19 @@
           </form>
         @endif
 
-        <!-- {{-- Back Button (Always at Bottom) --}}
+        {{-- Chat Button for Approved/Completed Requests --}}
+        @if($handover->requestStatus === 'Approved' || $handover->requestStatus === 'Completed')
+          <div class="chat-button-wrapper">
+            <a href="{{ route('handover.chat.show', $handover->requestID) }}" class="btn-chat-action">
+              💬 Open Chat
+            </a>
+          </div>
+        @endif
+
+        {{-- Back Button (Always at Bottom) --}}
         <div class="back-button-wrapper">
           <a href="{{ route('handover.index') }}" class="btn-back">Back to Handovers</a>
-        </div> -->
+        </div>
       </div>
 
     </div>
