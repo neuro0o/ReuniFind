@@ -81,8 +81,7 @@
         </button>
         <ul class="sub-menu">
             <div>
-              <li><a href="{{ route('help.faq') }}">FAQ</a></li>
-              <li><a href="{{ route('help.feedback') }}">Submit Feedback</a></li>
+              <li><a href="{{ route('feedback.create') }}">Submit Feedback</a></li>
             </div>
           </ul>
       </li>

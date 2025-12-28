@@ -333,6 +333,55 @@ class AdminController extends Controller
     }
 
 
+
+    // -------------------- FEEDBACK CONTROLLER -------------------- //
+
+    /**
+     * Display all feedbacks with filters
+     */
+    public function feedbacks(Request $request)
+    {
+        $query = \App\Models\Feedback::with('user');
+
+        // Filter by feedback type
+        if ($request->has('type') && $request->type != '') {
+            $query->where('feedbackType', $request->type);
+        }
+
+        // Filter by feedback status
+        if ($request->has('status') && $request->status != '') {
+            $query->where('feedbackStatus', $request->status);
+        }
+
+        // Order by most recent
+        $feedbacks = $query->orderBy('feedbackDate', 'desc')->paginate(15);
+
+        return view('admin.feedbacks.index', compact('feedbacks'));
+    }
+
+    /**
+     * Mark feedback as reviewed
+     */
+    public function markAsReviewed($id)
+    {
+        $feedback = \App\Models\Feedback::findOrFail($id);
+        $feedback->update(['feedbackStatus' => 'Reviewed']);
+
+        return redirect()->back()->with('success', 'Feedback marked as reviewed.');
+    }
+
+    /**
+     * Delete feedback
+     */
+    public function deleteFeedback($id)
+    {
+        $feedback = \App\Models\Feedback::findOrFail($id);
+        $feedback->delete();
+
+        return redirect()->back()->with('success', 'Feedback deleted successfully.');
+    }
+
+
     // -------------------- Helper -------------------- //
     private function getEnumValues($table, $column)
     {

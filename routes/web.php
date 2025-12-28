@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\HandoverRequestController;
 use App\Http\Controllers\HandoverMessageController;
 use App\Http\Controllers\ItemReportController;
@@ -106,6 +107,11 @@ Route::middleware(['auth', 'isAdmin'])->prefix('admin')->group(function () {
     // Detailed view
     Route::get('/reports/{id}', [AdminController::class, 'showReport'])
         ->name('admin.report_detail');
+
+    // Feedback Management
+    Route::get('/feedbacks', [AdminController::class, 'feedbacks'])->name('admin.feedbacks');
+    Route::post('/feedbacks/{id}/review', [AdminController::class, 'markAsReviewed'])->name('admin.feedbacks.review');
+    Route::delete('/feedbacks/{id}', [AdminController::class, 'deleteFeedback'])->name('admin.feedbacks.delete');
 });
 
 /*----------------- LOST & FOUND REPORT MODULE ROUTES -------------------*/
@@ -182,14 +188,6 @@ Route::middleware(['auth'])->prefix('handover')->group(function () {
     Route::patch('/{id}/update', [HandoverRequestController::class, 'update'])
         ->name('handover.update');
 
-    // Handover Form Routes
-    // Route::get('/{id}/generate-form', [HandoverRequestController::class, 'generateHandoverForm'])
-    //     ->name('handover.generateForm');
-    // Route::post('/{id}/upload-form', [HandoverRequestController::class, 'uploadHandoverForm'])
-    //     ->name('handover.uploadForm');
-    // Route::get('/{id}/view-form', [HandoverRequestController::class, 'viewHandoverForm'])
-    //     ->name('handover.viewForm');
-
     // Handover Form Routes (must be approved)
     Route::get('/handover/{requestID}/form/download', [HandoverRequestController::class, 'downloadHandoverForm'])
         ->name('handover.form.download')
@@ -202,7 +200,6 @@ Route::middleware(['auth'])->prefix('handover')->group(function () {
     Route::get('/handover/{requestID}/form/view', [HandoverRequestController::class, 'viewHandoverForm'])
         ->name('handover.form.view')
         ->middleware('auth');
-
 
     /* ----- CHAT MESSAGES ----- */
     // Show chat list (all conversations)
@@ -227,6 +224,14 @@ Route::middleware(['auth'])->prefix('handover')->group(function () {
 });
 
 
+/*----------------- HELP CENTRE & USER FEEDBACK ROUTES -------------------*/
+// User Feedback Routes (require authentication)
+Route::middleware(['auth'])->group(function () {
+    Route::get('/feedback/create', [FeedbackController::class, 'create'])->name('feedback.create');
+    Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
+});
+
+
 
 
 
@@ -248,16 +253,16 @@ Route::prefix('tag')->group(function () {
     })->name('tag.my');
 });
 
-// HELP CENTER
-Route::prefix('help')->group(function () {
-    Route::get('/faq', function () {
-        return view('help.faq');
-    })->name('help.faq');
+// // HELP CENTER
+// Route::prefix('help')->group(function () {
+//     Route::get('/faq', function () {
+//         return view('help.faq');
+//     })->name('help.faq');
 
-    Route::get('/feedback', function () {
-        return view('help.feedback');
-    })->name('help.feedback');
-});
+//     Route::get('/feedback', function () {
+//         return view('help.feedback');
+//     })->name('help.feedback');
+// });
 
 // COMMUNITY FORUM
 Route::get('/forum', function () {
