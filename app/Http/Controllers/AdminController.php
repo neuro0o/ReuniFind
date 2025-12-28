@@ -226,52 +226,42 @@ class AdminController extends Controller
             ->with('success', 'User deleted successfully.');
     }
 
-
-
-
-
-    
-
-
     // -------------------- Item Report -------------------- //
-    // Show Lost reports with optional status filter (case-sensitive)
+    // Show Lost reports with optional status filter
     public function manageLostReports(Request $request)
     {
-        $status = $request->query('status'); // may be null
+        $query = ItemReport::where('reportType', 'Lost');
 
-        // Default to Pending if not set
-        if (!$status) {
-            $status = 'pending';
+        // Filter by status (optional)
+        if ($request->has('status') && $request->status != '') {
+            $query->where('reportStatus', ucfirst($request->status));
         }
 
-        $statusEnum = ucfirst(strtolower($status)); // Match enum exactly
+        $lostReports = $query->orderBy('reportDate', 'desc')->get();
 
-        $lostReports = ItemReport::where('reportType', 'Lost')
-                        ->where('reportStatus', $statusEnum)
-                        ->orderBy('reportDate', 'desc')
-                        ->get();
-
-        return view('admin.manage_report_lost', compact('lostReports', 'status'));
+        return view('admin.manage_report_lost', [
+            'lostReports' => $lostReports,
+            'status' => $request->status,
+        ]);
     }
 
 
-    // Show Found reports with optional status filter (case-sensitive)
+    // Show Found reports with optional status filter
     public function manageFoundReports(Request $request)
     {
-        $status = $request->query('status');
+        $query = ItemReport::where('reportType', 'Found');
 
-        if (!$status) {
-            $status = 'pending';
+        // Filter by status (optional)
+        if ($request->has('status') && $request->status != '') {
+            $query->where('reportStatus', ucfirst($request->status));
         }
 
-        $statusEnum = ucfirst(strtolower($status));
+        $foundReports = $query->orderBy('reportDate', 'desc')->get();
 
-        $foundReports = ItemReport::where('reportType', 'Found')
-                        ->where('reportStatus', $statusEnum)
-                        ->orderBy('reportDate', 'desc')
-                        ->get();
-
-        return view('admin.manage_report_found', compact('foundReports', 'status'));
+        return view('admin.manage_report_found', [
+            'foundReports' => $foundReports,
+            'status' => $request->status,
+        ]);
     }
     
     // Approve report
@@ -310,7 +300,7 @@ class AdminController extends Controller
         }
     }
 
-    // Delete Report
+    // Delete Report (for non-completed reports)
     public function deleteReport($id)
     {
         $report = ItemReport::findOrFail($id);
@@ -322,6 +312,64 @@ class AdminController extends Controller
         } else {
             return redirect()->route('admin.manage_report_found')
                 ->with('success', 'Report deleted successfully.');
+        }
+    }
+
+    /**
+     * Delete completed report pair (both reports in the handover)
+     * This is used specifically for completed reports to delete both paired reports
+     */
+    public function deleteCompletedReportPair($reportID)
+    {
+        // Find the handover request for this report
+        $handover = \App\Models\HandoverRequest::where(function ($query) use ($reportID) {
+            $query->where('reportID', $reportID)
+                  ->orWhere('senderReportID', $reportID);
+        })
+        ->where('requestStatus', 'Completed')
+        ->first();
+
+        if (!$handover) {
+            return redirect()->back()->with('error', 'No completed handover found for this report.');
+        }
+
+        // Get both report IDs
+        $reportID1 = $handover->reportID;
+        $reportID2 = $handover->senderReportID;
+
+        // Get the report type for redirect
+        $report = ItemReport::find($reportID);
+        $reportType = $report ? $report->reportType : 'Lost';
+
+        // Delete the handover form file if it exists
+        if ($handover->handoverForm) {
+            Storage::disk('public')->delete($handover->handoverForm);
+        }
+
+        // Delete match suggestions for this pair
+        \App\Models\MatchSuggestion::where(function($q) use ($reportID1, $reportID2) {
+            $q->where(function($q2) use ($reportID1, $reportID2) {
+                $q2->where('reportID', $reportID1)
+                   ->where('matchedReportID', $reportID2);
+            })->orWhere(function($q3) use ($reportID1, $reportID2) {
+                $q3->where('reportID', $reportID2)
+                   ->where('matchedReportID', $reportID1);
+            });
+        })->delete();
+
+        // Delete the handover request
+        $handover->delete();
+
+        // Delete BOTH item reports
+        ItemReport::whereIn('reportID', [$reportID1, $reportID2])->delete();
+
+        // Redirect to appropriate list based on original report type
+        if ($reportType === 'Lost') {
+            return redirect()->route('admin.manage_report_lost')
+                ->with('success', 'Both reports in the handover pair have been deleted successfully.');
+        } else {
+            return redirect()->route('admin.manage_report_found')
+                ->with('success', 'Both reports in the handover pair have been deleted successfully.');
         }
     }
 

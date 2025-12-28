@@ -16,7 +16,6 @@ use Illuminate\Support\Facades\Auth;
 // LANDING
 Route::get('/', function () {
     return view('landing');
-    // return view('user/dashboard');
 });
 
 /*----------------- AUTH ROUTES -------------------*/
@@ -38,7 +37,7 @@ Route::post('/logout', function (Request $request) {
     Auth::logout();
     $request->session()->invalidate();
     $request->session()->regenerateToken();
-    return redirect('/'); // landing page
+    return redirect('/');
 })->name('logout');
 
 
@@ -54,11 +53,6 @@ Route::middleware(['auth'])->prefix('account')->group(function () {
 });
 
 // USER HOME @ DASHBOARD
-Route::get('/dashboard', function () {
-    return view('user.dashboard');
-})->middleware('auth')->name('user.dashboard');
-
-// USER HOME @ DASHBOARD STATISTICS
 Route::get('/dashboard', [UserDashboardController::class, 'index'])
     ->middleware('auth')
     ->name('user.dashboard');
@@ -102,6 +96,10 @@ Route::middleware(['auth', 'isAdmin'])->prefix('admin')->group(function () {
     Route::post('/reports/{id}/approve', [AdminController::class, 'approveReport'])->name('admin.approve_report');
     Route::post('/reports/{id}/reject', [AdminController::class, 'rejectReport'])->name('admin.reject_report');
     Route::delete('/reports/{id}/delete', [AdminController::class, 'deleteReport'])->name('admin.delete_report');
+
+    // Delete completed report pair (NEW - for completed handover pairs)
+    Route::delete('/reports/completed/{id}/delete-pair', [AdminController::class, 'deleteCompletedReportPair'])
+        ->name('admin.delete_completed_pair');
 
     // Detailed view
     Route::get('/reports/{id}', [AdminController::class, 'showReport'])
@@ -187,17 +185,23 @@ Route::middleware(['auth'])->prefix('handover')->group(function () {
     Route::patch('/{id}/update', [HandoverRequestController::class, 'update'])
         ->name('handover.update');
 
-    // Handover Form Routes (must be approved)
-    Route::get('/handover/{requestID}/form/download', [HandoverRequestController::class, 'downloadHandoverForm'])
+    // Handover Form Routes
+    Route::get('/{requestID}/form/download', [HandoverRequestController::class, 'downloadHandoverForm'])
         ->name('handover.form.download')
         ->middleware('auth');
 
-    Route::post('/handover/{requestID}/form/upload', [HandoverRequestController::class, 'uploadHandoverForm'])
+    Route::post('/{requestID}/form/upload', [HandoverRequestController::class, 'uploadHandoverForm'])
         ->name('handover.form.upload')
         ->middleware('auth');
 
-    Route::get('/handover/{requestID}/form/view', [HandoverRequestController::class, 'viewHandoverForm'])
+    // View uploaded form (inline in browser - opens in new tab)
+    Route::get('/{requestID}/form/view', [HandoverRequestController::class, 'viewHandoverForm'])
         ->name('handover.form.view')
+        ->middleware('auth');
+
+    // Download uploaded form (force download)
+    Route::get('/{requestID}/form/download-uploaded', [HandoverRequestController::class, 'downloadUploadedForm'])
+        ->name('handover.form.download_uploaded')
         ->middleware('auth');
 
     /* ----- CHAT MESSAGES ----- */
@@ -231,11 +235,6 @@ Route::middleware(['auth'])->group(function () {
 });
 
 
-
-
-
-
-
 /*----------------- TEMP ROUTES -------------------*/
 // DIGITAL ITEM TAG
 Route::prefix('tag')->group(function () {
@@ -254,5 +253,5 @@ Route::prefix('tag')->group(function () {
 
 // COMMUNITY FORUM
 Route::get('/forum', function () {
-    return view('forum.index'); // Blade file name here
+    return view('forum.index');
 })->name('forum.index');

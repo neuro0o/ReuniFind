@@ -258,15 +258,16 @@ class HandoverRequestController extends Controller
             ->findOrFail($requestID);
         
         $userId = Auth::id();
+        $isAdmin = Auth::user()->userRole === 'Admin';
         
-        // Verify user is part of this handover
-        if ($handover->senderID !== $userId && $handover->recipientID !== $userId) {
+        // Verify user is part of this handover OR is admin
+        if ($handover->senderID !== $userId && $handover->recipientID !== $userId && !$isAdmin) {
             abort(403, 'Unauthorized');
         }
 
         // Must be approved to download form
-        if ($handover->requestStatus !== 'Approved') {
-            return back()->with('error', 'Handover form can only be downloaded for approved requests.');
+        if ($handover->requestStatus !== 'Approved' && $handover->requestStatus !== 'Completed') {
+            return back()->with('error', 'Handover form can only be downloaded for approved/completed requests.');
         }
         
         // Determine who is finder and who is owner based on request type
@@ -349,15 +350,16 @@ class HandoverRequestController extends Controller
     }
 
     /**
-     * View/Download uploaded handover form
+     * View uploaded handover form (inline in browser - New TAB)
      */
     public function viewHandoverForm($requestID)
     {
         $handover = HandoverRequest::findOrFail($requestID);
         $userId = Auth::id();
+        $isAdmin = Auth::user()->userRole === 'Admin';
         
-        // Verify user is part of this handover
-        if ($handover->senderID !== $userId && $handover->recipientID !== $userId) {
+        // Verify user is part of this handover OR is admin
+        if ($handover->senderID !== $userId && $handover->recipientID !== $userId && !$isAdmin) {
             abort(403, 'Unauthorized');
         }
         
@@ -365,7 +367,38 @@ class HandoverRequestController extends Controller
             return back()->with('error', 'No handover form has been uploaded yet.');
         }
         
-        return Storage::disk('public')->download($handover->handoverForm);
+        $filePath = storage_path('app/public/' . $handover->handoverForm);
+        
+        if (!file_exists($filePath)) {
+            return back()->with('error', 'Form file not found.');
+        }
+        
+        // Return file inline (opens in browser)
+        return response()->file($filePath);
+    }
+
+    /**
+     * Download uploaded handover form (force download)
+     */
+    public function downloadUploadedForm($requestID)
+    {
+        $handover = HandoverRequest::findOrFail($requestID);
+        $userId = Auth::id();
+        $isAdmin = Auth::user()->userRole === 'Admin';
+        
+        // Verify user is part of this handover OR is admin
+        if ($handover->senderID !== $userId && $handover->recipientID !== $userId && !$isAdmin) {
+            abort(403, 'Unauthorized');
+        }
+        
+        if (!$handover->handoverForm) {
+            return back()->with('error', 'No handover form has been uploaded yet.');
+        }
+        
+        return Storage::disk('public')->download(
+            $handover->handoverForm,
+            'Handover_Form_' . $handover->requestID . '.pdf'
+        );
     }
 
     

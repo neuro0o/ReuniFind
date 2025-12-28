@@ -12,45 +12,99 @@
   @include('layouts.partials.sidebar')
 
   <div class="main-content">
-    <h1>My Item Reports</h1>
-
-    <!-- FILTERS -->
-    <div class="filter-tabs">
-      @php
-        $statuses = ['Pending', 'Published', 'Rejected', 'Completed'];
-      @endphp
-
-      @foreach($statuses as $tabStatus)
-        <a href="{{ route('item_report.my_report', ['status' => strtolower($tabStatus)]) }}" 
-          class="tab-btn {{ isset($status) && strtolower($status) === strtolower($tabStatus) ? 'active' : (!isset($status) && strtolower($tabStatus) === 'pending' ? 'active' : '') }}">
-          {{ $tabStatus }}
-        </a>
-      @endforeach
+    <div class="page-header">
+      <h1>My Item Reports</h1>
     </div>
-
 
     <!-- Success Message -->
     @if(session('success'))
-      <div class="alert alert-success">{{ session('success') }}</div>
+      <div class="status-info-card published">
+        <i class="fas fa-check-circle"></i>
+        <span>{{ session('success') }}</span>
+      </div>
     @endif
 
+    <!-- Statistics Cards -->
+    <div class="stats-container">
+      <div class="stat-card">
+        <div class="stat-icon"></div>
+        <div class="stat-info">
+          <div class="stat-label">Total Reports</div>
+          <div class="stat-value">{{ \App\Models\ItemReport::where('userID', Auth::id())->count() }}</div>
+        </div>
+      </div>
+      <div class="stat-card pending">
+        <div class="stat-icon"></div>
+        <div class="stat-info">
+          <div class="stat-label">Pending</div>
+          <div class="stat-value">{{ \App\Models\ItemReport::where('userID', Auth::id())->where('reportStatus', 'Pending')->count() }}</div>
+        </div>
+      </div>
+      <div class="stat-card published">
+        <div class="stat-icon"></div>
+        <div class="stat-info">
+          <div class="stat-label">Published</div>
+          <div class="stat-value">{{ \App\Models\ItemReport::where('userID', Auth::id())->where('reportStatus', 'Published')->count() }}</div>
+        </div>
+      </div>
+      <div class="stat-card rejected">
+        <div class="stat-icon"></div>
+        <div class="stat-info">
+          <div class="stat-label">Rejected</div>
+          <div class="stat-value">{{ \App\Models\ItemReport::where('userID', Auth::id())->where('reportStatus', 'Rejected')->count() }}</div>
+        </div>
+      </div>
+      <div class="stat-card completed">
+        <div class="stat-icon"></div>
+        <div class="stat-info">
+          <div class="stat-label">Completed</div>
+          <div class="stat-value">{{ \App\Models\ItemReport::where('userID', Auth::id())->where('reportStatus', 'Completed')->count() }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FILTERS CARD -->
+    <div class="filters-card">
+      <form action="{{ route('item_report.my_report') }}" method="GET" class="filters-form">
+        <div class="filter-group">
+          <label for="status">Filter by Status</label>
+          <select name="status" id="status" class="filter-select">
+            <option value="">All Status</option>
+            <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>
+              Pending
+            </option>
+            <option value="published" {{ request('status') == 'published' ? 'selected' : '' }}>
+              Published
+            </option>
+            <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>
+              Rejected
+            </option>
+            <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>
+              Completed
+            </option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="type">Filter by Type</label>
+          <select name="type" id="type" class="filter-select">
+            <option value="">All Types</option>
+            <option value="lost" {{ request('type') == 'lost' ? 'selected' : '' }}>
+              Lost
+            </option>
+            <option value="found" {{ request('type') == 'found' ? 'selected' : '' }}>
+              Found
+            </option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn-filter">Apply Filters</button>
+        <a href="{{ route('item_report.my_report') }}" class="btn-reset">Reset</a>
+      </form>
+    </div>
     <!-- Report Table -->
     @if($userReports->count() > 0)
-      <!-- @php
-          $statusMessages = [
-              'pending'   => 'List of reports waiting for Admin approval',
-              'published' => 'List of reports approved by Admin and published',
-              'rejected'  => 'List of reports rejected by Admin and not published',
-              'completed' => 'List of reports that have been handed over'
-          ];
-      @endphp
-
-      @if(isset($status) && isset($statusMessages[strtolower($status)]))
-          <div class="status-info-card {{ strtolower($status) }}">
-              <i class="fas fa-info-circle"></i>
-              <span class="statusMessage">{{ $statusMessages[strtolower($status)] }}</span>
-          </div>
-      @endif -->
+      <!-- <h5>_</h5> -->
       <div class="table-container">
         <table class="report-table">
           <thead>
@@ -91,7 +145,7 @@
                 <td data-label="Action">
                   <div class="btn-group">
                     @if(strtolower($report->reportStatus) === 'completed')
-                        <!-- View Handover Form for Completed Reports -->
+                        {{-- View & Download Handover Form for Completed Reports --}}
                         @php
                             $completedHandover = \App\Models\HandoverRequest::where(function ($query) use ($report) {
                                 $query->where('reportID', $report->reportID)
@@ -102,32 +156,38 @@
                             ->first();
                         @endphp
 
-
                         @if($completedHandover && $completedHandover->handoverForm)
+                            {{-- View Form (opens in new tab) --}}
                             <a href="{{ route('handover.form.view', $completedHandover->requestID) }}" 
                                class="btn view-form" 
                                target="_blank">
                                 View Form
+                            </a>
+                            
+                            {{-- Download Form --}}
+                            <a href="{{ route('handover.form.download_uploaded', $completedHandover->requestID) }}" 
+                               class="btn download-form">
+                                Download
                             </a>
                         @else
                             <span class="btn disabled">No Form</span>
                         @endif
 
                     @elseif(strtolower($report->reportStatus) === 'rejected')
-                        <!-- View Rejection Reason -->
+                        {{-- View Rejection Reason --}}
                         <button type="button" class="btn reason" 
                             data-reason="{{ $report->rejectionNote ?? 'No reason provided' }}">
                             Reason
                         </button>
 
-                        <!-- Delete -->
+                        {{-- Delete --}}
                         <form action="{{ route('item_report.destroy', $report->reportID) }}" method="POST" onsubmit="return confirm('Are you sure?')">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn delete">Delete</button>
                         </form>
                     @else
-                        <!-- Normal Edit/Delete for other statuses -->
+                        {{-- Normal Edit/Delete for other statuses (Pending/Published) --}}
                         <a href="{{ route('item_report.edit', $report->reportID) }}" class="btn edit">Edit</a>
                         <form action="{{ route('item_report.destroy', $report->reportID) }}" method="POST" onsubmit="return confirm('Are you sure?')">
                             @csrf
@@ -143,7 +203,17 @@
         </table>
       </div>
     @else
-      <p class="empty-text">No reports found.</p>
+      <div class="empty-state">
+        <div class="empty-icon"></div>
+        <h3>No Reports Found</h3>
+        <p>
+          @if(request('status') || request('type'))
+            No reports match your current filters
+          @else
+            You don't have any reports yet
+          @endif
+        </p>
+      </div>
     @endif
   </div>
 </div>

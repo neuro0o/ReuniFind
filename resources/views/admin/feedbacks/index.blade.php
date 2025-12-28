@@ -26,28 +26,28 @@
             <!-- Statistics Cards -->
             <div class="stats-container">
                 <div class="stat-card">
-                    <div class="stat-icon">📊</div>
+                    <div class="stat-icon"></div>
                     <div class="stat-info">
                         <div class="stat-label">Total Feedbacks</div>
                         <div class="stat-value">{{ $feedbacks->total() }}</div>
                     </div>
                 </div>
                 <div class="stat-card pending">
-                    <div class="stat-icon">⏳</div>
+                    <div class="stat-icon"></div>
                     <div class="stat-info">
                         <div class="stat-label">Pending</div>
                         <div class="stat-value">{{ \App\Models\Feedback::where('feedbackStatus', 'Pending')->count() }}</div>
                     </div>
                 </div>
                 <div class="stat-card reviewed">
-                    <div class="stat-icon">✓</div>
+                    <div class="stat-icon"></div>
                     <div class="stat-info">
                         <div class="stat-label">Reviewed</div>
                         <div class="stat-value">{{ \App\Models\Feedback::where('feedbackStatus', 'Reviewed')->count() }}</div>
                     </div>
                 </div>
                 <div class="stat-card bug">
-                    <div class="stat-icon">🐛</div>
+                    <div class="stat-icon"></div>
                     <div class="stat-info">
                         <div class="stat-label">Bug Reports</div>
                         <div class="stat-value">{{ \App\Models\Feedback::where('feedbackType', 'Error/Bug Report')->count() }}</div>

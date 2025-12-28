@@ -12,20 +12,81 @@
     @include('layouts.partials.admin_sidebar')
 
     <div class="main-content">
-        <h1>Manage Lost Reports</h1>
+        <div class="page-header">
+            <h1>Manage Lost Reports</h1>
+        </div>
 
-        <!-- FILTER TABS -->
-        <div class="filter-tabs">
-            @php
-                $statuses = ['Pending', 'Published', 'Rejected', 'Completed'];
-            @endphp
+        @if(session('success'))
+            <div class="status-info-card published">
+                <i class="fas fa-check-circle"></i>
+                <span>{{ session('success') }}</span>
+            </div>
+        @endif
 
-            @foreach($statuses as $tabStatus)
-                <a href="{{ route('admin.manage_report_lost', ['status' => strtolower($tabStatus)]) }}" 
-                class="tab-btn {{ isset($status) && ucfirst($status) === $tabStatus ? 'active' : (!isset($status) && $tabStatus === 'Pending' ? 'active' : '') }}">
-                {{ $tabStatus }}
-                </a>
-            @endforeach
+        <!-- Statistics Cards -->
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-icon"></div>
+                <div class="stat-info">
+                    <div class="stat-label">Total Lost Reports</div>
+                    <div class="stat-value">{{ \App\Models\ItemReport::where('reportType', 'Lost')->count() }}</div>
+                </div>
+            </div>
+            <div class="stat-card pending">
+                <div class="stat-icon"></div>
+                <div class="stat-info">
+                    <div class="stat-label">Pending</div>
+                    <div class="stat-value">{{ \App\Models\ItemReport::where('reportType', 'Lost')->where('reportStatus', 'Pending')->count() }}</div>
+                </div>
+            </div>
+            <div class="stat-card published">
+                <div class="stat-icon"></div>
+                <div class="stat-info">
+                    <div class="stat-label">Published</div>
+                    <div class="stat-value">{{ \App\Models\ItemReport::where('reportType', 'Lost')->where('reportStatus', 'Published')->count() }}</div>
+                </div>
+            </div>
+            <div class="stat-card rejected">
+                <div class="stat-icon"></div>
+                <div class="stat-info">
+                    <div class="stat-label">Rejected</div>
+                    <div class="stat-value">{{ \App\Models\ItemReport::where('reportType', 'Lost')->where('reportStatus', 'Rejected')->count() }}</div>
+                </div>
+            </div>
+            <div class="stat-card completed">
+                <div class="stat-icon"></div>
+                <div class="stat-info">
+                    <div class="stat-label">Completed</div>
+                    <div class="stat-value">{{ \App\Models\ItemReport::where('reportType', 'Lost')->where('reportStatus', 'Completed')->count() }}</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FILTERS CARD -->
+        <div class="filters-card">
+            <form action="{{ route('admin.manage_report_lost') }}" method="GET" class="filters-form">
+                <div class="filter-group">
+                    <label for="status">Filter by Status</label>
+                    <select name="status" id="status" class="filter-select">
+                        <option value="">All Status</option>
+                        <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>
+                            Pending
+                        </option>
+                        <option value="published" {{ request('status') == 'published' ? 'selected' : '' }}>
+                            Published
+                        </option>
+                        <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>
+                            Rejected
+                        </option>
+                        <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>
+                            Completed
+                        </option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-filter">Apply Filter</button>
+                <a href="{{ route('admin.manage_report_lost') }}" class="btn-reset">Reset</a>
+            </form>
         </div>
 
         @if($lostReports->count() > 0)
@@ -37,7 +98,7 @@
                         <th>Image</th>
                         <th>Category</th>
                         <th>Status</th>
-                        @if(isset($status) && strtolower($status) === 'rejected')
+                        @if(request('status') === 'rejected')
                             <th>Reason for Rejection</th>
                         @endif
                         <th>Actions</th>
@@ -61,7 +122,7 @@
                             </span>
                         </td>
 
-                        @if(isset($status) && strtolower($status) === 'rejected')
+                        @if(request('status') === 'rejected')
                             <td data-label="Reason for Rejection">
                                 {{ $report->rejectionNote ?? '-' }}
                             </td>
@@ -69,14 +130,46 @@
 
                         <td data-label="Actions">
                             <div class="btn-group">
-                                <a href="{{ route('admin.report_detail', $report->reportID) }}" class="btn edit">View</a>
-
                                 @if(strtolower($report->reportStatus) === 'completed')
-                                <form action="{{ route('admin.delete_report', $report->reportID) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this completed report?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn delete">Delete</button>
-                                </form>
+                                    {{-- View & Download Handover Form for Completed Reports --}}
+                                    @php
+                                        $completedHandover = \App\Models\HandoverRequest::where(function ($query) use ($report) {
+                                            $query->where('reportID', $report->reportID)
+                                                  ->orWhere('senderReportID', $report->reportID);
+                                        })
+                                        ->whereNotNull('handoverForm')
+                                        ->latest()
+                                        ->first();
+                                    @endphp
+
+                                    @if($completedHandover && $completedHandover->handoverForm)
+                                        {{-- View Form (opens in new tab) --}}
+                                        <a href="{{ route('handover.form.view', $completedHandover->requestID) }}" 
+                                           class="btn view-form" 
+                                           target="_blank">
+                                            View
+                                        </a>
+                                        
+                                        {{-- Download Form --}}
+                                        <a href="{{ route('handover.form.download_uploaded', $completedHandover->requestID) }}" 
+                                           class="btn download-form">
+                                            Download
+                                        </a>
+                                    @else
+                                        <span class="btn disabled">No Form</span>
+                                    @endif
+
+                                    {{-- Delete button for completed reports (deletes BOTH reports) --}}
+                                    <form action="{{ route('admin.delete_completed_pair', $report->reportID) }}" 
+                                          method="POST" 
+                                          onsubmit="return confirm('Are you sure? This will delete BOTH reports in this handover pair!')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn delete">Delete Pair</button>
+                                    </form>
+                                @else
+                                    {{-- View button for all other statuses --}}
+                                    <a href="{{ route('admin.report_detail', $report->reportID) }}" class="btn edit">View</a>
                                 @endif
                             </div>
                         </td>
@@ -86,7 +179,17 @@
             </table>
         </div>
         @else
-            <p class="empty-text">No lost reports found.</p>
+            <div class="empty-state">
+                <div class="empty-icon">📋</div>
+                <h3>No Lost Reports Found</h3>
+                <p>
+                    @if(request('status'))
+                        There are no {{ request('status') }} lost reports at the moment
+                    @else
+                        There are no lost reports at the moment
+                    @endif
+                </p>
+            </div>
         @endif
     </div>
 </div>
@@ -94,6 +197,5 @@
 
 <!-- PAGE SPECIFIC JS -->
 @section('page-js')
-    <!-- FIXME: Fix Sidebar Collapse Behavior -->
     <script src="{{ asset('js/admin_sidebar.js') }}"></script>
 @endsection

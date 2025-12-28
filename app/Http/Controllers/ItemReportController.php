@@ -136,34 +136,28 @@ class ItemReportController extends Controller
         return view('item_report.view', compact('reports', 'statusEnum', 'categories'));
     }
 
-
-
     // -------------------- READ (User's Reports) -------------------- //
     public function myReports(Request $request)
     {
-        $status = $request->query('status'); 
+        $query = ItemReport::where('userID', Auth::user()->userID);
 
-        $query = ItemReport::where('userID', Auth::user()->userID)
-            ->orderBy('reportDate', 'desc');
-
-        $enumStatusMap = [
-            'pending' => 'Pending',
-            'published' => 'Published',
-            'rejected' => 'Rejected',
-            'completed' => 'Completed',
-        ];
-
-        // Default to 'pending' if $status is not set
-        $statusKey = strtolower($status ?? 'pending');
-
-        if (isset($enumStatusMap[$statusKey])) {
-            $query->where('reportStatus', $enumStatusMap[$statusKey]);
+        // Filter by status
+        if ($request->has('status') && $request->status != '') {
+            $query->where('reportStatus', ucfirst($request->status));
         }
 
-        $userReports = $query->get();
+        // Filter by type (Lost/Found)
+        if ($request->has('type') && $request->type != '') {
+            $query->where('reportType', ucfirst($request->type));
+        }
 
+        $userReports = $query->orderBy('reportDate', 'desc')->get();
 
-        return view('item_report.my_report', compact('userReports', 'status'));
+        return view('item_report.my_report', [
+            'userReports' => $userReports,
+            'status' => $request->status,
+            'type' => $request->type,
+        ]);
     }
 
     // -------------------- EDIT ITEM REPORT -------------------- //
