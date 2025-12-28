@@ -47,6 +47,7 @@
                   <option value="Lost" {{ $report->reportType == 'Lost' ? 'selected' : '' }}>Lost</option>
                   <option value="Found" {{ $report->reportType == 'Found' ? 'selected' : '' }}>Found</option>
               </select><br>
+              
               <label for="itemName">Item Name</label>
               <input type="text" name="itemName" id="itemName" value="{{ old('itemName', $report->itemName) }}" required><br>
 
@@ -54,11 +55,15 @@
               <select name="itemCategory" id="itemCategory" required>
                 <option value="">-- Select Item Category --</option>
                 @foreach ($categories as $category)
-                  <option value="{{ $category->categoryID }}" {{ $report->itemCategory == $category->categoryID ? 'selected' : '' }}>
+                  <option value="{{ $category->categoryID }}" 
+                          data-description="{{ $category->description }}"
+                          {{ old('itemCategory', $report->itemCategory) == $category->categoryID ? 'selected' : '' }}>
                       {{ $category->categoryName }}
                   </option>
                 @endforeach
-              </select><br>
+              </select>
+              <p class="category-description" id="categoryDescription"></p>
+              <br>
 
               <label for="itemDescription">Item Description</label> 
               <input type="text" name="itemDescription" id="itemDescription"
@@ -68,7 +73,8 @@
               <select name="itemLocation" id="itemLocation" required>
                 <option value="">-- Select Location --</option>
                 @foreach ($locations as $location)
-                  <option value="{{ $location->locationID }}" {{ $report->itemLocation == $location->locationID ? 'selected' : '' }}>
+                  <option value="{{ $location->locationID }}" 
+                          {{ old('itemLocation', $report->itemLocation) == $location->locationID ? 'selected' : '' }}>
                       {{ $location->locationName }}
                   </option>
                 @endforeach
@@ -144,5 +150,22 @@
         reader.readAsDataURL(file);
       }
     });
+
+    // Category Description Display
+    const categorySelect = document.getElementById('itemCategory');
+    const categoryDescription = document.getElementById('categoryDescription');
+
+    categorySelect.addEventListener('change', function() {
+      const selectedOption = this.options[this.selectedIndex];
+      const description = selectedOption.getAttribute('data-description');
+      categoryDescription.textContent = description || '';
+    });
+
+    // Trigger description on page load (for existing selected value)
+    if (categorySelect.value) {
+      const selectedOption = categorySelect.options[categorySelect.selectedIndex];
+      const description = selectedOption.getAttribute('data-description');
+      categoryDescription.textContent = description || '';
+    }
   </script>
 @endsection

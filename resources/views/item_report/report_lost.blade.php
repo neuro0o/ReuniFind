@@ -38,9 +38,14 @@
             <select name="itemCategory" id="itemCategory" required>
               <option value="">-- Select Item Category --</option>
               @foreach ($categories as $category)
-                <option value="{{ $category->categoryID }}">{{ $category->categoryName }}</option>
+                <option value="{{ $category->categoryID }}" 
+                        data-description="{{ $category->description }}"
+                        {{ old('itemCategory') == $category->categoryID ? 'selected' : '' }}>
+                  {{ $category->categoryName }}
+                </option>
               @endforeach
             </select>
+            <p class="category-description" id="categoryDescription"></p>
             <br>
 
             <label for="itemDescription">Item Description</label>
@@ -51,7 +56,9 @@
             <select name="itemLocation" id="itemLocation" required>
               <option value="">-- Select Last Seen Location --</option>
               @foreach ($locations as $location)
-                <option value="{{ $location->locationID }}">{{ $location->locationName }}</option>
+                <option value="{{ $location->locationID }}" {{ old('itemLocation') == $location->locationID ? 'selected' : '' }}>
+                  {{ $location->locationName }}
+                </option>
               @endforeach
             </select>
             <br>
@@ -86,14 +93,7 @@
 
 @section('page-js')
     <script src="{{ asset('js/sidebar.js') }}"></script>
-
-    <script>
-      // Limit report date to today or earlier
-      const reportDateInput = document.getElementById('reportDate');
-      const today = new Date().toISOString().split('T')[0];
-      reportDateInput.setAttribute('max', today);
-    </script>
-    
+      
     <script>
       // Preview Main Item Image
       const itemImgInput = document.getElementById('itemImg');
@@ -124,5 +124,22 @@
           reader.readAsDataURL(file);
         }
       });
+
+      // Category Description Display
+      const categorySelect = document.getElementById('itemCategory');
+      const categoryDescription = document.getElementById('categoryDescription');
+
+      categorySelect.addEventListener('change', function() {
+        const selectedOption = this.options[this.selectedIndex];
+        const description = selectedOption.getAttribute('data-description');
+        categoryDescription.textContent = description || '';
+      });
+
+      // Trigger description on page load if value exists (for old() values)
+      if (categorySelect.value) {
+        const selectedOption = categorySelect.options[categorySelect.selectedIndex];
+        const description = selectedOption.getAttribute('data-description');
+        categoryDescription.textContent = description || '';
+      }
     </script>
 @endsection

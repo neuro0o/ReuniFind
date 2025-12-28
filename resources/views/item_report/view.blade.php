@@ -64,7 +64,7 @@
       <!-- ITEM REPORT GRID -->
       @if ($reports->isEmpty())
         <div class="empty-state">
-          <div class="empty-icon">📭</div>
+          <div class="empty-icon"></div>
           <h3>No Reports Found</h3>
           <p>
             @if(request('keyword') || request('status') != 'all' || request('category') != 'all')

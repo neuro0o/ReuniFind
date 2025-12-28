@@ -13,7 +13,7 @@
 
   <div class="content">
     <div class="form-card">
-      <h2 id="form-title">FOUND ITEM REPORT FORM</h2><br>      
+      <h2 id="form-title">FOUND ITEM REPORT FORM</h2><br>
 
       <form method="POST" action="{{ route('item_report.store') }}" enctype="multipart/form-data">
         @csrf
@@ -38,9 +38,14 @@
             <select name="itemCategory" id="itemCategory" required>
               <option value="">-- Select Item Category --</option>
               @foreach ($categories as $category)
-                <option value="{{ $category->categoryID }}">{{ $category->categoryName }}</option>
+                <option value="{{ $category->categoryID }}" 
+                        data-description="{{ $category->description }}"
+                        {{ old('itemCategory') == $category->categoryID ? 'selected' : '' }}>
+                  {{ $category->categoryName }}
+                </option>
               @endforeach
             </select>
+            <p class="category-description" id="categoryDescription"></p>
             <br>
 
             <label for="itemDescription">Item Description</label>
@@ -51,13 +56,15 @@
             <select name="itemLocation" id="itemLocation" required>
               <option value="">-- Select Found Location --</option>
               @foreach ($locations as $location)
-                <option value="{{ $location->locationID }}">{{ $location->locationName }}</option>
+                <option value="{{ $location->locationID }}" {{ old('itemLocation') == $location->locationID ? 'selected' : '' }}>
+                  {{ $location->locationName }}
+                </option>
               @endforeach
             </select>
             <br>
 
             <label for="reportDate">Date Found</label>
-            <input type="date" name="reportDate" id="reportDate" placeholder="DD/MM/YY." value="{{ old('reportDate') }}" max="{{ date('Y-m-d') }}"  required>
+            <input type="date" name="reportDate" id="reportDate" placeholder="DD/MM/YY." value="{{ old('reportDate') }}" max="{{ date('Y-m-d') }}" required>
             <br>
 
             <!-- Item Report Verification Fields -->
@@ -78,7 +85,6 @@
         </div>
       </form>
 
-      
     </div>
   </div>
 </div>
@@ -86,7 +92,7 @@
 
 @section('page-js')
     <script src="{{ asset('js/sidebar.js') }}"></script>
-    
+
     <script>
       // Preview Main Item Image
       const itemImgInput = document.getElementById('itemImg');
@@ -117,5 +123,22 @@
           reader.readAsDataURL(file);
         }
       });
+
+      // Category Description Display
+      const categorySelect = document.getElementById('itemCategory');
+      const categoryDescription = document.getElementById('categoryDescription');
+
+      categorySelect.addEventListener('change', function() {
+        const selectedOption = this.options[this.selectedIndex];
+        const description = selectedOption.getAttribute('data-description');
+        categoryDescription.textContent = description || '';
+      });
+
+      // Trigger description on page load if value exists (for old() values)
+      if (categorySelect.value) {
+        const selectedOption = categorySelect.options[categorySelect.selectedIndex];
+        const description = selectedOption.getAttribute('data-description');
+        categoryDescription.textContent = description || '';
+      }
     </script>
 @endsection

@@ -180,7 +180,7 @@
         </div>
         @else
             <div class="empty-state">
-                <div class="empty-icon">📋</div>
+                <div class="empty-icon"></div>
                 <h3>No Lost Reports Found</h3>
                 <p>
                     @if(request('status'))

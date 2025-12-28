@@ -36,7 +36,7 @@
     padding: 0 2rem;
     margin-bottom: 2.5rem;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 1.5rem;
 }
 
@@ -67,6 +67,14 @@
 
 .stat-card.bug {
     border-left-color: var(--color-error);
+}
+
+.stat-card.review {
+    border-left-color: #1565c0;
+}
+
+.stat-card.suggestion {
+    border-left-color: #ef6c00;
 }
 
 .stat-icon {
@@ -322,6 +330,7 @@
     line-height: 1.6;
     font-size: var(--fs-md);
     font-weight: var(--fw-medium);
+    text-align: start;
 }
 
 /* Actions */

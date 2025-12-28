@@ -186,6 +186,28 @@
   border-radius: 10px;
 }
 
+/* Category Description Styling */
+.category-description {
+  margin: 0.5rem 0 0 0;
+  padding: 0.8rem 1rem;
+  background: var(--color-secondary);
+  border-left: 3px solid var(--color-primary);
+  border-radius: 0.5rem;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  color: rgba(58, 89, 135, 0.9);
+  line-height: 1.5;
+  font-style: italic;
+  min-height: 2.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.category-description:empty {
+  display: none;
+}
+
+
 /* CSS FOR EDIT ITEM FORM */
 .upload-box-edit {
   position: relative;
@@ -260,6 +282,11 @@
   /* Prevent clipping of dropdown */
   .form-card {
     overflow: visible;
+  }
+
+  .category-description {
+    font-size: 1.2rem;
+    padding: 0.7rem 0.9rem;
   }
 }
 

@@ -53,6 +53,20 @@
                         <div class="stat-value">{{ \App\Models\Feedback::where('feedbackType', 'Error/Bug Report')->count() }}</div>
                     </div>
                 </div>
+                <div class="stat-card review">
+                    <div class="stat-icon"></div>
+                    <div class="stat-info">
+                        <div class="stat-label">Review</div>
+                        <div class="stat-value">{{ \App\Models\Feedback::where('feedbackType', 'Review')->count() }}</div>
+                    </div>
+                </div>
+                <div class="stat-card suggestion">
+                    <div class="stat-icon"></div>
+                    <div class="stat-info">
+                        <div class="stat-label">Suggestion</div>
+                        <div class="stat-value">{{ \App\Models\Feedback::where('feedbackType', 'Suggestion')->count() }}</div>
+                    </div>
+                </div>
             </div>
 
             <!-- Filters -->
