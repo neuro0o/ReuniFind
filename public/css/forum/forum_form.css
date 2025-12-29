@@ -1,0 +1,439 @@
+span:hover {
+  background: transparent; /* remove any highlight on hover */
+  color: inherit; /* keep text color unchanged */
+}
+
+/* ==========================================
+   Forum Form Styling
+   ========================================== */
+
+/* Main Content */
+.main-content {
+    width: 90%;
+    margin: 0 auto;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: var(--color-background);
+}
+
+/* Header */
+.page-header {
+    width: 100%;
+    max-width: 800px;
+    padding: 3rem 2rem 2rem 2rem;
+    text-align: center;
+}
+
+.page-header h1 {
+    margin: 0 0 1rem 0;
+    font-size: var(--fs-xl);
+    font-weight: var(--fw-bold);
+    color: var(--color-primary);
+}
+
+/* Form Card */
+.form-card {
+    width: 100%;
+    max-width: 800px;
+    background: white;
+    border-radius: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 3rem;
+    margin: 2rem 2rem 3rem 2rem;
+}
+
+/* Form Groups */
+.form-group {
+    margin-bottom: 2.5rem;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    font-family: var(--font-heading);
+    font-weight: var(--fw-bold);
+    color: var(--color-primary);
+    margin-bottom: 0.8rem;
+    font-size: var(--fs-md);
+}
+
+.required {
+    color: var(--color-error);
+    margin-left: 0.2rem;
+}
+
+/* Form Controls */
+.form-control {
+    width: 100%;
+    padding: 1.2rem 1.5rem;
+    border: 2px solid var(--color-tertiary);
+    border-radius: 1rem;
+    font-size: var(--fs-md);
+    font-family: var(--font-body);
+    color: var(--color-primary);
+    background: var(--color-secondary);
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    resize: vertical;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    background: white;
+    box-shadow: 0 0 0 3px rgba(58, 89, 135, 0.1);
+}
+
+.form-control:hover:not(:focus) {
+    border-color: #A8B8D8;
+}
+
+.form-control::placeholder {
+    color: rgba(58, 89, 135, 0.5);
+}
+
+/* Select Dropdown */
+select.form-control {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath fill='%233A5987' d='M8 11L3 6h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1.5rem center;
+    padding-right: 3.5rem;
+}
+
+/* Textarea */
+textarea.form-control {
+    min-height: 180px;
+    line-height: 1.6;
+}
+
+/* Character Counter */
+.char-counter {
+    text-align: right;
+    font-size: var(--fs-sm);
+    color: rgba(58, 89, 135, 0.6);
+    margin-top: 0.5rem;
+    font-weight: var(--fw-medium);
+}
+
+.char-counter.warning {
+    color: var(--color-warning);
+    font-weight: var(--fw-bold);
+}
+
+.char-counter.error {
+    color: var(--color-error);
+    font-weight: var(--fw-bold);
+}
+
+/* Error Messages */
+.error-message {
+    color: var(--color-error);
+    font-size: var(--fs-sm);
+    margin-top: 0.5rem;
+    font-weight: var(--fw-semibold);
+}
+
+/* Success Message */
+.status-info-card {
+    width: 100%;
+    max-width: 800px;
+    padding: 1.5rem 2rem;
+    border-radius: 1rem;
+    margin: 0 2rem 2rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-weight: var(--fw-semibold);
+}
+
+.status-info-card.published {
+    background: #d1fae5;
+    color: #065f46;
+    border-left: 4px solid #10b981;
+}
+
+.status-info-card.rejected {
+    background: #fee2e2;
+    color: #991b1b;
+    border-left: 4px solid #ef4444;
+}
+
+/* ========== IMAGE UPLOAD BOX - DOTTED BORDER ========== */
+.upload-box {
+    position: relative;
+    width: 95%;
+    min-height: 200px;
+    border: 3px dashed var(--color-tertiary);
+    border-radius: 1rem;
+    background: var(--color-secondary);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.upload-box:hover {
+    border-color: var(--color-primary);
+    background: white;
+    box-shadow: 0 0 0 3px rgba(58, 89, 135, 0.05);
+}
+
+.upload-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    cursor: pointer;
+    text-align: center;
+    width: 100%;
+}
+
+.upload-btn i {
+    font-size: 4rem;
+    color: var(--color-primary);
+}
+
+.upload-btn span {
+    font-size: var(--fs-md);
+    font-weight: var(--fw-bold);
+    color: var(--color-primary);
+}
+
+.upload-btn small {
+    font-size: var(--fs-sm);
+    color: rgba(58, 89, 135, 0.6);
+    margin-top: 0.5rem;
+}
+
+/* Image Preview */
+#previewImg {
+    max-width: 100%;
+    max-height: 400px;
+    object-fit: contain;
+    border-radius: 1rem;
+    margin-top: 1rem;
+}
+
+/* Form Actions */
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 3rem;
+}
+
+.btn-submit {
+    flex: 1;
+    background: var(--color-primary);
+    color: white;
+    padding: 1.5rem 2rem;
+    border: none;
+    border-radius: 7rem;
+    font-size: var(--fs-md);
+    font-weight: var(--fw-bold);
+    font-family: var(--font-heading);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 8px rgba(58, 89, 135, 0.3);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.btn-submit:hover {
+    background: #566FA5;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(58, 89, 135, 0.4);
+}
+
+.btn-submit:active {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(58, 89, 135, 0.3);
+}
+
+.btn-cancel {
+    flex: 1;
+    padding: 1.5rem 2rem;
+    border: 2px solid var(--color-tertiary);
+    border-radius: 7rem;
+    font-size: var(--fs-md);
+    font-weight: var(--fw-bold);
+    font-family: var(--font-heading);
+    background: var(--color-tertiary);
+    color: var(--color-primary);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.btn-cancel:hover {
+    background: #C5D4E9;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .page-header,
+    .form-card,
+    .status-info-card {
+        max-width: 700px;
+    }
+}
+
+@media (max-width: 768px) {
+    .page-header {
+        padding: 2rem 1.5rem 1.5rem 1.5rem;
+    }
+
+    .page-header h1 {
+        font-size: var(--fs-lg);
+    }
+
+    .form-card {
+        padding: 2rem;
+        margin: 1.5rem 1.5rem 10rem 1.5rem;
+    }
+
+    .status-info-card {
+        margin: 0 1.5rem 2rem 1.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 2rem;
+    }
+
+    .form-group label {
+        font-size: var(--fs-sm);
+        margin-bottom: 0.6rem;
+    }
+
+    .form-control {
+        padding: 1rem 1.2rem;
+        font-size: var(--fs-sm);
+    }
+
+    select.form-control {
+        background-position: right 1.2rem center;
+        padding-right: 3rem;
+    }
+
+    textarea.form-control {
+        min-height: 150px;
+    }
+
+    .upload-box {
+        min-height: 180px;
+        padding: 1.5rem;
+    }
+
+    .upload-btn i {
+        font-size: 3rem;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .btn-submit,
+    .btn-cancel {
+        width: 95%;
+        padding: 1.3rem 1.8rem;
+        font-size: var(--fs-sm);
+    }
+}
+
+@media (max-width: 426px) {
+    .page-header {
+        padding: 1.5rem 1rem 1rem 1rem;
+    }
+
+    .page-header h1 {
+        font-size: 2.4rem;
+    }
+
+    .form-card {
+        width: 80%;
+        padding: 1.5rem;
+        margin: 1rem 1rem 10rem 1rem;
+        border-radius: 1.2rem;
+    }
+
+    .status-info-card {
+        margin: 0 1rem 1.5rem 1rem;
+        padding: 1.2rem 1.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.8rem;
+    }
+
+    .form-group label {
+        font-size: 1.3rem;
+    }
+
+    .form-control {
+        padding: 0.9rem 1rem;
+        border-radius: 0.8rem;
+        font-size: 1.3rem;
+    }
+
+    select.form-control {
+        background-position: right 1rem center;
+    }
+
+    textarea.form-control {
+        min-height: 130px;
+    }
+
+    .char-counter {
+        font-size: 1.2rem;
+    }
+
+    .upload-box {
+        min-height: 160px;
+        padding: 1.2rem;
+        border-width: 2px;
+    }
+
+    .upload-btn i {
+        font-size: 2.5rem;
+    }
+
+    .upload-btn span {
+        font-size: 1.3rem;
+    }
+
+    .upload-btn small {
+        font-size: 1.1rem;
+    }
+
+    #previewImg {
+        max-height: 300px;
+    }
+
+    .form-actions {
+        margin-top: 2rem;
+    }
+
+    .btn-submit,
+    .btn-cancel {
+        width: 90%;
+        padding: 1.2rem 1.5rem;
+        font-size: 1.3rem;
+    }
+}

@@ -16,7 +16,7 @@ return new class extends Migration
 
             $table->enum('forumCategory', ['Personal Story', 'Tips & Tricks', 'Others']); // Category
             $table->string('forumTitle');   // Title of the forum post
-            $table->string('forumContent'); // Content of the forum post
+            $table->text('forumContent'); // Content of the forum post
             $table->string('forumImg')->nullable(); // Optional image attachment
             $table->dateTime('forumDate'); // Date forum was posted
 

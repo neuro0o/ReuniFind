@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\FAQController;
+use App\Http\Controllers\ForumController;
 use App\Http\Controllers\HandoverRequestController;
 use App\Http\Controllers\HandoverMessageController;
 use App\Http\Controllers\ItemReportController;
@@ -118,7 +119,13 @@ Route::middleware(['auth', 'isAdmin'])->prefix('admin')->group(function () {
     Route::get('/admin/faqs/{id}/edit', [AdminController::class, 'editFaq'])->name('admin.faqs.edit');
     Route::put('/admin/faqs/{id}', [AdminController::class, 'updateFaq'])->name('admin.faqs.update');
     Route::delete('/admin/faqs/{id}', [AdminController::class, 'deleteFaq'])->name('admin.faqs.delete');
+
+    // Forum Management
+    Route::get('/forum/posts', [AdminController::class, 'forumPosts'])->name('admin.forum.posts');
+    Route::delete('/forum/posts/{id}', [AdminController::class, 'deleteForumPost'])->name('admin.forum.delete');
+    Route::delete('/forum/comments/{id}', [AdminController::class, 'deleteForumComment'])->name('admin.forum.comment.delete');
 });
+
 
 /*----------------- LOST & FOUND REPORT MODULE ROUTES -------------------*/
 Route::middleware(['auth'])->prefix('item_report')->group(function () {
@@ -248,6 +255,37 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/faq', [FAQController::class, 'index'])->name('faq.index');
 });
 
+// ==================== COMMUNITY FORUM ROUTES ====================
+
+// USER SIDE - Forum
+Route::middleware(['auth'])->prefix('forum')->group(function () {
+    // View all forum posts
+    Route::get('/', [ForumController::class, 'index'])->name('forum.index');
+    
+    // Create new forum post
+    Route::get('/create', [ForumController::class, 'create'])->name('forum.create');
+    Route::post('/store', [ForumController::class, 'store'])->name('forum.store');
+    
+    // View single forum post with comments
+    Route::get('/{id}', [ForumController::class, 'show'])->name('forum.show');
+    
+    // Edit forum post (own posts only)
+    Route::get('/{id}/edit', [ForumController::class, 'edit'])->name('forum.edit');
+    Route::put('/{id}', [ForumController::class, 'update'])->name('forum.update');
+    
+    // Delete forum post (own posts only)
+    Route::delete('/{id}', [ForumController::class, 'destroy'])->name('forum.destroy');
+    
+    // Add comment to forum post
+    Route::post('/{id}/comment', [ForumController::class, 'addComment'])->name('forum.comment.add');
+    
+    // Delete comment (own comments only)
+    Route::delete('/comment/{id}', [ForumController::class, 'deleteComment'])->name('forum.comment.delete');
+    
+    // Like/Dislike forum post
+    Route::post('/{id}/like', [ForumController::class, 'toggleLike'])->name('forum.like');
+});
+
 
 
 
@@ -267,8 +305,3 @@ Route::prefix('tag')->group(function () {
         return view('tag.my');
     })->name('tag.my');
 });
-
-// COMMUNITY FORUM
-Route::get('/forum', function () {
-    return view('forum.index');
-})->name('forum.index');

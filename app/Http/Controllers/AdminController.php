@@ -504,6 +504,50 @@ class AdminController extends Controller
             ->with('success', 'FAQ deleted successfully!');
     }
 
+    // ==================== FORUM MANAGEMENT ====================
+
+    /**
+     * Display all forum posts (Admin view)
+     */
+    public function forumPosts()
+    {
+        $posts = \App\Models\ForumPost::with(['user', 'comments', 'likes'])
+            ->orderBy('created_at', 'asc')
+            ->get();
+        
+        return view('admin.forum.index', compact('posts'));
+    }
+
+    /**
+     * Delete any forum post (Admin moderation)
+     */
+    public function deleteForumPost($id)
+    {
+        $post = \App\Models\ForumPost::findOrFail($id);
+        
+        // Delete image if exists
+        if ($post->forumImg && \Storage::disk('public')->exists($post->forumImg)) {
+            \Storage::disk('public')->delete($post->forumImg);
+        }
+        
+        $post->delete();
+        
+        return redirect()->route('admin.forum.posts')
+            ->with('success', 'Forum post deleted successfully!');
+    }
+
+    /**
+     * Delete any comment (Admin moderation)
+     */
+    public function deleteForumComment($id)
+    {
+        $comment = \App\Models\ForumComment::findOrFail($id);
+        $comment->delete();
+        
+        return redirect()->back()
+            ->with('success', 'Comment deleted successfully!');
+    }
+
 
     // -------------------- Helper -------------------- //
     private function getEnumValues($table, $column)
