@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\FAQController;
 use App\Http\Controllers\HandoverRequestController;
 use App\Http\Controllers\HandoverMessageController;
 use App\Http\Controllers\ItemReportController;
@@ -109,6 +110,14 @@ Route::middleware(['auth', 'isAdmin'])->prefix('admin')->group(function () {
     Route::get('/feedbacks', [AdminController::class, 'feedbacks'])->name('admin.feedbacks');
     Route::post('/feedbacks/{id}/review', [AdminController::class, 'markAsReviewed'])->name('admin.feedbacks.review');
     Route::delete('/feedbacks/{id}', [AdminController::class, 'deleteFeedback'])->name('admin.feedbacks.delete');
+
+    // FAQ Management
+    Route::get('/admin/faqs', [AdminController::class, 'faqs'])->name('admin.faqs');
+    Route::get('/admin/faqs/create', [AdminController::class, 'createFaq'])->name('admin.faqs.create');
+    Route::post('/admin/faqs', [AdminController::class, 'storeFaq'])->name('admin.faqs.store');
+    Route::get('/admin/faqs/{id}/edit', [AdminController::class, 'editFaq'])->name('admin.faqs.edit');
+    Route::put('/admin/faqs/{id}', [AdminController::class, 'updateFaq'])->name('admin.faqs.update');
+    Route::delete('/admin/faqs/{id}', [AdminController::class, 'deleteFaq'])->name('admin.faqs.delete');
 });
 
 /*----------------- LOST & FOUND REPORT MODULE ROUTES -------------------*/
@@ -233,6 +242,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/feedback/create', [FeedbackController::class, 'create'])->name('feedback.create');
     Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
 });
+
+// USER SIDE - FAQ
+Route::middleware(['auth'])->group(function () {
+    Route::get('/faq', [FAQController::class, 'index'])->name('faq.index');
+});
+
+
+
 
 
 /*----------------- TEMP ROUTES -------------------*/

@@ -430,6 +430,81 @@ class AdminController extends Controller
     }
 
 
+    // ==================== FAQ CONTROLLER ====================
+
+    /**
+     * Display all FAQs
+     */
+    public function faqs()
+    {
+        $faqs = \App\Models\FAQ::orderBy('created_at', 'desc')->get();
+        return view('admin.faqs.index', compact('faqs'));
+    }
+
+    /**
+     * Show create FAQ form
+     */
+    public function createFaq()
+    {
+        return view('admin.faqs.create');
+    }
+
+    /**
+     * Store new FAQ
+     */
+    public function storeFaq(Request $request)
+    {
+        $validated = $request->validate([
+            'faqQuestion' => 'required|string|max:255',
+            'faqAnswer' => 'required|string|max:1000',
+        ]);
+
+        \App\Models\FAQ::create($validated);
+
+        return redirect()->route('admin.faqs')
+            ->with('success', 'FAQ created successfully!');
+    }
+
+    /**
+     * Show edit FAQ form
+     */
+    public function editFaq($id)
+    {
+        $faq = \App\Models\FAQ::findOrFail($id);
+        return view('admin.faqs.edit', compact('faq'));
+    }
+
+    /**
+     * Update FAQ
+     */
+    public function updateFaq(Request $request, $id)
+    {
+        $faq = \App\Models\FAQ::findOrFail($id);
+
+        $validated = $request->validate([
+            'faqQuestion' => 'required|string|max:255',
+            'faqAnswer' => 'required|string|max:1000',
+        ]);
+
+        $faq->update($validated);
+
+        return redirect()->route('admin.faqs')
+            ->with('success', 'FAQ updated successfully!');
+    }
+
+    /**
+     * Delete FAQ
+     */
+    public function deleteFaq($id)
+    {
+        $faq = \App\Models\FAQ::findOrFail($id);
+        $faq->delete();
+
+        return redirect()->route('admin.faqs')
+            ->with('success', 'FAQ deleted successfully!');
+    }
+
+
     // -------------------- Helper -------------------- //
     private function getEnumValues($table, $column)
     {

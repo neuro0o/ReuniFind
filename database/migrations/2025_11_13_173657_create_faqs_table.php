@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('faqs', function (Blueprint $table) {
             $table->id('faqID'); // Primary key, auto increment
             $table->string('faqQuestion'); // FAQ question
-            $table->string('faqAnswer');   // FAQ answer
+            $table->text('faqAnswer');   // FAQ answer
             $table->timestamps(); // created_at & updated_at
         });
     }

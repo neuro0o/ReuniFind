@@ -82,6 +82,7 @@
         <ul class="sub-menu">
             <div>
               <li><a href="{{ route('feedback.create') }}">Submit Feedback</a></li>
+              <li><a href="{{ route('faq.index') }}">FAQ</a></li>
             </div>
           </ul>
       </li>

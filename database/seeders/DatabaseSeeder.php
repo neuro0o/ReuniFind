@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             AdminSeeder::class,
             ItemCategoriesTableSeeder::class,
             ItemLocationsTableSeeder::class,
+            FAQTableSeeder::class
         ]);
     }
 }

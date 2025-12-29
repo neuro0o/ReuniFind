@@ -75,7 +75,7 @@
         <ul class="sub-menu">
             <div>
               <li><a href="{{ route('admin.feedbacks') }}">Manage User Feedback</a></li>
-              <!-- <li><a href="{{ route('admin.manage_report_found') }}">Manage FAQ</a></li> -->
+              <li><a href="{{ route('admin.faqs') }}">Manage FAQ</a></li>
             </div>
           </ul>
       </li>
