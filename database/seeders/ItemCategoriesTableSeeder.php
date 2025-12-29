@@ -22,5 +22,7 @@ class ItemCategoriesTableSeeder extends Seeder
         ];
 
         DB::table('item_categories')->insert($categories);
+
+        $this->command->info('Item Category seeder completed successfully! ' . count($categories) . ' Categories inserted.');
     }
 }

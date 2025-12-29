@@ -32,5 +32,7 @@ class ItemLocationsTableSeeder extends Seeder
         ];
 
         DB::table('item_locations')->insert($locations);
+
+        $this->command->info('Item Location seeder completed successfully! ' . count($locations) . ' Item Locations inserted.');
     }
 }
