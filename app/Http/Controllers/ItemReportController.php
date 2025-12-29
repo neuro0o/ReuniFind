@@ -101,12 +101,12 @@ class ItemReportController extends Controller
             $query->where('userID', '!=', $userID);
         }
 
-        // Exclude reports involved in any pending handover (either as sender or recipient)
+        // Exclude reports involved in any pending, approved, completed handover (either as sender or recipient)
         $query->whereDoesntHave('sentHandoverRequests', function($q) {
-            $q->where('requestStatus', 'Pending');
+            $q->whereIn('requestStatus', ['Pending', 'Approved', 'Completed']);
         })
         ->whereDoesntHave('receivedHandoverRequests', function($q) {
-            $q->where('requestStatus', 'Pending');
+            $q->whereIn('requestStatus', ['Pending', 'Approved', 'Completed']);
         });
 
         
@@ -290,9 +290,18 @@ class ItemReportController extends Controller
             $oppositeType = $report->reportType === 'Lost' ? 'Found' : 'Lost';
 
             // Get all possible matches from other users
+            // EXCLUDE reports already in active handovers (Pending, Approved, Completed)
             $potentialMatches = ItemReport::where('reportType', $oppositeType)
                 ->where('userID', '!=', $userID)
                 ->where('reportStatus', 'Published') // only published reports
+                // Exclude reports that are senders in active handovers
+                ->whereDoesntHave('sentHandoverRequests', function($q) {
+                    $q->whereIn('requestStatus', ['Pending', 'Approved', 'Completed']);
+                })
+                // Exclude reports that are recipients in active handovers
+                ->whereDoesntHave('receivedHandoverRequests', function($q) {
+                    $q->whereIn('requestStatus', ['Pending', 'Approved', 'Completed']);
+                })
                 ->get();
 
             // Extract all words from this report
@@ -304,7 +313,7 @@ class ItemReportController extends Controller
                 // 2. Check if eligible for handover (not dismissed, not used)
                 if (!$report->canHandoverWith($match, $userID)) continue;
 
-                // 3️. Check matching words (simple word equality)
+                // 3. Check matching words (simple word equality)
                 $matchWords = array_filter(
                     preg_split('/\s+/', strtolower($match->itemName . ' ' . ($match->itemDescription ?? '')))
                 );
@@ -342,17 +351,34 @@ class ItemReportController extends Controller
         $matchesByStatus = [];
 
         foreach ($allStatuses as $status) {
-            $matchesByStatus[$status] = MatchSuggestion::with([
+            $query = MatchSuggestion::with([
                 'report.category', 
                 'report.location',
                 'matchedReport.category', 
                 'matchedReport.location', 
+                'matchedReport.user',
                 'user'
             ])
                 ->whereIn('reportID', $userReports->pluck('reportID'))
-                ->where('matchStatus', $status)
-                ->latest('matchedAt')
-                ->get();
+                ->where('matchStatus', $status);
+
+            // CRITICAL: For "suggested" status only, hide matches where EITHER report is in an active handover
+            if ($status === 'suggested') {
+                $query->whereDoesntHave('report.sentHandoverRequests', function($q) {
+                    $q->whereIn('requestStatus', ['Pending', 'Approved', 'Completed']);
+                })
+                ->whereDoesntHave('report.receivedHandoverRequests', function($q) {
+                    $q->whereIn('requestStatus', ['Pending', 'Approved', 'Completed']);
+                })
+                ->whereDoesntHave('matchedReport.sentHandoverRequests', function($q) {
+                    $q->whereIn('requestStatus', ['Pending', 'Approved', 'Completed']);
+                })
+                ->whereDoesntHave('matchedReport.receivedHandoverRequests', function($q) {
+                    $q->whereIn('requestStatus', ['Pending', 'Approved', 'Completed']);
+                });
+            }
+
+            $matchesByStatus[$status] = $query->latest('matchedAt')->get();
         }
 
         return view('item_report.suggested_matches', [

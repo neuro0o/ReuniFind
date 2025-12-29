@@ -12,20 +12,20 @@ use Illuminate\Support\Str;
 class HandoverMessageController extends Controller
 {
     /**
-     * Display list of all chats (approved handovers)
+     * Display list of all chats (approved, completed, or rejected handovers)
      */
     public function index(Request $request)
     {
         $userId = Auth::id();
         $filter = $request->get('filter', 'all'); // 'all' or 'unread'
 
-        // Get all approved or completed handovers where user is involved
+        // Get all approved, completed, or rejected handovers where user is involved
         $chats = HandoverRequest::with(['sender', 'recipient', 'report', 'messages'])
             ->where(function($query) use ($userId) {
                 $query->where('senderID', $userId)
                       ->orWhere('recipientID', $userId);
             })
-            ->whereIn('requestStatus', ['Approved', 'Completed'])
+            ->whereIn('requestStatus', ['Approved', 'Completed', 'Rejected'])
             ->orderBy('updated_at', 'desc')
             ->get()
             ->map(function($handover) use ($userId) {
@@ -77,13 +77,13 @@ class HandoverMessageController extends Controller
         $userId = Auth::id();
         $filter = $request->get('filter', 'all');
 
-        // Get all approved or completed handovers
+        // Get all approved, completed, or rejected handovers
         $chats = HandoverRequest::with(['sender', 'recipient', 'report', 'messages'])
             ->where(function($query) use ($userId) {
                 $query->where('senderID', $userId)
                       ->orWhere('recipientID', $userId);
             })
-            ->whereIn('requestStatus', ['Approved', 'Completed'])
+            ->whereIn('requestStatus', ['Approved', 'Completed', 'Rejected'])
             ->orderBy('updated_at', 'desc')
             ->get()
             ->map(function($handover) use ($userId) {
@@ -163,10 +163,10 @@ class HandoverMessageController extends Controller
             abort(403, 'Unauthorized access to this chat.');
         }
 
-        // Check if handover is approved (only approved requests can chat)
-        if ($handover->requestStatus !== 'Approved' && $handover->requestStatus !== 'Completed') {
+        // Check if handover is approved, completed, or rejected (allow chat for all three)
+        if (!in_array($handover->requestStatus, ['Approved', 'Completed', 'Rejected'])) {
             return redirect()->route('handover.index')
-                ->with('error', 'Chat is only available for approved handover requests.');
+                ->with('error', 'Chat is only available for approved, completed, or rejected handover requests.');
         }
 
         // Get all messages for this handover request
@@ -180,12 +180,14 @@ class HandoverMessageController extends Controller
             ? $handover->recipient 
             : $handover->sender;
 
-        // Mark messages as read by updating last_read_at timestamp
-        $isSender = $handover->senderID === $userId;
-        if ($isSender) {
-            $handover->update(['sender_last_read_at' => now()]);
-        } else {
-            $handover->update(['recipient_last_read_at' => now()]);
+        // Mark messages as read by updating last_read_at timestamp (only if NOT rejected)
+        if ($handover->requestStatus !== 'Rejected') {
+            $isSender = $handover->senderID === $userId;
+            if ($isSender) {
+                $handover->update(['sender_last_read_at' => now()]);
+            } else {
+                $handover->update(['recipient_last_read_at' => now()]);
+            }
         }
 
         return view('handover.chat', compact('handover', 'messages', 'otherUser'));
@@ -202,6 +204,11 @@ class HandoverMessageController extends Controller
         // Verify user is part of this handover
         if ($handover->senderID !== $userId && $handover->recipientID !== $userId) {
             abort(403, 'Unauthorized');
+        }
+
+        // Prevent sending messages if handover is rejected
+        if ($handover->requestStatus === 'Rejected') {
+            return back()->with('error', 'Cannot send messages for rejected handovers.');
         }
 
         // Validate the request

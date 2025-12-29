@@ -74,8 +74,42 @@ span:hover {
     font-weight: var(--fw-medium);
 }
 
-.handover-status {
+/* Header Actions Container */
+.header-actions {
     margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Reject Button in Header */
+.reject-btn {
+    padding: 0.8rem 1.5rem;
+    border-radius: 7rem;
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-bold);
+    background: var(--color-error);
+    color: white;
+    border: 2px solid var(--color-error);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(239, 68, 68, 0.3);
+    white-space: nowrap;
+}
+
+.reject-btn:hover {
+    background: #dc2626;
+    border-color: #dc2626;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+}
+
+.reject-btn:active {
+    transform: translateY(0);
+}
+
+.handover-status {
+    margin-left: 0;
 }
 
 .status-badge {
@@ -121,6 +155,89 @@ span:hover {
 .status-badge.completed {
     background: #7C4DFF;
     color: #fffbea;
+}
+
+.status-badge.rejected {
+    background: var(--color-error);
+    color: #fffbea;
+}
+
+/* Rejection Notice */
+.rejection-notice {
+    background: linear-gradient(135deg, #FEF2F2 0%, #FEE2E2 100%);
+    border-bottom: 3px solid #FECACA;
+    padding: 1.5rem 2.5rem;
+}
+
+.rejection-notice-content {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.rejection-icon {
+    font-size: 3rem;
+    flex-shrink: 0;
+}
+
+.rejection-text {
+    flex: 1;
+}
+
+.rejection-text strong {
+    display: block;
+    color: var(--color-error);
+    font-size: var(--fs-md);
+    font-weight: var(--fw-bold);
+    margin-bottom: 0.5rem;
+}
+
+.rejection-text p {
+    margin: 0;
+    color: rgba(239, 68, 68, 0.8);
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-medium);
+}
+
+/* Completion Notice */
+.completion-notice {
+    background: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%);
+    border-bottom: 3px solid #BBF7D0;
+    padding: 1.5rem 2.5rem;
+}
+
+.completion-notice-content {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.completion-icon {
+    font-size: 3rem;
+    flex-shrink: 0;
+}
+
+.completion-text {
+    flex: 1;
+}
+
+.completion-text strong {
+    display: block;
+    color: var(--color-success);
+    font-size: var(--fs-md);
+    font-weight: var(--fw-bold);
+    margin-bottom: 0.5rem;
+}
+
+.completion-text p {
+    margin: 0;
+    color: rgba(34, 197, 94, 0.8);
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-medium);
 }
 
 /* Messages Container */
@@ -256,6 +373,34 @@ span:hover {
     background: var(--color-secondary);
     border-top: 3px solid var(--color-background);
     box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Disabled Input (for rejected handovers) */
+.message-input-container.disabled {
+    background: #F3F4F6;
+    padding: 2rem;
+}
+
+.input-disabled-message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 1.5rem;
+    border: 2px dashed rgba(58, 89, 135, 0.3);
+}
+
+.input-disabled-message span {
+    font-size: 2.4rem;
+}
+
+.input-disabled-message p {
+    margin: 0;
+    color: rgba(58, 89, 135, 0.6);
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-medium);
 }
 
 #messageForm {
@@ -420,6 +565,11 @@ span:hover {
     border-radius: 2rem 2rem 0 0;
 }
 
+/* Reject Modal Header */
+.handover-modal-header.reject-header {
+    background: linear-gradient(135deg, var(--color-error) 0%, #dc2626 100%);
+}
+
 .handover-modal-header h2 {
     margin: 0;
     color: white;
@@ -460,6 +610,77 @@ span:hover {
     text-align: center;
     margin: 0 0 2rem 0;
     line-height: 1.6;
+}
+
+/* Reject Input Group */
+.reject-input-group {
+    margin-bottom: 2rem;
+}
+
+.reject-input-group label {
+    display: block;
+    font-size: var(--fs-md);
+    font-weight: var(--fw-bold);
+    color: var(--color-primary);
+    margin-bottom: 0.8rem;
+}
+
+.reject-input-group textarea {
+    width: 100%;
+    padding: 1.2rem;
+    border: 2px solid var(--color-tertiary);
+    border-radius: 1rem;
+    font-size: var(--fs-sm);
+    font-family: var(--font-body);
+    color: var(--color-primary);
+    resize: vertical;
+    transition: all 0.2s ease;
+}
+
+.reject-input-group textarea:focus {
+    outline: none;
+    border-color: var(--color-error);
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.reject-input-group textarea::placeholder {
+    color: rgba(58, 89, 135, 0.5);
+}
+
+.char-count {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 1.2rem;
+    color: rgba(58, 89, 135, 0.6);
+    text-align: right;
+}
+
+/* Rejection Reason Display */
+.rejection-reason-display {
+    background: #FEF2F2;
+    border: 2px solid #FECACA;
+    border-radius: 1.2rem;
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.rejection-reason-text {
+    font-size: var(--fs-md);
+    color: var(--color-primary);
+    line-height: 1.8;
+    margin: 0 0 1.5rem 0;
+    font-weight: var(--fw-medium);
+}
+
+.rejection-meta {
+    margin: 0;
+    font-size: var(--fs-sm);
+    color: rgba(58, 89, 135, 0.7);
+}
+
+.rejection-meta strong {
+    color: var(--color-error);
+    font-weight: var(--fw-bold);
 }
 
 .modal-actions {
@@ -514,6 +735,26 @@ span:hover {
 
 .submit-btn:hover {
     background: #16a34a;
+}
+
+/* Reject Submit Button */
+.reject-submit-btn {
+    background: var(--color-error);
+    color: white;
+}
+
+.reject-submit-btn:hover {
+    background: #dc2626;
+}
+
+/* Cancel Button */
+.cancel-btn {
+    background: var(--color-tertiary);
+    color: var(--color-primary);
+}
+
+.cancel-btn:hover {
+    background: #C5D4E9;
 }
 
 .divider {
@@ -675,6 +916,39 @@ span:hover {
         font-size: var(--fs-md);
     }
 
+    .header-actions {
+        gap: 0.8rem;
+    }
+
+    .reject-btn {
+        padding: 0.6rem 1.2rem;
+        font-size: 1.2rem;
+    }
+
+    .rejection-notice {
+        padding: 1.2rem 1.5rem;
+    }
+
+    .rejection-notice-content {
+        gap: 1rem;
+    }
+
+    .rejection-icon {
+        font-size: 2.4rem;
+    }
+
+    .completion-notice {
+        padding: 1.2rem 1.5rem;
+    }
+
+    .completion-notice-content {
+        gap: 1rem;
+    }
+
+    .completion-icon {
+        font-size: 2.4rem;
+    }
+
     .message {
         max-width: 85%;
     }
@@ -724,6 +998,11 @@ span:hover {
         padding: 2.5rem 1.5rem;
         min-height: 150px;
     }
+
+    .reject-input-group textarea {
+        padding: 1rem;
+        font-size: 1.3rem;
+    }
 }
 
 @media (max-width: 426px) {
@@ -753,6 +1032,51 @@ span:hover {
     #imagePreview img {
         max-width: 100px;
         max-height: 100px;
+    }
+
+    .header-actions {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .reject-btn {
+        padding: 0.5rem 1rem;
+        font-size: 1.1rem;
+    }
+
+    .handover-status {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .status-badge {
+        width: 100%;
+        text-align: center;
+    }
+
+    .rejection-notice {
+        padding: 1rem;
+    }
+
+    .rejection-text strong {
+        font-size: var(--fs-sm);
+    }
+
+    .rejection-text p {
+        font-size: 1.2rem;
+    }
+
+    .completion-notice {
+        padding: 1rem;
+    }
+
+    .completion-text strong {
+        font-size: var(--fs-sm);
+    }
+
+    .completion-text p {
+        font-size: 1.2rem;
     }
 
     .handover-modal-header {

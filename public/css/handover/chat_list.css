@@ -80,6 +80,41 @@ span:hover {
     color: white;
 }
 
+/* Total Unread Badge on Tab */
+.total-unread-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-primary);
+    color: var(--color-secondary);
+    font-size: 1.2rem;
+    font-weight: var(--fw-bold);
+    min-width: 24px;
+    height: 24px;
+    padding: 0 0.6rem;
+    border-radius: 12px;
+    margin-left: 0.8rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    animation: pulse-badge 2s infinite;
+}
+
+@keyframes pulse-badge {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 2px 4px rgba(58, 89, 135, 0.2);
+        
+    }
+    50% {
+        transform: scale(1.1);
+        box-shadow: 0 3px 8px rgba(58, 89, 140, 0.4);
+    }
+}
+
+.tab-btn.active .total-unread-badge {
+    background: var(--color-secondary);
+    color: var(--color-primary);
+}
+
 /* Empty State */
 .empty-state {
     text-align: center;
@@ -323,6 +358,12 @@ span:hover {
 
     .chat-name {
         font-size: var(--fs-sm);
+    }
+
+    .item-name-badge {
+        font-size: 1rem;
+        padding: 0.25rem 0.6rem;
+        max-width: 120px;
     }
 
     .last-message {

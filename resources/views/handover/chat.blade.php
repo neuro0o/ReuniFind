@@ -26,22 +26,64 @@
                         <p class="item-name">{{ $handover->report->itemName }}</p>
                     </div>
                 </div>
-                <div class="handover-status">
-                    @if($handover->requestStatus === 'Approved')
-                        <button class="status-badge approved clickable" onclick="openHandoverFormModal()">
-                            📋 Form Pending
+                
+                <!-- Header Actions -->
+                <div class="header-actions">
+                    <!-- Reject Button (only for recipient and when Approved) -->
+                    @if(auth()->id() === $handover->recipientID && $handover->requestStatus === 'Approved')
+                        <button class="reject-btn" onclick="openRejectModal()">
+                            ❌ Reject
                         </button>
-                    @elseif($handover->requestStatus === 'Completed')
-                        <button class="status-badge completed clickable" onclick="openHandoverFormModal()">
-                            ✅ Completed
-                        </button>
-                    @else
-                        <span class="status-badge {{ strtolower($handover->requestStatus) }}">
-                            {{ $handover->requestStatus }}
-                        </span>
                     @endif
+
+                    <!-- Handover Status Badge -->
+                    <div class="handover-status">
+                        @if($handover->requestStatus === 'Approved')
+                            <button class="status-badge approved clickable" onclick="openHandoverFormModal()">
+                                📋 Form Pending
+                            </button>
+                        @elseif($handover->requestStatus === 'Completed')
+                            <button class="status-badge completed clickable" onclick="openHandoverFormModal()">
+                                ✅ Completed
+                            </button>
+                        @elseif($handover->requestStatus === 'Rejected')
+                            <button class="status-badge rejected clickable" onclick="openRejectionReasonModal()">
+                                ❌ Rejected
+                            </button>
+                        @else
+                            <span class="status-badge {{ strtolower($handover->requestStatus) }}">
+                                {{ $handover->requestStatus }}
+                            </span>
+                        @endif
+                    </div>
                 </div>
             </div>
+
+            <!-- Rejection Notice (only when rejected) -->
+            @if($handover->requestStatus === 'Rejected')
+                <div class="rejection-notice">
+                    <div class="rejection-notice-content">
+                        <span class="rejection-icon">❗</span>
+                        <div class="rejection-text">
+                            <strong>This handover request was rejected.</strong>
+                            <p>Chat is now read-only. Click the status badge to view rejection reason.</p>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
+            <!-- Completion Notice (only when completed) -->
+            @if($handover->requestStatus === 'Completed')
+                <div class="completion-notice">
+                    <div class="completion-notice-content">
+                        <span class="completion-icon">✅</span>
+                        <div class="completion-text">
+                            <strong>This handover has been completed successfully!</strong>
+                            <p>The signed form has been submitted. You can continue chatting if needed.</p>
+                        </div>
+                    </div>
+                </div>
+            @endif
 
             <!-- Messages Container -->
             <div class="messages-container" id="messagesContainer">
@@ -77,56 +119,130 @@
                 @endforelse
             </div>
 
-            <!-- Message Input Form -->
-            <div class="message-input-container">
-                <form action="{{ route('handover.chat.store', $handover->requestID) }}" 
-                        method="POST" 
-                        enctype="multipart/form-data"
-                        id="messageForm">
-                    @csrf
-                    
-                    <div class="input-wrapper">
-                        <!-- Image Preview -->
-                        <div id="imagePreview" style="display: none;">
-                            <img id="previewImg" src="" alt="Preview">
-                            <button type="button" onclick="removeImage()" class="remove-preview">&times;</button>
+            <!-- Message Input Form (disabled if rejected) -->
+            <div class="message-input-container {{ $handover->requestStatus === 'Rejected' ? 'disabled' : '' }}">
+                @if($handover->requestStatus === 'Rejected')
+                    <div class="input-disabled-message">
+                        <span>💬</span>
+                        <p>Messaging is disabled for rejected handovers</p>
+                    </div>
+                @else
+                    <form action="{{ route('handover.chat.store', $handover->requestID) }}" 
+                            method="POST" 
+                            enctype="multipart/form-data"
+                            id="messageForm">
+                        @csrf
+                        
+                        <div class="input-wrapper">
+                            <!-- Image Preview -->
+                            <div id="imagePreview" style="display: none;">
+                                <img id="previewImg" src="" alt="Preview">
+                                <button type="button" onclick="removeImage()" class="remove-preview">&times;</button>
+                            </div>
+
+                            <!-- File Input (Hidden) -->
+                            <input type="file" 
+                                    name="messageImg" 
+                                    id="messageImg" 
+                                    accept="image/*"
+                                    style="display: none;"
+                                    onchange="previewImage(this)">
+                            
+                            <!-- Image Upload Button -->
+                            <button type="button" class="attach-btn" onclick="document.getElementById('messageImg').click()">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/>
+                                </svg>
+                            </button>
+
+                            <!-- Text Input -->
+                            <textarea name="messageText" 
+                                    id="messageText"
+                                    placeholder="Type a message..."
+                                    rows="1"
+                                    maxlength="1000">
+                            </textarea>
+                            
+                            <!-- Send Button -->
+                            <button type="submit" class="send-btn">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                                </svg>
+                            </button>
                         </div>
+                    </form>
+                @endif
+            </div>
+        </div>
+    </div>
 
-                        <!-- File Input (Hidden) -->
-                        <input type="file" 
-                                name="messageImg" 
-                                id="messageImg" 
-                                accept="image/*"
-                                style="display: none;"
-                                onchange="previewImage(this)">
-                        
-                        <!-- Image Upload Button -->
-                        <button type="button" class="attach-btn" onclick="document.getElementById('messageImg').click()">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                <path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/>
-                            </svg>
+    <!-- Reject Modal -->
+    <div id="rejectModal" class="handover-modal" onclick="closeRejectModal(event)">
+        <div class="handover-modal-content" onclick="event.stopPropagation()">
+            <div class="handover-modal-header reject-header">
+                <h2>❌ Reject Handover Request</h2>
+                <button class="close-modal-btn" onclick="closeRejectModal()">&times;</button>
+            </div>
+
+            <div class="handover-modal-body">
+                <p class="modal-description">Please provide a reason for rejecting this handover request. The chat will become read-only after rejection.</p>
+                
+                <form action="{{ route('handover.update', $handover->requestID) }}" method="POST" id="rejectForm">
+                    @csrf
+                    @method('PATCH')
+                    <input type="hidden" name="handoverStatus" value="Rejected">
+                    
+                    <div class="reject-input-group">
+                        <label for="rejectionNote">Rejection Reason</label>
+                        <textarea name="rejectionNote" 
+                                  id="rejectionNote" 
+                                  rows="4"
+                                  placeholder="Why are you rejecting this request?"
+                                  required
+                                  maxlength="500"></textarea>
+                        <small class="char-count">0 / 500 characters</small>
+                    </div>
+
+                    <div class="modal-actions">
+                        <button type="submit" class="modal-btn reject-submit-btn">
+                            Submit Rejection
                         </button>
-
-                        <!-- Text Input -->
-                        <textarea name="messageText" 
-                                id="messageText"
-                                placeholder="Type a message..."
-                                rows="1"
-                                maxlength="1000">
-                        </textarea>
-                        
-                        <!-- Send Button -->
-                        <button type="submit" class="send-btn">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                <line x1="22" y1="2" x2="11" y2="13"></line>
-                                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-                            </svg>
+                        <button type="button" class="modal-btn cancel-btn" onclick="closeRejectModal()">
+                            Cancel
                         </button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+
+    <!-- Rejection Reason Modal (view only) -->
+    @if($handover->requestStatus === 'Rejected' && $handover->rejectionNote)
+        <div id="rejectionReasonModal" class="handover-modal" onclick="closeRejectionReasonModal(event)">
+            <div class="handover-modal-content" onclick="event.stopPropagation()">
+                <div class="handover-modal-header reject-header">
+                    <h2>❌ Rejection Reason</h2>
+                    <button class="close-modal-btn" onclick="closeRejectionReasonModal()">&times;</button>
+                </div>
+
+                <div class="handover-modal-body">
+                    <div class="rejection-reason-display">
+                        <p class="rejection-reason-text">{{ $handover->rejectionNote }}</p>
+                        <p class="rejection-meta">
+                            Rejected by: <strong>{{ $handover->recipient->userName }}</strong>
+                        </p>
+                    </div>
+                    
+                    <div class="modal-actions">
+                        <button type="button" class="modal-btn cancel-btn" onclick="closeRejectionReasonModal()">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
 
     <!-- Handover Form Modal -->
     @if($handover->requestStatus === 'Approved' || ($handover->requestStatus === 'Completed' && $handover->handoverForm))
@@ -228,10 +344,12 @@
     <script>
         // Auto-resize textarea
         const textarea = document.getElementById('messageText');
-        textarea.addEventListener('input', function() {
-            this.style.height = 'auto';
-            this.style.height = (this.scrollHeight) + 'px';
-        });
+        if (textarea) {
+            textarea.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = (this.scrollHeight) + 'px';
+            });
+        }
 
         // Preview image before upload
         function previewImage(input) {
@@ -252,6 +370,49 @@
         function removeImage() {
             document.getElementById('messageImg').value = '';
             document.getElementById('imagePreview').style.display = 'none';
+        }
+
+        // Reject Modal Functions
+        function openRejectModal() {
+            document.getElementById('rejectModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeRejectModal(event) {
+            if (!event || event.target.id === 'rejectModal' || event.target.classList.contains('close-modal-btn') || event.target.classList.contains('cancel-btn')) {
+                document.getElementById('rejectModal').style.display = 'none';
+                const rejectionNote = document.getElementById('rejectionNote');
+                if (rejectionNote) rejectionNote.value = '';
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Rejection Reason Modal Functions
+        function openRejectionReasonModal() {
+            const modal = document.getElementById('rejectionReasonModal');
+            if (modal) {
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeRejectionReasonModal(event) {
+            if (!event || event.target.id === 'rejectionReasonModal' || event.target.classList.contains('close-modal-btn') || event.target.classList.contains('cancel-btn')) {
+                const modal = document.getElementById('rejectionReasonModal');
+                if (modal) {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            }
+        }
+
+        // Character count for rejection note
+        const rejectionNote = document.getElementById('rejectionNote');
+        if (rejectionNote) {
+            rejectionNote.addEventListener('input', function() {
+                const charCount = this.value.length;
+                document.querySelector('.char-count').textContent = charCount + ' / 500 characters';
+            });
         }
 
         // Handover Form Modal Functions
@@ -285,10 +446,12 @@
             }
         }
 
-        // Close modal on Escape key
+        // Close modals on Escape key
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 closeHandoverFormModal();
+                closeRejectModal();
+                closeRejectionReasonModal();
             }
         });
 
@@ -312,6 +475,8 @@
             document.getElementById('imageModal').style.display = 'none';
         }
 
+        // Only enable auto-refresh if handover is NOT rejected
+        @if($handover->requestStatus !== 'Rejected')
         // Track last message count to detect new messages
         let lastMessageCount = document.querySelectorAll('.message').length;
         let isUpdatingMessages = false;
@@ -378,51 +543,53 @@
 
         // Send message via AJAX for instant feedback
         const messageForm = document.getElementById('messageForm');
-        messageForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(this);
-            const submitBtn = this.querySelector('.send-btn');
-            
-            // Disable send button
-            submitBtn.disabled = true;
-            submitBtn.style.opacity = '0.5';
-            
-            fetch(this.action, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '{{ csrf_token() }}'
-                }
-            })
-            .then(response => {
-                if (response.ok) {
-                    // Clear form
-                    textarea.value = '';
-                    textarea.style.height = 'auto';
-                    removeImage();
-                    
-                    // Immediately fetch new messages
-                    return fetch('{{ route("handover.chat.fetch", $handover->requestID) }}')
-                        .then(res => res.json())
-                        .then(messages => {
-                            updateMessages(messages);
-                            scrollToBottom();
-                        });
-                } else {
-                    throw new Error('Failed to send message');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Failed to send message. Please try again.');
-            })
-            .finally(() => {
-                // Re-enable send button
-                submitBtn.disabled = false;
-                submitBtn.style.opacity = '1';
+        if (messageForm) {
+            messageForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const formData = new FormData(this);
+                const submitBtn = this.querySelector('.send-btn');
+                
+                // Disable send button
+                submitBtn.disabled = true;
+                submitBtn.style.opacity = '0.5';
+                
+                fetch(this.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '{{ csrf_token() }}'
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        // Clear form
+                        textarea.value = '';
+                        textarea.style.height = 'auto';
+                        removeImage();
+                        
+                        // Immediately fetch new messages
+                        return fetch('{{ route("handover.chat.fetch", $handover->requestID) }}')
+                            .then(res => res.json())
+                            .then(messages => {
+                                updateMessages(messages);
+                                scrollToBottom();
+                            });
+                    } else {
+                        throw new Error('Failed to send message');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Failed to send message. Please try again.');
+                })
+                .finally(() => {
+                    // Re-enable send button
+                    submitBtn.disabled = false;
+                    submitBtn.style.opacity = '1';
+                });
             });
-        });
+        }
 
         // Update when page becomes visible
         document.addEventListener('visibilitychange', function() {
@@ -440,5 +607,6 @@
                     });
             }
         });
+        @endif
     </script>
 @endsection

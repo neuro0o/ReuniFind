@@ -350,7 +350,7 @@ class HandoverRequestController extends Controller
     }
 
     /**
-     * View uploaded handover form (inline in browser - New TAB)
+     * View uploaded handover form (inline in browser - NEW)
      */
     public function viewHandoverForm($requestID)
     {
@@ -378,7 +378,7 @@ class HandoverRequestController extends Controller
     }
 
     /**
-     * Download uploaded handover form (force download)
+     * Download uploaded handover form (force download - NEW)
      */
     public function downloadUploadedForm($requestID)
     {
@@ -412,9 +412,17 @@ class HandoverRequestController extends Controller
         $oppositeType = $recipientReport->reportType === 'Lost' ? 'Found' : 'Lost';
         $senderID = Auth::id();
 
+        // Get user's reports of opposite type, excluding those in active handovers
         $allReports = ItemReport::where('userID', $senderID)
             ->where('reportType', $oppositeType)
             ->where('reportStatus', 'Published')
+            // EXCLUDE reports already in active handovers (Pending, Approved, Completed)
+            ->whereDoesntHave('sentHandoverRequests', function($q) {
+                $q->whereIn('requestStatus', ['Pending', 'Approved', 'Completed']);
+            })
+            ->whereDoesntHave('receivedHandoverRequests', function($q) {
+                $q->whereIn('requestStatus', ['Pending', 'Approved', 'Completed']);
+            })
             ->get();
 
         $availableReports = $allReports->filter(function($report) use ($recipientReport, $senderID) {

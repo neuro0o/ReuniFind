@@ -16,7 +16,7 @@
                 <h1>Private Chat</h1>
             </div>
 
-            <!-- Filter Tabs: All / Unread -->
+            <!-- Filter Tabs: All / Unread (counts CONVERSATIONS not messages) -->
             <div class="filter-tabs">
                 <a href="{{ route('handover.chat.index', ['filter' => 'all']) }}" 
                     class="tab-btn {{ (!request('filter') || request('filter') === 'all') ? 'active' : '' }}">
@@ -25,6 +25,15 @@
                 <a href="{{ route('handover.chat.index', ['filter' => 'unread']) }}" 
                     class="tab-btn {{ request('filter') === 'unread' ? 'active' : '' }}">
                     Unread
+                    @php
+                        // Count CONVERSATIONS with unread messages (not total message count)
+                        $unreadConversations = $chats->filter(function($chat) {
+                            return $chat['unreadCount'] > 0;
+                        })->count();
+                    @endphp
+                    @if($unreadConversations > 0)
+                        <span class="total-unread-badge" id="totalUnreadBadge">{{ $unreadConversations }}</span>
+                    @endif
                 </a>
             </div>
 
@@ -42,7 +51,8 @@
                     @foreach($chats as $chat)
                         <a href="{{ route('handover.chat.show', $chat['handover']->requestID) }}" 
                             class="chat-item {{ $chat['unreadCount'] > 0 ? 'has-unread' : '' }}"
-                            data-request-id="{{ $chat['handover']->requestID }}">
+                            data-request-id="{{ $chat['handover']->requestID }}"
+                            data-unread="{{ $chat['unreadCount'] }}">
                             <div class="chat-avatar">
                                 <img src="{{ $chat['otherUser']->profileImg ? asset('storage/' . $chat['otherUser']->profileImg) : asset('images/profiles/user_default.png') }}" 
                                     alt="{{ $chat['otherUser']->userName }}">
@@ -50,7 +60,10 @@
 
                             <div class="chat-info">
                                 <div class="chat-header-row">
-                                    <h3 class="chat-name">{{ $chat['otherUser']->userName }}</h3>
+                                    <h3 class="chat-name">
+                                        {{ $chat['otherUser']->userName }} 
+                                        <span class="item-name">({{ $chat['handover']->report->itemName }})</span>
+                                    </h3>
                                     <span class="chat-time">
                                         @if($chat['lastActivity']->isToday())
                                             {{ $chat['lastActivity']->format('H:i') }}
@@ -121,10 +134,21 @@
             // Store current scroll position
             const scrollPos = window.scrollY;
 
+            // Count CONVERSATIONS with unread messages (not total message count)
+            let unreadConversations = 0;
+
             // Update each chat item
             chats.forEach(chat => {
                 const chatItem = document.querySelector(`[data-request-id="${chat.requestID}"]`);
                 if (!chatItem) return;
+
+                // Count conversation if it has unread
+                if (chat.unreadCount > 0) {
+                    unreadConversations++;
+                }
+
+                // Update data attribute
+                chatItem.setAttribute('data-unread', chat.unreadCount);
 
                 // Update unread badge
                 const unreadBadge = chatItem.querySelector('.unread-badge');
@@ -170,8 +194,34 @@
                 }
             });
 
+            // Update total unread badge (conversation count, not message count)
+            updateTotalUnreadBadge(unreadConversations);
+
             // Restore scroll position
             window.scrollTo(0, scrollPos);
+        }
+
+        function updateTotalUnreadBadge(count) {
+            const totalBadge = document.getElementById('totalUnreadBadge');
+            const unreadTab = document.querySelector('.tab-btn[href*="unread"]');
+
+            if (count > 0) {
+                if (totalBadge) {
+                    totalBadge.textContent = count;
+                } else if (unreadTab) {
+                    // Create badge if it doesn't exist
+                    const badge = document.createElement('span');
+                    badge.className = 'total-unread-badge';
+                    badge.id = 'totalUnreadBadge';
+                    badge.textContent = count;
+                    unreadTab.appendChild(badge);
+                }
+            } else {
+                // Remove badge if count is 0
+                if (totalBadge) {
+                    totalBadge.remove();
+                }
+            }
         }
 
         // Update every 5 seconds
