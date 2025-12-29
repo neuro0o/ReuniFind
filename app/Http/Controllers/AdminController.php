@@ -507,13 +507,45 @@ class AdminController extends Controller
     // ==================== FORUM MANAGEMENT ====================
 
     /**
-     * Display all forum posts (Admin view)
+     * Display all forum posts (Admin view with filters)
      */
-    public function forumPosts()
+    public function forumPosts(Request $request)
     {
-        $posts = \App\Models\ForumPost::with(['user', 'comments', 'likes'])
-            ->orderBy('created_at', 'asc')
-            ->get();
+        $query = \App\Models\ForumPost::with(['user', 'comments', 'likes']);
+
+        // Filter by category
+        if ($request->filled('category') && $request->category !== 'all') {
+            $query->where('forumCategory', $request->category);
+        }
+
+        // Filter by author
+        if ($request->filled('author')) {
+            if ($request->author === 'admin_posts') {
+                // Show only admin posts
+                $query->whereHas('user', function($q) {
+                    $q->where('userRole', 'Admin');
+                });
+            } elseif ($request->author === 'user_posts') {
+                // Show only user posts
+                $query->whereHas('user', function($q) {
+                    $q->where('userRole', 'User');
+                });
+            }
+        }
+
+        // Search functionality
+        if ($request->filled('search')) {
+            $searchTerm = $request->search;
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('forumTitle', 'like', '%' . $searchTerm . '%')
+                  ->orWhere('forumContent', 'like', '%' . $searchTerm . '%')
+                  ->orWhereHas('user', function($q2) use ($searchTerm) {
+                      $q2->where('userName', 'like', '%' . $searchTerm . '%');
+                  });
+            });
+        }
+
+        $posts = $query->orderBy('created_at', 'desc')->get();
         
         return view('admin.forum.index', compact('posts'));
     }
@@ -526,8 +558,8 @@ class AdminController extends Controller
         $post = \App\Models\ForumPost::findOrFail($id);
         
         // Delete image if exists
-        if ($post->forumImg && \Storage::disk('public')->exists($post->forumImg)) {
-            \Storage::disk('public')->delete($post->forumImg);
+        if ($post->forumImg && Storage::disk('public')->exists($post->forumImg)) {
+            Storage::disk('public')->delete($post->forumImg);
         }
         
         $post->delete();

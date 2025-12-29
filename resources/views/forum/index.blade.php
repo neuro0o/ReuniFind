@@ -4,6 +4,9 @@
 
 @section('page-css')
     <link rel="stylesheet" href="{{ asset('css/utils/sidebar.css') }}">
+    @if(Auth::user()->userRole === 'Admin')
+        <link rel="stylesheet" href="{{ asset('css/utils/admin_sidebar.css') }}">
+    @endif
     <link rel="stylesheet" href="{{ asset('css/forum/forum_index.css') }}">
 @endsection
 
@@ -43,26 +46,42 @@
                 <div class="filter-group">
                     <label for="category">Filter by Category</label>
                     <select name="category" id="category" class="filter-select">
-                        <option value="all" {{ request('category') == 'all' ? 'selected' : '' }}>All Categories</option>
-                        <option value="Personal Story" {{ request('category') == 'Personal Story' ? 'selected' : '' }}>Personal Story</option>
-                        <option value="Tips & Tricks" {{ request('category') == 'Tips & Tricks' ? 'selected' : '' }}>Tips & Tricks</option>
-                        <option value="Others" {{ request('category') == 'Others' ? 'selected' : '' }}>Others</option>
+                        <option value="all" {{ request('category') == 'all' || !request('category') ? 'selected' : '' }}>All Categories</option>
+                        <option value="Personal Story" {{ request('category') == 'Personal Story' ? 'selected' : '' }}>📖 Personal Story</option>
+                        <option value="Tips & Tricks" {{ request('category') == 'Tips & Tricks' ? 'selected' : '' }}>💡 Tips & Tricks</option>
+                        <option value="Others" {{ request('category') == 'Others' ? 'selected' : '' }}>💬 Others</option>
                     </select>
                 </div>
 
-                <button type="submit" class="btn-filter">Apply Filters</button>
-                <a href="{{ route('forum.index') }}" class="btn-reset">Reset</a>
+                <div class="filter-group">
+                    <label for="author">Filter by Author</label>
+                    <select name="author" id="author" class="filter-select">
+                        <option value="all" {{ request('author') == 'all' || !request('author') ? 'selected' : '' }}>All Posts</option>
+                        <option value="my_posts" {{ request('author') == 'my_posts' ? 'selected' : '' }}>My Posts Only</option>
+                        <option value="admin_posts" {{ request('author') == 'admin_posts' ? 'selected' : '' }}>Admin Posts</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-filter">
+                    <i class="fas fa-filter"></i> Apply Filters
+                </button>
+                <a href="{{ route('forum.index') }}" class="btn-reset">
+                    <i class="fas fa-redo"></i> Reset
+                </a>
             </form>
         </div>
 
         <!-- Forum Posts Grid -->
         @if($posts->isEmpty())
             <div class="empty-state">
-                <!-- <div class="empty-icon">💬</div> -->
                 <h3>No Posts Found</h3>
                 <p>
-                    @if(request('search') || request('category') != 'all')
-                        No posts match your current filters
+                    @if(request('author') == 'my_posts')
+                        You haven't created any posts yet.
+                    @elseif(request('author') == 'admin_posts')
+                        No admin announcements at this time.
+                    @elseif(request('search') || request('category') != 'all')
+                        No posts match your current filters.
                     @else
                         Be the first to create a forum post!
                     @endif
@@ -78,6 +97,7 @@
             </a>
 
             <h5>_</h5>
+
             <div class="posts-container">
                 @foreach($posts as $post)
                     <div class="post-card">
@@ -108,7 +128,6 @@
                                      alt="Post image" 
                                      class="post-image">
                             @endif
-
                         </div>
 
                         <div class="post-footer">
@@ -120,18 +139,18 @@
                                     <i class="fas fa-thumbs-down"></i> {{ $post->dislikesCount() }}
                                 </span>
                                 <span class="stat">
-                                    <i class="fas fa-comment"></i> {{ $post->comments->count() }} comments
+                                    <i class="fas fa-comment"></i> {{ $post->comments->count() }}
                                 </span>
                             </div>
 
                             <div class="post-actions">
                                 <a href="{{ route('forum.show', $post->forumID) }}" class="btn-view">
-                                    View Discussion
+                                    <i class="fas fa-eye"></i> View
                                 </a>
                                 
                                 @if(Auth::id() === $post->userID)
                                     <a href="{{ route('forum.edit', $post->forumID) }}" class="btn-edit">
-                                        Edit
+                                        <i class="fas fa-edit"></i> Edit
                                     </a>
                                     <form action="{{ route('forum.destroy', $post->forumID) }}" 
                                           method="POST" 
@@ -139,7 +158,9 @@
                                           onsubmit="return confirm('Delete this post? This action cannot be undone.')">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn-delete">Delete</button>
+                                        <button type="submit" class="btn-delete">
+                                            <i class="fas fa-trash"></i> Delete
+                                        </button>
                                     </form>
                                 @endif
                             </div>

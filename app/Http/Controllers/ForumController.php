@@ -24,6 +24,19 @@ class ForumController extends Controller
             $query->where('forumCategory', $request->category);
         }
 
+        // Filter by author
+        if ($request->filled('author')) {
+            if ($request->author === 'my_posts') {
+                // Show only current user's posts
+                $query->where('userID', Auth::id());
+            } elseif ($request->author === 'admin_posts') {
+                // Show only admin posts
+                $query->whereHas('user', function($q) {
+                    $q->where('userRole', 'Admin');
+                });
+            }
+        }
+
         // Search functionality
         if ($request->filled('search')) {
             $searchTerm = $request->search;
@@ -78,6 +91,12 @@ class ForumController extends Controller
             'forumDate' => Carbon::now(),
             'userID' => Auth::id(),
         ]);
+
+        // Redirect based on user role
+        if (Auth::user()->userRole === 'Admin') {
+            return redirect()->route('admin.forum.posts')
+                ->with('success', 'Forum post created successfully!');
+        }
 
         return redirect()->route('forum.index')
             ->with('success', 'Forum post created successfully!');

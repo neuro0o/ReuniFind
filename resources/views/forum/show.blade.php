@@ -20,10 +20,14 @@
     
     <div class="main-content">
         <!-- Back Button -->
-        <a href="{{ route('forum.index') }}" class="btn-back">
-            <i class="fas fa-arrow-left"></i> Back to Forum
-        </a>
-
+        @if(Auth::user()->userRole === 'Admin')
+            <br><br>
+        @else
+            <a href="{{ route('forum.index') }}" class="btn-back">
+                <i class="fas fa-arrow-left"></i> Back to Forum
+            </a>
+        @endif
+        
         @if(session('success'))
             <div class="status-info-card published">
                 <i class="fas fa-check-circle"></i>
@@ -44,7 +48,12 @@
                         class="author-avatar">
                         
                     <div class="author-details">
-                        <h4>{{ $post->user->userName }}</h4>
+                        <h4>
+                            {{ $post->user->userName }}
+                            @if($post->user->userRole === 'Admin')
+                                <span style="color: #fbbf24;">👑</span>
+                            @endif
+                        </h4>
                         <span class="post-date">{{ $post->created_at->format('M d, Y \a\t h:i A') }}</span>
                     </div>
                 </div>
@@ -132,11 +141,16 @@
                         
                         <div class="comment-content">
                             <div class="comment-header">
-                                <strong>{{ $comment->user->userName }}</strong>
+                                <strong>
+                                    {{ $comment->user->userName }}
+                                    @if($comment->user->userRole === 'Admin')
+                                        <span style="color: #fbbf24;">👑</span>
+                                    @endif
+                                </strong>
                                 
                                 <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 0.5rem;">
+                                    <span class="comment-date">{{ $comment->created_at->diffForHumans() }}</span>
                                     @if(Auth::id() === $comment->userID || Auth::user()->userRole === 'Admin')
-                                        <span class="comment-date">{{ $comment->created_at->diffForHumans() }}</span>
                                         <form action="{{ route('forum.comment.delete', $comment->commentID) }}" 
                                             method="POST" 
                                             style="display:inline;" 
@@ -148,7 +162,6 @@
                                             </button>
                                         </form>
                                     @endif
-                                    
                                 </div>
                             </div>
                             

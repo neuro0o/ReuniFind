@@ -19,12 +19,11 @@ span:hover {
 
 /* Page Header */
 .page-header {
-  width: 900%;
+  width: 90%;
   max-width: 1200px;
-  padding: 3rem 2rem 1rem 2rem;
+  padding: 3rem 2rem 2rem 2rem;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
 }
 
 .page-header h1 {
@@ -32,10 +31,11 @@ span:hover {
   font-size: var(--fs-xl);
   font-weight: var(--fw-bold);
   color: var(--color-primary);
+  text-align: center;
 }
 
 .btn-create {
-  padding: 1rem 2rem;
+  padding: 1.2rem 2.5rem;
   border: none;
   border-radius: 7rem;
   font-size: var(--fs-md);
@@ -49,12 +49,12 @@ span:hover {
   text-decoration: none;
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.8rem;
 }
 
 .btn-create:hover {
   background: #16a34a;
-  transform: translateY(-3px);
+  transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
@@ -65,7 +65,7 @@ span:hover {
   margin: 0 auto 2.5rem auto;
   padding: 0 2rem;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1.5rem;
 }
 
@@ -127,6 +127,104 @@ span:hover {
   font-family: var(--font-heading);
 }
 
+/* Filters Card */
+.filters-card {
+  width: 90%;
+  max-width: 1000px;
+  background: white;
+  padding: 2.5rem;
+  border-radius: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin: 0 auto 2.5rem auto;
+  text-align: start;
+}
+
+.filters-form {
+  display: grid;
+  grid-template-columns: 2fr 1.2fr 1.2fr auto auto;
+  gap: 1.5rem;
+  align-items: flex-end;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.filter-group label {
+  display: block;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-bold);
+  color: var(--color-primary);
+  margin-bottom: 0.8rem;
+  font-family: var(--font-heading);
+}
+
+.filter-input,
+.filter-select {
+  width: 80%;
+  padding: 1.2rem 1.5rem;
+  border: 2px solid var(--color-tertiary);
+  border-radius: 1rem;
+  font-size: var(--fs-sm);
+  font-family: var(--font-body);
+  color: var(--color-primary);
+  background: var(--color-secondary);
+  transition: all 0.3s ease;
+}
+
+.filter-select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath fill='%233A5987' d='M8 11L3 6h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1.2rem center;
+  padding-right: 3rem;
+}
+
+.filter-input:focus,
+.filter-select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  background: white;
+  box-shadow: 0 0 0 3px rgba(58, 89, 135, 0.1);
+}
+
+.btn-filter,
+.btn-reset {
+  padding: 1.2rem 2rem;
+  border: none;
+  border-radius: 7rem;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-bold);
+  font-family: var(--font-heading);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-filter {
+  background: var(--color-primary);
+  color: white;
+}
+
+.btn-filter:hover {
+  background: #566FA5;
+  transform: translateY(-2px);
+}
+
+.btn-reset {
+  background: var(--color-tertiary);
+  color: var(--color-primary);
+}
+
+.btn-reset:hover {
+  background: #C5D4E9;
+  transform: translateY(-2px);
+}
+
 /* Empty State */
 .empty-state {
   text-align: center;
@@ -159,7 +257,7 @@ span:hover {
 /* Table Container */
 .table-container {
   overflow-x: auto;
-  max-width: 1400px;
+  max-width: 1200px;
   width: 100%;
   padding: 0 2rem;
   margin: 0 auto;
@@ -177,7 +275,7 @@ span:hover {
 
 .forum-table th,
 .forum-table td {
-  text-align: left;
+  text-align: center;
   padding: 1.5rem;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
@@ -214,7 +312,7 @@ span:hover {
 }
 
 .author-cell {
-  display: flex;
+  display: inline;
   align-items: center;
   gap: 0.8rem;
 }
@@ -317,7 +415,7 @@ span:hover {
 @media (max-width: 768px) {
   .page-header {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     gap: 1.5rem;
     padding: 2rem 1.5rem 1rem 1.5rem;
   }
@@ -327,7 +425,7 @@ span:hover {
   }
 
   .btn-create {
-    width: 100%;
+    width: 50%;
     justify-content: center;
   }
 
@@ -350,6 +448,18 @@ span:hover {
     font-size: var(--fs-lg);
   }
 
+  .filters-form {
+    display: block;
+    grid-template-columns: 2fr 1.2fr 1.2fr auto auto;
+    gap: 1.5rem;
+    align-items: flex-end;
+  }
+
+  .btn-filter,
+  .btn-reset {
+    margin: 2rem;
+  }
+
   .table-container {
     padding: 0 1.5rem;
   }
@@ -363,6 +473,7 @@ span:hover {
   .forum-table tbody {
     display: block;
     width: 100%;
+    background-color: var(--color-background);
   }
 
   .forum-table tr {
@@ -378,6 +489,7 @@ span:hover {
   .forum-table td {
     display: flex;
     flex-direction: column;
+    text-align: center;
     padding: 0.5rem 0;
     border: none;
   }
@@ -391,13 +503,17 @@ span:hover {
     margin-bottom: 0.3rem;
   }
 
+  .forum-table span {
+    justify-content: center;
+  }
+
   .btn-group {
     flex-direction: column;
     gap: 0.5rem;
   }
 
   .btn {
-    width: 100%;
+    width: 90%;
     text-align: center;
   }
 

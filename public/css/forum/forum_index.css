@@ -24,7 +24,6 @@ span:hover {
   padding: 3rem 2rem 2rem 2rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 }
 
 .page-header h1 {
@@ -32,6 +31,7 @@ span:hover {
   font-size: var(--fs-xl);
   font-weight: var(--fw-bold);
   color: var(--color-primary);
+  text-align: center;
 }
 
 .btn-create {
@@ -80,7 +80,7 @@ span:hover {
 /* Filters Card */
 .filters-card {
   width: 90%;
-  max-width: 1200px;
+  max-width: 1000px;
   background: white;
   padding: 2.5rem;
   border-radius: 1.5rem;
@@ -91,7 +91,7 @@ span:hover {
 
 .filters-form {
   display: grid;
-  grid-template-columns: 2fr 1.2fr auto auto;
+  grid-template-columns: 2fr 1.2fr 1.2fr auto auto;
   gap: 1.5rem;
   align-items: flex-end;
 }
@@ -112,7 +112,7 @@ span:hover {
 
 .filter-input,
 .filter-select {
-  width: 90%;
+  width: 80%;
   padding: 1.2rem 1.5rem;
   border: 2px solid var(--color-tertiary);
   border-radius: 1rem;
@@ -496,6 +496,30 @@ span:hover {
 
   .post-image {
     max-height: 350px;
+  }
+
+  .post-footer {
+    display: flex;
+    flex-direction: column;  /* Stack vertically */
+    align-items: center;     /* Center everything */
+    gap: 2rem;
+    padding-top: 2rem;
+    border-top: 2px solid var(--color-tertiary);
+  }
+
+  .post-stats {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;  /* Center the stats */
+    width: 90%;
+  }
+
+  .post-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;  /* Center the buttons */
+    width: 90%;
   }
 }
 
