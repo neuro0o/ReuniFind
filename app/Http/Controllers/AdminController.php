@@ -437,7 +437,7 @@ class AdminController extends Controller
      */
     public function faqs()
     {
-        $faqs = \App\Models\FAQ::orderBy('created_at', 'desc')->get();
+        $faqs = \App\Models\FAQ::orderBy('created_at', 'asc')->get();
         return view('admin.faqs.index', compact('faqs'));
     }
 

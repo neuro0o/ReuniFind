@@ -61,6 +61,7 @@
                 <table class="faq-table">
                     <thead>
                         <tr>
+                            <th>No.</th>
                             <th>Question</th>
                             <th>Answer</th>
                             <th>Created</th>
@@ -71,6 +72,7 @@
                     <tbody>
                         @foreach($faqs as $faq)
                         <tr>
+                            <td data-label="No.">{{ $loop->iteration }}.</td>
                             <td data-label="Question">
                                 <div class="question-cell">{{ Str::limit($faq->faqQuestion, 80) }}</div>
                             </td>
