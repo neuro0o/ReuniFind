@@ -44,12 +44,12 @@
             <div class="boast-card">
                 <!-- <div class="boast-icon">📄</div> -->
                 <h3>{{ $totalLost ?? '0' }}</h3>
-                <p>Lost Reports</p>
+                <p>Lost Items Reported</p>
             </div>
             <div class="boast-card">
                 <!-- <div class="boast-icon">🔍</div> -->
                 <h3>{{ $totalFound ?? '0' }}</h3>
-                <p>Found Reports</p>
+                <p>Found Items Reported</p>
             </div>
             <div class="boast-card">
                 <!-- <div class="boast-icon">✅</div> -->

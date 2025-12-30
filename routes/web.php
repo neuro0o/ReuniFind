@@ -16,9 +16,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 // LANDING
-Route::get('/', function () {
-    return view('landing');
-});
+Route::get('/', [App\Http\Controllers\LandingController::class, 'index'])
+    ->name('landing');
 
 /*----------------- AUTH ROUTES -------------------*/
 
