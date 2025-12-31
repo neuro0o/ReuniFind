@@ -31,7 +31,7 @@
               <li><a href="{{ route('item_report.report_lost') }}">Report Lost Item</a></li>
               <li><a href="{{ route('item_report.report_found') }}">Report Found Item</a></li>
               <li><a href="{{ route('item_report.view') }}">Search Item</a></li>
-              <li><a href="{{ route('item_report.suggested_matches') }}">Suggested Matches</a></li>
+              <li><a href="{{ route('item_report.suggested_matches') }}">Suggested Match</a></li>
               <li><a href="{{ route('item_report.my_report') }}">My Report</a></li>
             </div>
           </ul>
@@ -46,7 +46,7 @@
         </button>
         <ul class="sub-menu">
           <div>
-            <li><a href="{{ route('handover.index') }}">Handover List</a></li>
+            <li><a href="{{ route('handover.index') }}">My Handover</a></li>
             <li><a href="{{ route('handover.chat.index') }}" class="nav-item {{ Request::is('handover/chat*') ? 'active' : '' }}">Private Chat</a></li>
           </div>
         </ul>
