@@ -15,6 +15,7 @@
         <div class="form-card">
             <h2 id="form-title">REGISTER YOUR ITEM</h2><br>
             <p style="text-align: center; color: #666; margin-bottom: 2rem;">Register to get your personalized Item QR Tag!</p>
+            <br>
 
             <form action="{{ route('tag.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf

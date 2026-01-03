@@ -1,3 +1,8 @@
+span:hover {
+  background: transparent; /* remove any highlight on hover */
+  color: inherit; /* keep text color unchanged */
+}
+
 /* Item Info Page (After Scan) Styles */
 
 .content {
@@ -240,6 +245,12 @@
     }
 
     .btn-action {
-        width: 100%;
+        width: 95%;
+    }
+}
+
+@media (max-width: 426px) {
+    .btn-action {
+        width: 90%;
     }
 }

@@ -34,7 +34,7 @@
                         </div>
                         @if($itemTag->itemImg)
                             <small class="text-muted" style="display: block; margin-top: 0.5rem; text-align: center;">
-                                Leave empty to keep current image
+                                Don't change to keep current image
                             </small>
                         @endif
                     </div>
@@ -72,7 +72,7 @@
                         @enderror
                         <br>
 
-                        <div style="display: flex; gap: 1rem; width: 95%;">
+                        <div style="display: flex; gap: 1rem; width: 90%;">
                             <a href="{{ route('tag.my') }}" class="btn btn-secondary" style="flex: 1; text-align: center; text-decoration: none; display: flex; align-items: center; justify-content: center;">
                                 Cancel
                             </a>

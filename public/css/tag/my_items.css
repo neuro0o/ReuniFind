@@ -1,4 +1,8 @@
 /* My Registered Items Page Styles */
+span:hover {
+  background: transparent; /* remove any highlight on hover */
+  color: inherit; /* keep text color unchanged */
+}
 
 .content {
     margin: 3rem;
@@ -14,7 +18,8 @@
 /* Page Header */
 .page-header {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
     margin-bottom: 3rem;
 }
@@ -33,6 +38,7 @@
 
 .btn-add-item {
     display: flex;
+    width: 15%;
     align-items: center;
     gap: 0.8rem;
     padding: 1rem 2rem;
@@ -137,15 +143,10 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.item-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 6px 16px rgba(58, 89, 135, 0.15);
-}
-
 .item-image {
     width: 100%;
     height: 200px;
-    background: white;
+    background: var(--color-secondary);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -153,15 +154,15 @@
 }
 
 .item-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    width: 90%;
+    height: 90%;
+    object-fit: contain;
 }
 
 .no-image {
     width: 80px;
     height: 80px;
-    color: #D5DEEF;
+    color: var(--color-tertiary);
 }
 
 .no-image svg {
@@ -180,29 +181,34 @@
     font-weight: var(--fw-semibold);
     color: var(--color-primary);
     margin-bottom: 0.5rem;
+    text-align: center;
 }
 
 .item-category {
-    font-size: var(--fs-xs);
+    font-size: var(--fs-sm);
     color: #666;
     font-style: italic;
     margin-bottom: 0.75rem;
+    text-align: center;
 }
 
 .item-description {
-    font-size: var(--fs-sm);
-    color: #333;
+    font-size: var(--fs-md);
+    color: var(--color-primary);
+    font-weight: var(--fw-regular);
     line-height: 1.5;
     margin-bottom: 1rem;
+    text-align: center;
 }
 
 .status-badge {
-    display: inline-block;
+    display: block;
     padding: 0.4rem 1rem;
     border-radius: 20px;
     font-size: var(--fs-xs);
     font-weight: var(--fw-semibold);
     text-transform: uppercase;
+    text-align: center;
 }
 
 .status-badge.safe {
@@ -218,7 +224,7 @@
 /* Item Actions */
 .item-actions {
     padding: 1rem 1.5rem;
-    background: white;
+    background: var(--color-secondary);
     border-top: 1px solid #D5DEEF;
     display: flex;
     flex-direction: column;
@@ -234,7 +240,7 @@
     padding: 0.6rem 1rem;
     border: none;
     border-radius: 8px;
-    font-size: var(--fs-xs);
+    font-size: var(--fs-md);
     font-weight: var(--fw-semibold);
     cursor: pointer;
     transition: all 0.3s ease;
@@ -275,15 +281,18 @@
     justify-content: center;
     padding: 0.6rem;
     background: white;
+    color: var(--color-primary);
     border: 1.5px solid #D5DEEF;
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.3s ease;
+    text-decoration: none;
 }
 
 .btn-icon:hover {
     background: var(--color-primary);
     border-color: var(--color-primary);
+    color: var(--color-secondary);
 }
 
 .btn-icon:hover svg {
@@ -351,12 +360,12 @@
 
     .page-header {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: center;
         gap: 1.5rem;
     }
 
     .btn-add-item {
-        width: 100%;
+        width: 25%;
         justify-content: center;
     }
 

@@ -63,13 +63,13 @@
                         <!-- Status Badge -->
                         <div class="status-badge {{ strtolower($itemTag->itemStatus) }}">
                             @if($itemTag->itemStatus === 'Lost')
-                                <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
+                                <!-- <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
                                     <path d="M440-756q11-2 20-3t20-1q11 0 20 1t20 3v-4q0-17-11.5-28.5T480-800q-17 0-28.5 11.5T440-760v4ZM280-80q-33 0-56.5-23.5T200-160v-320q0-85 44.5-152T360-732v-28q0-50 34.5-85t85.5-35q51 0 85.5 35t34.5 85v28q71 33 115.5 100T760-480v320q0 33-23.5 56.5T680-80H280Zm200-200q83 0 141.5-58.5T680-480q0-83-58.5-141.5T480-680q-83 0-141.5 58.5T280-480q0 83 58.5 141.5T480-280Z"/>
-                                </svg>
+                                </svg> -->
                             @else
-                                <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
+                                <!-- <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
                                     <path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"/>
-                                </svg>
+                                </svg> -->
                             @endif
                             <span>Status: {{ $itemTag->itemStatus }}</span>
                         </div>
@@ -78,25 +78,15 @@
 
                 <!-- Action Buttons -->
                 <div class="action-buttons">
-                    @auth
-                        @if($itemTag->userID !== Auth::id())
-                            <a href="{{ route('handover.chat.index') }}" class="btn-action primary">
-                                <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
-                                    <path d="M240-400h320v-80H240v80Zm0-120h480v-80H240v80Zm0-120h480v-80H240v80ZM80-80v-720q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H240L80-80Z"/>
-                                </svg>
-                                <span>Private Chat</span>
-                            </a>
-                        @endif
-                    @endauth
-                    
                     <a href="{{ route('tag.scan') }}" class="btn-action secondary">
                         <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
-                            <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/>
+                            <path d="M480-320q75 0 127.5-52.5T660-500q0-75-52.5-127.5T480-680q-75 0-127.5 52.5T300-500q0 75 52.5 127.5T480-320Zm0-72q-45 0-76.5-31.5T372-500q0-45 31.5-76.5T480-608q45 0 76.5 31.5T588-500q0 45-31.5 76.5T480-392Zm0 192q-146 0-266-81.5T40-500q54-137 174-218.5T480-800q146 0 266 81.5T920-500q-54 137-174 218.5T480-200Z"/>
                         </svg>
                         <span>Re Scan</span>
                     </a>
                 </div>
             </div>
+            <br><br><br><br>
         </div>
     </div>
 @endsection

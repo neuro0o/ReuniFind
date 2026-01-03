@@ -64,7 +64,7 @@
                     </div>
 
                     <div class="scan-info">
-                        <p>💡 <strong>Tip:</strong> Position the QR code within the frame for scanning</p>
+                        <p><strong>Tip:</strong> Position the QR code within the frame for scanning</p>
                     </div>
                 </div>
 
@@ -105,10 +105,11 @@
                     </div>
 
                     <div class="scan-info">
-                        <p>💡 <strong>Tip:</strong> Make sure the QR code is clear and well-lit in the image</p>
+                        <p><strong>Tip:</strong> Make sure the QR code is clear and well-lit in the image</p>
                     </div>
                 </div>
             </div>
+            <br><br><br><br>
         </div>
     </div>
 @endsection
@@ -161,7 +162,7 @@
             if (isScanning) return;
 
             const config = {
-                fps: 10,
+                fps: 60,
                 qrbox: { width: 250, height: 250 },
                 aspectRatio: 1.0
             };

@@ -1,5 +1,10 @@
-/* Scan QR Page Styles */
+span:hover {
+  background: transparent; /* remove any highlight on hover */
+  color: inherit; /* keep text color unchanged */
+}
 
+
+/* Scan QR Page Styles */
 .content {
     margin: 3rem;
     width: 90%;
@@ -57,7 +62,7 @@
     border-radius: 15px;
 }
 
-/* Hide the default permission button (we have our own) */
+/* Hide the default permission button */
 #qr-reader__dashboard_section_csr button {
     background: var(--color-primary) !important;
     color: white !important;
@@ -296,7 +301,6 @@
         font-size: var(--fs-sm);
     }
 }
-
 
 /* Scan Method Tabs */
 .scan-tabs {
