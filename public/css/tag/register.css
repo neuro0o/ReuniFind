@@ -1,0 +1,289 @@
+/* Register Item Page Styles */
+
+.content {
+    margin: 3rem;
+    width: 90%;
+}
+
+.register-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.register-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.register-header h1 {
+    font-size: var(--fs-xl);
+    font-weight: var(--fw-bold);
+    color: var(--color-primary);
+    margin-bottom: 1rem;
+}
+
+.register-header p {
+    font-size: var(--fs-sm);
+    color: #666;
+}
+
+/* Form Container */
+.form-container {
+    background: var(--color-secondary);
+    border-radius: 20px;
+    padding: 2.5rem;
+    box-shadow: 0 4px 12px rgba(58, 89, 135, 0.1);
+}
+
+.form-container h2 {
+    font-size: var(--fs-lg);
+    font-weight: var(--fw-semibold);
+    color: var(--color-primary);
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+/* Form Grid */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+/* Image Upload Section */
+.image-upload-section label {
+    display: block;
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-semibold);
+    color: var(--color-primary);
+    margin-bottom: 1rem;
+}
+
+.upload-box {
+    width: 100%;
+    height: 300px;
+    background: white;
+    border: 3px dashed #D5DEEF;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.upload-box:hover {
+    border-color: var(--color-primary);
+    background: #f8f9fb;
+}
+
+.upload-box.drag-over {
+    border-color: var(--color-primary);
+    background: #e8eef9;
+}
+
+.upload-placeholder {
+    text-align: center;
+    color: #999;
+}
+
+.upload-placeholder svg {
+    fill: #D5DEEF;
+    margin-bottom: 1rem;
+}
+
+.upload-placeholder p {
+    font-size: var(--fs-md);
+    font-weight: var(--fw-semibold);
+    color: var(--color-primary);
+    margin-bottom: 0.5rem;
+}
+
+.upload-placeholder span {
+    font-size: var(--fs-xs);
+    color: #999;
+}
+
+.image-preview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Form Fields */
+.form-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-semibold);
+    color: var(--color-primary);
+    margin-bottom: 0.5rem;
+}
+
+.required {
+    color: #ef4444;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    border: 2px solid #D5DEEF;
+    border-radius: 10px;
+    font-size: var(--fs-sm);
+    color: var(--color-primary);
+    font-family: var(--font-body);
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+}
+
+.form-group select {
+    cursor: pointer;
+    background: white;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.error-message {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: var(--fs-xs);
+    color: #ef4444;
+    font-weight: var(--fw-medium);
+}
+
+/* Form Actions */
+.form-actions {
+    display: flex;
+    justify-content: center;
+    padding-top: 1.5rem;
+    border-top: 2px solid #D5DEEF;
+}
+
+.btn-register {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    padding: 1rem 3rem;
+    background: var(--color-primary);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: var(--fs-md);
+    font-weight: var(--fw-semibold);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(58, 89, 135, 0.3);
+}
+
+.btn-register:hover {
+    background: #2a4d78;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(58, 89, 135, 0.4);
+}
+
+.btn-register svg {
+    fill: white;
+}
+
+/* Cancel Button */
+.btn-cancel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    padding: 1rem 2rem;
+    background: white;
+    color: var(--color-primary);
+    border: 2px solid var(--color-primary);
+    border-radius: 12px;
+    font-size: var(--fs-md);
+    font-weight: var(--fw-semibold);
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(58, 89, 135, 0.2);
+}
+
+.btn-cancel:hover {
+    background: #ef4444;
+    border-color: #ef4444;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.btn-cancel svg {
+    fill: currentColor;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid #D5DEEF;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .content {
+        margin: 1.5rem;
+    }
+
+    .register-container {
+        padding: 1rem;
+    }
+
+    .form-container {
+        padding: 1.5rem;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .upload-box {
+        height: 250px;
+    }
+}
+
+@media (max-width: 480px) {
+    .form-container {
+        padding: 1rem;
+    }
+
+    .btn-register {
+        width: 100%;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .btn-cancel,
+    .btn-register {
+        width: 100%;
+    }
+}

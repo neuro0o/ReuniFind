@@ -1,0 +1,245 @@
+/* Item Info Page (After Scan) Styles */
+
+.content {
+    margin: 3rem;
+    width: 90%;
+}
+
+.item-info-container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.info-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.info-header h1 {
+    font-size: var(--fs-xl);
+    font-weight: var(--fw-bold);
+    color: var(--color-primary);
+    margin-bottom: 1rem;
+}
+
+.info-header p {
+    font-size: var(--fs-sm);
+    color: #666;
+}
+
+/* Item Card */
+.item-card {
+    background: var(--color-secondary);
+    border-radius: 20px;
+    padding: 2.5rem;
+    box-shadow: 0 4px 12px rgba(58, 89, 135, 0.1);
+    margin-bottom: 2rem;
+}
+
+.item-image {
+    width: 100%;
+    max-width: 300px;
+    height: 300px;
+    margin: 0 auto 2rem;
+    border-radius: 15px;
+    overflow: hidden;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.item-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.no-image {
+    width: 100px;
+    height: 100px;
+    color: #D5DEEF;
+}
+
+.no-image svg {
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
+}
+
+/* Item Details */
+.item-details {
+    text-align: center;
+}
+
+.item-name {
+    font-size: var(--fs-lg);
+    font-weight: var(--fw-bold);
+    color: var(--color-primary);
+    margin-bottom: 0.5rem;
+}
+
+.item-category {
+    font-size: var(--fs-sm);
+    color: #666;
+    font-style: italic;
+    margin-bottom: 1.5rem;
+}
+
+.item-description {
+    padding: 1.5rem;
+    background: white;
+    border-radius: 12px;
+    margin: 1.5rem 0;
+}
+
+.item-description p {
+    font-size: var(--fs-sm);
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Owner Section */
+.owner-section {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 2px solid #D5DEEF;
+}
+
+.owner-section h3 {
+    font-size: var(--fs-md);
+    font-weight: var(--fw-semibold);
+    color: var(--color-primary);
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.owner-details {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+}
+
+.owner-item {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin: 1rem 0;
+    font-size: var(--fs-sm);
+    color: #333;
+}
+
+.owner-item svg {
+    fill: var(--color-primary);
+    flex-shrink: 0;
+}
+
+.owner-item strong {
+    color: var(--color-primary);
+    font-weight: var(--fw-semibold);
+}
+
+/* Status Badge */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 25px;
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-semibold);
+    margin-top: 1.5rem;
+}
+
+.status-badge.safe {
+    background: rgba(46, 204, 113, 0.1);
+    color: #27ae60;
+    border: 2px solid #27ae60;
+}
+
+.status-badge.lost {
+    background: rgba(231, 76, 60, 0.1);
+    color: #c0392b;
+    border: 2px solid #c0392b;
+}
+
+.status-badge svg {
+    fill: currentColor;
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn-action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-semibold);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(58, 89, 135, 0.2);
+}
+
+.btn-action.primary {
+    background: var(--color-primary);
+    color: white;
+}
+
+.btn-action.primary:hover {
+    background: #2a4d78;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(58, 89, 135, 0.3);
+}
+
+.btn-action.secondary {
+    background: var(--color-secondary);
+    color: var(--color-primary);
+    border: 2px solid var(--color-primary);
+}
+
+.btn-action.secondary:hover {
+    background: var(--color-primary);
+    color: white;
+}
+
+.btn-action svg {
+    fill: currentColor;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .content {
+        margin: 1.5rem;
+    }
+
+    .item-info-container {
+        padding: 1rem;
+    }
+
+    .item-card {
+        padding: 1.5rem;
+    }
+
+    .item-image {
+        max-width: 250px;
+        height: 250px;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .btn-action {
+        width: 100%;
+    }
+}

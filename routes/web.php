@@ -286,22 +286,50 @@ Route::middleware(['auth'])->prefix('forum')->group(function () {
     Route::post('/{id}/like', [ForumController::class, 'toggleLike'])->name('forum.like');
 });
 
-
-
-
-
-/*----------------- TEMP ROUTES -------------------*/
-// DIGITAL ITEM TAG
-Route::prefix('tag')->group(function () {
-    Route::get('/scan', function () {
-        return view('tag.scan');
-    })->name('tag.scan');
-
-    Route::get('/register', function () {
-        return view('tag.register');
-    })->name('tag.register');
-
-    Route::get('/my', function () {
-        return view('tag.my');
-    })->name('tag.my');
+/*----------------- DIGITAL ITEM TAG ROUTES -------------------*/
+Route::middleware(['auth'])->prefix('tag')->group(function () {
+    
+    // Scan QR Tag (any user can access)
+    Route::get('/scan', [App\Http\Controllers\ItemTagController::class, 'showScanPage'])
+        ->name('tag.scan');
+    
+    // Register new item
+    Route::get('/register', [App\Http\Controllers\ItemTagController::class, 'showRegisterForm'])
+        ->name('tag.register');
+    Route::post('/register', [App\Http\Controllers\ItemTagController::class, 'store'])
+        ->name('tag.store');
+    
+    // My registered items
+    Route::get('/my-items', [App\Http\Controllers\ItemTagController::class, 'myRegisteredItems'])
+        ->name('tag.my');
+    
+    // Item detail with QR tag
+    Route::get('/item/{tagID}', [App\Http\Controllers\ItemTagController::class, 'showItemDetail'])
+        ->name('tag.detail');
+    
+    // Update item status
+    Route::patch('/item/{tagID}/status', [App\Http\Controllers\ItemTagController::class, 'updateStatus'])
+        ->name('tag.status');
+    
+    // Edit item
+    Route::get('/item/{tagID}/edit', [App\Http\Controllers\ItemTagController::class, 'edit'])
+        ->name('tag.edit');
+    Route::put('/item/{tagID}', [App\Http\Controllers\ItemTagController::class, 'update'])
+        ->name('tag.update');
+    
+    // Delete item
+    Route::delete('/item/{tagID}', [App\Http\Controllers\ItemTagController::class, 'destroy'])
+        ->name('tag.destroy');
+    
+    // Download QR tag PDF
+    Route::get('/item/{tagID}/download', [App\Http\Controllers\ItemTagController::class, 'downloadQRTag'])
+        ->name('tag.download');
 });
+
+// Public route - View item info after scanning (no auth required)
+Route::get('/tag/info/{tagID}', [App\Http\Controllers\ItemTagController::class, 'showItemInfo'])
+    ->name('tag.info');
+
+// Manual tag ID entry
+Route::get('/tag/info', [App\Http\Controllers\ItemTagController::class, 'showItemInfo'])
+    ->name('tag.info.manual');

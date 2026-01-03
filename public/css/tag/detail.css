@@ -1,0 +1,478 @@
+/* Item Detail Page Styles */
+
+.content {
+    margin: 3rem;
+    width: 90%;
+}
+
+.detail-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Alert */
+.alert {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+    font-size: var(--fs-sm);
+}
+
+.alert.success {
+    background: rgba(46, 204, 113, 0.1);
+    color: #27ae60;
+    border-left: 4px solid #27ae60;
+}
+
+.alert svg {
+    fill: currentColor;
+    flex-shrink: 0;
+}
+
+/* Header */
+.detail-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.detail-header h1 {
+    font-size: var(--fs-lg);
+    font-weight: var(--fw-semibold);
+    color: var(--color-primary);
+    line-height: 1.4;
+}
+
+/* QR Display Grid */
+.qr-display-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+/* Item Info Card */
+.item-info-card {
+    background: var(--color-secondary);
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 4px 12px rgba(58, 89, 135, 0.1);
+}
+
+.item-info-card h2 {
+    font-size: var(--fs-md);
+    font-weight: var(--fw-semibold);
+    color: var(--color-primary);
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.info-image {
+    width: 100%;
+    height: 250px;
+    background: white;
+    border-radius: 15px;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.info-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.no-image {
+    width: 80px;
+    height: 80px;
+    color: #D5DEEF;
+}
+
+.no-image svg {
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
+}
+
+.info-details {
+    text-align: center;
+}
+
+.info-details h3 {
+    font-size: var(--fs-lg);
+    font-weight: var(--fw-bold);
+    color: var(--color-primary);
+    margin-bottom: 0.5rem;
+}
+
+.category {
+    font-size: var(--fs-sm);
+    color: #666;
+    font-style: italic;
+    margin-bottom: 1rem;
+}
+
+.description {
+    font-size: var(--fs-sm);
+    color: #333;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.owner-info {
+    padding: 1rem;
+    background: white;
+    border-radius: 10px;
+    text-align: left;
+}
+
+.owner-info p {
+    font-size: var(--fs-sm);
+    color: #333;
+    margin: 0.5rem 0;
+}
+
+.owner-info strong {
+    color: var(--color-primary);
+    font-weight: var(--fw-semibold);
+}
+
+/* QR Tag Card */
+.qr-tag-card {
+    background: var(--color-secondary);
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 4px 12px rgba(58, 89, 135, 0.1);
+}
+
+.qr-tag-card h2 {
+    font-size: var(--fs-md);
+    font-weight: var(--fw-semibold);
+    color: var(--color-primary);
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.qr-preview {
+    display: flex;
+    justify-content: center;
+}
+
+.qr-box {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    text-align: center;
+    border: 3px dashed #D5DEEF;
+}
+
+.scan-instruction {
+    margin-bottom: 1.5rem;
+}
+
+.scan-instruction svg {
+    fill: var(--color-primary);
+    margin-bottom: 0.5rem;
+}
+
+.scan-instruction p {
+    font-size: var(--fs-sm);
+    color: var(--color-primary);
+}
+
+.qr-code {
+    width: 280px;
+    height: 280px;
+    margin: 0 auto;
+    padding: 1rem;
+    background: white;
+    border: 2px solid #D5DEEF;
+    border-radius: 10px;
+}
+
+.qr-code svg {
+    width: 100%;
+    height: 100%;
+}
+
+.qr-info {
+    margin-top: 1.5rem;
+}
+
+.qr-info p {
+    font-size: var(--fs-xs);
+    color: #666;
+}
+
+.qr-info strong {
+    color: var(--color-primary);
+    font-weight: var(--fw-semibold);
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn-action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-semibold);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(58, 89, 135, 0.2);
+}
+
+.btn-action.primary {
+    background: var(--color-primary);
+    color: white;
+}
+
+.btn-action.primary:hover {
+    background: #2a4d78;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(58, 89, 135, 0.3);
+}
+
+.btn-action.secondary {
+    background: white;
+    color: var(--color-primary);
+    border: 2px solid var(--color-primary);
+}
+
+.btn-action.secondary:hover {
+    background: var(--color-primary);
+    color: white;
+}
+
+.btn-action.tertiary {
+    background: var(--color-secondary);
+    color: var(--color-primary);
+}
+
+.btn-action.tertiary:hover {
+    background: #D5DEEF;
+}
+
+.btn-action svg {
+    fill: currentColor;
+}
+
+/* Size Selection Section */
+.size-selection {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 12px;
+    border: 2px solid #D5DEEF;
+}
+
+.size-selection h3 {
+    font-size: var(--fs-md);
+    font-weight: var(--fw-semibold);
+    color: var(--color-primary);
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+
+.size-help {
+    font-size: var(--fs-xs);
+    color: #666;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.size-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.size-option {
+    position: relative;
+    padding: 1rem;
+    background: white;
+    border: 2px solid #D5DEEF;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.size-option:hover {
+    border-color: var(--color-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(58, 89, 135, 0.15);
+}
+
+.size-option.active {
+    border-color: var(--color-primary);
+    background: rgba(58, 89, 135, 0.05);
+    box-shadow: 0 4px 12px rgba(58, 89, 135, 0.2);
+}
+
+.size-option.active::after {
+    content: '✓';
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 24px;
+    height: 24px;
+    background: var(--color-primary);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.size-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.size-preview {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed #D5DEEF;
+    border-radius: 8px;
+    background: #F1F4FB;
+    transition: all 0.3s ease;
+}
+
+.size-option:hover .size-preview,
+.size-option.active .size-preview {
+    border-color: var(--color-primary);
+    background: white;
+}
+
+.size-preview svg {
+    fill: var(--color-primary);
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+}
+
+.size-option:hover .size-preview svg,
+.size-option.active .size-preview svg {
+    opacity: 1;
+}
+
+.small-preview svg {
+    width: 20px;
+    height: 20px;
+}
+
+.medium-preview svg {
+    width: 30px;
+    height: 30px;
+}
+
+.large-preview svg {
+    width: 40px;
+    height: 40px;
+}
+
+.size-info h4 {
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-semibold);
+    color: var(--color-primary);
+    margin-bottom: 0.25rem;
+}
+
+.size-dimensions {
+    font-size: var(--fs-xs);
+    color: #999;
+    font-weight: var(--fw-medium);
+    margin-bottom: 0.5rem;
+}
+
+.size-use {
+    font-size: var(--fs-xs);
+    color: #666;
+    line-height: 1.4;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .content {
+        margin: 1.5rem;
+    }
+
+    .detail-container {
+        padding: 1rem;
+    }
+
+    .qr-display-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .qr-code {
+        width: 220px;
+        height: 220px;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .btn-action {
+        width: 100%;
+    }
+
+
+    .size-options {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .size-option {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 1rem;
+        text-align: left;
+    }
+
+    .size-preview {
+        margin: 0;
+    }
+
+    .size-info {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .item-info-card,
+    .qr-tag-card {
+        padding: 1.5rem;
+    }
+
+    .qr-code {
+        width: 180px;
+        height: 180px;
+    }
+}
+
