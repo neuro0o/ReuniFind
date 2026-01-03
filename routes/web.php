@@ -62,6 +62,7 @@ Route::get('/dashboard', [UserDashboardController::class, 'index'])
 /*----------------- ADMIN ROUTES -------------------*/
 Route::middleware(['auth', 'isAdmin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.admin_dashboard');
+    Route::get('/dashboard/export-pdf', [AdminController::class, 'exportDashboardPDF'])->name('admin.dashboard.export-pdf');
 
     // user managements
     Route::get('/admin/users', [AdminController::class, 'manageUsers'])->name('admin.users.index');

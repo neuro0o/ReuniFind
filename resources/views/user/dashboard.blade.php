@@ -75,6 +75,11 @@
                     <span>Forum</span>
                 </a>
 
+                <a href="{{ route('faq.index') }}" class="action-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M424-320q0-81 14.5-116.5T500-514q41-36 62.5-62.5T584-637q0-41-27.5-68T480-732q-51 0-77.5 31T365-638l-103-44q21-64 77-111t141-47q105 0 161.5 58.5T698-641q0 50-21.5 85.5T609-475q-49 47-59.5 71.5T539-320H424Zm56 240q-33 0-56.5-23.5T400-160q0-33 23.5-56.5T480-240q33 0 56.5 23.5T560-160q0 33-23.5 56.5T480-80Z"/></svg>
+                    <span>FAQ</span>
+                </a>
+
                 <!-- <a href="{{ route('item_report.view') }}" class="action-btn">
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M0-240v-63q0-43 44-70t116-27q13 0 25 .5t23 2.5q-14 21-21 44t-7 48v65H0Zm240 0v-65q0-32 17.5-58.5T307-410q32-20 76.5-30t96.5-10q53 0 97.5 10t76.5 30q32 20 49 46.5t17 58.5v65H240Zm540 0v-65q0-26-6.5-49T754-397q11-2 22.5-2.5t23.5-.5q72 0 116 26.5t44 70.5v63H780Zm-455-80h311q-10-20-55.5-35T480-370q-55 0-100.5 15T325-320ZM160-440q-33 0-56.5-23.5T80-520q0-34 23.5-57t56.5-23q34 0 57 23t23 57q0 33-23 56.5T160-440Zm640 0q-33 0-56.5-23.5T720-520q0-34 23.5-57t56.5-23q34 0 57 23t23 57q0 33-23 56.5T800-440Zm-320-40q-50 0-85-35t-35-85q0-51 35-85.5t85-34.5q51 0 85.5 34.5T600-600q0 50-34.5 85T480-480Zm0-80q17 0 28.5-11.5T520-600q0-17-11.5-28.5T480-640q-17 0-28.5 11.5T440-600q0 17 11.5 28.5T480-560Zm1 240Zm-1-280Z"/></svg>
                     <span>Forum</span>
@@ -86,7 +91,7 @@
             <div class="activity-summary">
 
                 <!-- ------------------ Item Reports ------------------ -->
-                <h2 class="summary-group-title">Item Reports</h2><br>
+                <h2 class="summary-group-title">Item Reports</h2>
                 <div class="summary-grid">
                     <!-- <div class="summary-card">
                         <h3>My Total Lost Item Reports</h3>
@@ -97,25 +102,25 @@
                         <span>{{ $foundReportsCount }}</span>
                     </div> -->
                     <div class="summary-card">
-                        <h3>Pending Item Reports</h3>
+                        <h3>Pending Reports</h3>
                         <span>{{ $pendingReportsCount }}</span>
                     </div>
                     <div class="summary-card">
-                        <h3>Published Item Reports</h3>
+                        <h3>Published Reports</h3>
                         <span>{{ $publishedReportsCount }}</span>
                     </div>
                     <div class="summary-card">
-                        <h3>Rejected Item Reports</h3>
+                        <h3>Rejected Reports</h3>
                         <span>{{ $rejectedReportsCount }}</span>
                     </div>
                     <div class="summary-card">
-                        <h3>Completed Item Reports</h3>
+                        <h3>Completed Reports</h3>
                         <span>{{ $completedReportsCount }}</span>
                     </div>
-                </div><br><br>
+                </div>
 
                 <!-- ------------------ Handover Requests ------------------ -->
-                <h2 class="summary-group-title">Handover Requests</h2><br>
+                <h2 class="summary-group-title">Handover Requests</h2>
                 <div class="summary-grid">
                     <div class="summary-card">
                         <h3>New Claim Requests</h3>
@@ -126,27 +131,28 @@
                         <span>{{ $newReturnRequestsCount }}</span>
                     </div>
                     <div class="summary-card">
-                        <h3>Pending Handover Requests</h3>
+                        <h3>Pending Handovers</h3>
                         <span>{{ $pendingHandoverCount }}</span>
                     </div>
                     <div class="summary-card">
-                        <h3>Accepted Handover Requests</h3>
+                        <h3>Accepted Handovers</h3>
                         <span>{{ $acceptedHandoverCount }}</span>
                     </div>
                     <div class="summary-card">
-                        <h3>Rejected Handover Requests</h3>
+                        <h3>Rejected Handovers</h3>
                         <span>{{ $rejectedHandoverCount }}</span>
                     </div>
                 </div><br><br>
 
                 <!-- ------------------ Matches ------------------ -->
-                <h2 class="summary-group-title">Matches</h2><br>
+                <h2 class="summary-group-title">Suggested Matches</h2>
                 <div class="summary-grid">
                     <div class="summary-card">
-                        <h3>New Suggested Matches</h3>
+                        <h3>New Matches</h3>
                         <span>{{ $newSuggestedMatchesCount }}</span>
                     </div>
-                </div><br><br>
+                </div>
+                <br><br><br>
             </div>
         </div>
     </div>
