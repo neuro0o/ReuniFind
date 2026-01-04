@@ -71,15 +71,16 @@ class ItemTagController extends Controller
 
         // Generate QR code image
         $qrCodeUrl = route('tag.info', ['tagID' => $tag->tagID]);
-        $qrCodeSvg = QrCode::size(300)
-            ->style('round')
-            ->eye('circle')
+        
+        // Generate QR as PNG instead of SVG for better PDF compatibility
+        $qrCodePng = QrCode::format('png')
+            ->size(300)
             ->margin(1)
             ->generate($qrCodeUrl);
 
         // Save QR as PNG
-        $qrCodePath = 'qr_tags/tag_' . $tag->tagID . '.svg';
-        Storage::disk('public')->put($qrCodePath, $qrCodeSvg);
+        $qrCodePath = 'qr_tags/tag_' . $tag->tagID . '.png';
+        Storage::disk('public')->put($qrCodePath, $qrCodePng);
 
         // Update tag with QR image path
         $tag->update(['tagImg' => $qrCodePath]);
@@ -223,19 +224,11 @@ class ItemTagController extends Controller
             $size = 'medium';
         }
 
-        // Set paper size and orientation based on tag size
-        $paperSizes = [
-            'small' => ['width' => 50, 'height' => 50],   // 5cm × 5cm
-            'medium' => ['width' => 70, 'height' => 70],  // 7cm × 7cm
-            'large' => ['width' => 100, 'height' => 100]  // 10cm × 10cm
-        ];
-
         // Generate PDF
         $pdf = Pdf::loadView('tag.qr_tag_pdf', compact('itemTag', 'size'));
         
-        // Set custom paper size in millimeters
-        $paperSize = $paperSizes[$size];
-        $pdf->setPaper([0, 0, $paperSize['width'] * 2.83465, $paperSize['height'] * 2.83465], 'portrait');
+        // Use standard A4 page size
+        $pdf->setPaper('a4', 'portrait');
 
         $filename = 'QR_Tag_' . ucfirst($size) . '_' . str_replace(' ', '_', $itemTag->itemName) . '.pdf';
 

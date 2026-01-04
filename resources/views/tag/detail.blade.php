@@ -5,6 +5,9 @@
 @section('page-css')
     <link rel="stylesheet" href="{{ asset('css/utils/sidebar.css') }}">
     <link rel="stylesheet" href="{{ asset('css/tag/detail.css') }}">
+    <style>
+        
+    </style>
 @endsection
 
 @section('content')
@@ -55,32 +58,33 @@
                         </div>
                     </div>
 
-                    <!-- Right Side - Item QR Tag -->
+                    <!-- Right Side - Item QR Tag Preview -->
                     <div class="qr-tag-card">
-                        <h2>Item QR Tag</h2>
+                        <h2>Item QR Tag Preview</h2>
                         
-                        <div class="qr-preview">
-                            <div class="qr-box">
-                                <div class="scan-instruction">
-                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor">
-                                        <path d="M480-320q75 0 127.5-52.5T660-500q0-75-52.5-127.5T480-680q-75 0-127.5 52.5T300-500q0 75 52.5 127.5T480-320Zm0-72q-45 0-76.5-31.5T372-500q0-45 31.5-76.5T480-608q45 0 76.5 31.5T588-500q0 45-31.5 76.5T480-392Zm0 192q-146 0-266-81.5T40-500q54-137 174-218.5T480-800q146 0 266 81.5T920-500q-54 137-174 218.5T480-200Z"/>
-                                    </svg>
-                                    <p><strong>Scan & Reunite!</strong></p>
-                                </div>
+                        <!-- Actual Tag Preview (matches PDF output) -->
+                        <div class="tag-preview-container">
+                            <div class="tag-preview size-small" id="tagPreview">
+                                @if(file_exists(public_path('images/ReuniFind_Logo.png')))
+                                    <img src="{{ asset('images/ReuniFind_Logo.png') }}" class="tag-logo">
+                                @endif
                                 
-                                <!-- QR Code Display -->
-                                <div class="qr-code">
+                                <div class="tag-title">Item QR Tag</div>
+                                
+                                <div class="tag-qr">
                                     @if($itemTag->tagImg)
-                                        {!! file_get_contents(storage_path('app/public/' . $itemTag->tagImg)) !!}
+                                        <img src="{{ asset('storage/' . $itemTag->tagImg) }}" alt="QR Code">
                                     @else
-                                        <p>QR Code not generated</p>
+                                        <p style="font-size: 10px; color: #999;">QR Not Found</p>
                                     @endif
                                 </div>
-
-                                <div class="qr-info">
-                                    <p>Scan the QR Code to</p>
-                                    <p><strong>Reunite with the owner!</strong></p>
+                                
+                                <div class="tag-text">
+                                    Scan the QR Tag to<br>
+                                    Reunite the item with its owner!
                                 </div>
+                                
+                                <div class="tag-footer-text">Powered by ReuniFind</div>
                             </div>
                         </div>
 
@@ -138,28 +142,22 @@
 
                 <!-- Action Buttons -->
                 <div class="action-buttons">
-                    <a href="#" id="downloadBtn" class="btn-action primary">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
-                            <path d="M480-320 280-520l56-58 104 104v-326h80v326l104-104 56 58-200 200ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z"/>
-                        </svg>
-                        <span>Print Tag</span>
-                    </a>
-
                     <a href="{{ route('tag.my') }}" class="btn-action secondary">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
+                        <!-- <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
                             <path d="M280-600v-80h560v80H280Zm0 160v-80h560v80H280Zm0 160v-80h560v80H280ZM160-600q-17 0-28.5-11.5T120-640q0-17 11.5-28.5T160-680q17 0 28.5 11.5T200-640q0 17-11.5 28.5T160-600Zm0 160q-17 0-28.5-11.5T120-480q0-17 11.5-28.5T160-520q17 0 28.5 11.5T200-480q0 17-11.5 28.5T160-440Zm0 160q-17 0-28.5-11.5T120-320q0-17 11.5-28.5T160-360q17 0 28.5 11.5T200-320q0 17-11.5 28.5T160-280Z"/>
-                        </svg>
+                        </svg> -->
                         <span>My Registered Item</span>
                     </a>
 
-                    <a href="{{ route('tag.register') }}" class="btn-action tertiary">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
-                            <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/>
-                        </svg>
-                        <span>Register Another</span>
+                    <a href="#" id="downloadBtn" class="btn-action primary">
+                        <!-- <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
+                            <path d="M480-320 280-520l56-58 104 104v-326h80v326l104-104 56 58-200 200ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z"/>
+                        </svg> -->
+                        <span>Print Tag</span>
                     </a>
                 </div>
             </div>
+            <br><br><br><br>
         </div>
     </div>
 @endsection
@@ -170,6 +168,7 @@
         // Handle size selection
         const sizeOptions = document.querySelectorAll('.size-option');
         const downloadBtn = document.getElementById('downloadBtn');
+        const tagPreview = document.getElementById('tagPreview');
         
         sizeOptions.forEach(option => {
             option.addEventListener('click', function() {
@@ -182,6 +181,10 @@
                 // Check the radio button
                 const radio = this.querySelector('input[type="radio"]');
                 radio.checked = true;
+                
+                // Update tag preview size
+                const selectedSize = radio.value;
+                tagPreview.className = 'tag-preview size-' + selectedSize;
             });
         });
 

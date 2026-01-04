@@ -333,3 +333,4 @@ Route::get('/tag/info/{tagID}', [App\Http\Controllers\ItemTagController::class, 
 // Manual tag ID entry
 Route::get('/tag/info', [App\Http\Controllers\ItemTagController::class, 'showItemInfo'])
     ->name('tag.info.manual');
+

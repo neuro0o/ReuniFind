@@ -1,241 +1,121 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QR Tag - {{ $itemTag->itemName }}</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap');
+        @page {
+            margin: 0;
+            size: A4 portrait;
+        }
         
-        * {
+        body {
             margin: 0;
             padding: 0;
+            font-family: 'Quicksand', 'Segoe UI', sans-serif;
+        }
+        
+        .page-wrapper {
+            width: 210mm;
+            height: 297mm;
+            position: relative;
+        }
+        
+        .tag {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+
+            margin: auto;
+
+            @if($size === 'small')
+                width: 50mm;
+                height: 50mm;
+            @elseif($size === 'large')
+                width: 100mm;
+                height: 100mm;
+            @else
+                width: 70mm;
+                height: 70mm;
+            @endif
+
+            border: 1mm dashed #3A5987;
+            border-radius: @if($size === 'small') 3mm @elseif($size === 'large') 9mm @else 6mm @endif;
+            padding: @if($size === 'small') 5mm @elseif($size === 'large') 7mm @else 6mm @endif;
             box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', 'Arial', sans-serif;
-            background: white;
-            padding: {{ $size === 'small' ? '8px' : ($size === 'large' ? '15px' : '10px') }};
-        }
-
-        .qr-tag-container {
-            width: 100%;
-            height: 100%;
-            border: {{ $size === 'small' ? '2px' : '3px' }} dashed #3A5987;
-            border-radius: {{ $size === 'small' ? '10px' : ($size === 'large' ? '25px' : '15px') }};
-            padding: {{ $size === 'small' ? '10px' : ($size === 'large' ? '25px' : '15px') }};
             text-align: center;
             background: #F1F4FB;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
         }
 
-        .tag-header {
-            margin-bottom: {{ $size === 'small' ? '8px' : ($size === 'large' ? '15px' : '10px') }};
-        }
-
+        
         .logo {
-            width: {{ $size === 'small' ? '30px' : ($size === 'large' ? '60px' : '45px') }};
-            margin-bottom: {{ $size === 'small' ? '4px' : '8px' }};
-        }
-
-        .tag-header h1 {
-            font-family: 'Quicksand', sans-serif;
-            color: #3A5987;
-            font-size: {{ $size === 'small' ? '10px' : ($size === 'large' ? '20px' : '14px') }};
-            font-weight: 700;
-            margin-bottom: {{ $size === 'small' ? '2px' : '4px' }};
-        }
-
-        .tag-header p {
-            color: #666;
-            font-size: {{ $size === 'small' ? '6px' : ($size === 'large' ? '10px' : '8px') }};
-            font-weight: 500;
-        }
-
-        .divider {
-            height: {{ $size === 'small' ? '1px' : '2px' }};
-            background: #3A5987;
-            margin: {{ $size === 'small' ? '8px 0' : '12px 0' }};
-            border-radius: 2px;
-        }
-
-        .qr-section {
-            background: white;
-            padding: {{ $size === 'small' ? '8px' : ($size === 'large' ? '18px' : '12px') }};
-            border-radius: {{ $size === 'small' ? '8px' : '12px' }};
-            margin: {{ $size === 'small' ? '8px 0' : '12px 0' }};
-            box-shadow: 0 2px 8px rgba(58, 89, 135, 0.1);
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .scan-text {
-            color: #3A5987;
-            font-weight: 600;
-            font-size: {{ $size === 'small' ? '7px' : ($size === 'large' ? '12px' : '9px') }};
-            margin-bottom: {{ $size === 'small' ? '6px' : ($size === 'large' ? '12px' : '8px') }};
-        }
-
-        .qr-code {
-            width: 100%;
-            margin: 0 auto;
-            padding: {{ $size === 'small' ? '4px' : ($size === 'large' ? '10px' : '6px') }};
-            background: white;
-            border: {{ $size === 'small' ? '1px' : '2px' }} solid #D5DEEF;
-            border-radius: {{ $size === 'small' ? '6px' : '8px' }};
-        }
-
-        .qr-code svg {
-            width: 100%;
+            width: @if($size === 'small') 6mm @elseif($size === 'large') 12mm @else 9mm @endif;
             height: auto;
+            margin: @if($size === 'small') 0 auto 0.5mm @else 0 auto 1mm @endif;
             display: block;
         }
-
-        .reunite-text {
-            margin-top: {{ $size === 'small' ? '6px' : ($size === 'large' ? '12px' : '8px') }};
+        
+        .title {
+            font-size: @if($size === 'small') 2.5mm @elseif($size === 'large') 4.5mm @else 3.5mm @endif;
+            font-weight: bold;
+            color: #3A5987;
+            margin: @if($size === 'small') 1mm 0 2mm @else 1.5mm 0 3mm @endif;
+        }
+        
+        .qr {
+            width: @if($size === 'small') 24mm @elseif($size === 'large') 48mm @else 34mm @endif;
+            height: @if($size === 'small') 24mm @elseif($size === 'large') 48mm @else 34mm @endif;
+            padding: @if($size === 'small') 1.5mm @elseif($size === 'large') 3mm @else 2mm @endif;
+            box-sizing: border-box;
+            margin: 0 auto @if($size === 'small') 2mm @else 3mm @endif;
+            overflow: hidden;
+        }
+        
+        .qr img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            border: 0.5mm solid #3A5987;
+        }
+        
+        .text {
+            font-size: @if($size === 'small') 2mm @elseif($size === 'large') 3.4mm @else 2.7mm @endif;
+            color: #3A5987;
+            line-height: 1.2;
+            margin: @if($size === 'small') 2mm 0 @else 3mm 0 @endif;
+        }
+        
+        .footer {
+            font-size: @if($size === 'small') 1.5mm @elseif($size === 'large') 2.5mm @else 2mm @endif;
             color: #666;
-            font-size: {{ $size === 'small' ? '6px' : ($size === 'large' ? '10px' : '8px') }};
-            line-height: 1.4;
-        }
-
-        .reunite-text strong {
-            color: #3A5987;
-            font-weight: 600;
-        }
-
-        @if($size !== 'small')
-        .item-info {
-            background: white;
-            padding: {{ $size === 'large' ? '12px' : '8px' }};
-            border-radius: {{ $size === 'large' ? '10px' : '8px' }};
-            text-align: left;
-            margin-top: {{ $size === 'large' ? '15px' : '10px' }};
-        }
-
-        .item-info h2 {
-            font-family: 'Quicksand', sans-serif;
-            color: #3A5987;
-            font-size: {{ $size === 'large' ? '14px' : '10px' }};
-            font-weight: 600;
-            margin-bottom: {{ $size === 'large' ? '8px' : '6px' }};
-            border-bottom: {{ $size === 'large' ? '2px' : '1px' }} solid #D5DEEF;
-            padding-bottom: {{ $size === 'large' ? '6px' : '4px' }};
-        }
-
-        .info-row {
-            margin: {{ $size === 'large' ? '6px 0' : '4px 0' }};
-            font-size: {{ $size === 'large' ? '9px' : '7px' }};
-        }
-
-        .info-row strong {
-            color: #3A5987;
-            font-weight: 600;
-            display: inline-block;
-            width: {{ $size === 'large' ? '60px' : '45px' }};
-        }
-
-        .info-row span {
-            color: #333;
-        }
-        @endif
-
-        .tag-footer {
-            margin-top: {{ $size === 'small' ? '8px' : ($size === 'large' ? '15px' : '10px') }};
-            padding-top: {{ $size === 'small' ? '6px' : ($size === 'large' ? '12px' : '8px') }};
-            border-top: {{ $size === 'small' ? '1px' : '2px' }} solid #D5DEEF;
-        }
-
-        .tag-id {
-            font-size: {{ $size === 'small' ? '5px' : ($size === 'large' ? '9px' : '7px') }};
-            color: #999;
-            font-weight: 500;
-        }
-
-        .website {
-            font-size: {{ $size === 'small' ? '6px' : ($size === 'large' ? '11px' : '8px') }};
-            color: #3A5987;
-            font-weight: 600;
-            margin-top: {{ $size === 'small' ? '2px' : '4px' }};
-        }
-
-        /* Print-specific styles */
-        @media print {
-            body {
-                padding: 0;
-            }
-
-            .qr-tag-container {
-                border-color: #3A5987;
-                page-break-inside: avoid;
-            }
+            margin-top: @if($size === 'small') 2mm @else 3mm @endif;
         }
     </style>
 </head>
 <body>
-    <div class="qr-tag-container">
-        <!-- Header -->
-        <div class="tag-header">
-            @if($size !== 'small')
-            <img src="{{ public_path('images/ReuniFind_Logo.png') }}" alt="ReuniFind Logo" class="logo">
+    <div class="page-wrapper">
+        <div class="tag">
+            @if(file_exists(public_path('images/ReuniFind_Logo.png')))
+                <img src="{{ public_path('images/ReuniFind_Logo.png') }}" class="logo">
             @endif
-            <h1>ReuniFind</h1>
-            <p>Item QR Tag</p>
-        </div>
-
-        <div class="divider"></div>
-
-        <!-- QR Code Section -->
-        <div class="qr-section">
-            <p class="scan-text">🔍 SCAN & REUNITE!</p>
             
-            <div class="qr-code">
-                {!! file_get_contents(storage_path('app/public/' . $itemTag->tagImg)) !!}
-            </div>
-
-            <div class="reunite-text">
-                <p>Scan the QR Code to</p>
-                <p><strong>reunite with the owner!</strong></p>
-            </div>
-        </div>
-
-        @if($size !== 'small')
-        <!-- Item Information (Medium and Large only) -->
-        <div class="item-info">
-            <h2>Item Details</h2>
+            <div class="title">Item QR Tag</div>
             
-            <div class="info-row">
-                <strong>Item:</strong>
-                <span>{{ Str::limit($itemTag->itemName, $size === 'large' ? 30 : 20) }}</span>
+            <div class="qr">
+                @php
+                    $qrPath = storage_path('app/public/' . $itemTag->tagImg);
+                @endphp
+                @if(file_exists($qrPath))
+                    <img src="{{ $qrPath }}" style="width: 100%; height: 100%; display: block;">
+                @else
+                    <div style="background: #f0f0f0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 8px;">QR Not Found</div>
+                @endif
             </div>
-
-            <div class="info-row">
-                <strong>Category:</strong>
-                <span>{{ $itemTag->category->categoryName }}</span>
-            </div>
-
-            <div class="info-row">
-                <strong>Owner:</strong>
-                <span>{{ Str::limit($itemTag->user->userName, $size === 'large' ? 25 : 15) }}</span>
-            </div>
-
-            @if($itemTag->user->contactInfo && $size === 'large')
-            <div class="info-row">
-                <strong>Contact:</strong>
-                <span>{{ Str::limit($itemTag->user->contactInfo, 20) }}</span>
-            </div>
-            @endif
-        </div>
-        @endif
-
-        <!-- Footer -->
-        <div class="tag-footer">
-            <p class="tag-id">Tag ID: #{{ str_pad($itemTag->tagID, 5, '0', STR_PAD_LEFT) }}</p>
-            <p class="website">reunifind.com</p>
+            
+            <div class="text">Scan the QR Tag to<br>Reunite the item with its owner!</div>
+            
+            <div class="footer">Powered by ReuniFind</div>
         </div>
     </div>
 </body>
