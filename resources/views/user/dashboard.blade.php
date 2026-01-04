@@ -152,6 +152,10 @@
                         <h3>Rejected Handovers</h3>
                         <span>{{ $rejectedHandoverCount }}</span>
                     </div>
+                    <div class="summary-card">
+                        <h3>Completed Handovers</h3>
+                        <span>{{ $completedHandoverCount }}</span>
+                    </div>
                 </div><br><br>
 
                 <!-- ------------------ Matches ------------------ -->

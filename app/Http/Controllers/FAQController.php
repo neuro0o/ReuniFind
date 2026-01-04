@@ -23,7 +23,7 @@ class FAQController extends Controller
             });
         }
 
-        $faqs = $query->orderBy('created_at', 'asc')->get();
+        $faqs = $query->orderBy('faqID', 'asc')->get();
 
         return view('faq.index', compact('faqs'));
     }

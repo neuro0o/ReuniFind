@@ -349,6 +349,22 @@
                 this.style.height = 'auto';
                 this.style.height = (this.scrollHeight) + 'px';
             });
+
+            // Enter to send, Shift+Enter for new line
+            textarea.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    
+                    // Check if there's text or an image
+                    const hasText = this.value.trim().length > 0;
+                    const hasImage = document.getElementById('messageImg').files.length > 0;
+                    
+                    if (hasText || hasImage) {
+                        // Trigger form submission
+                        document.getElementById('messageForm').dispatchEvent(new Event('submit'));
+                    }
+                }
+            });
         }
 
         // Preview image before upload

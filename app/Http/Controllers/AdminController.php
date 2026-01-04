@@ -160,7 +160,7 @@ class AdminController extends Controller
             'pendingLostReports', 'pendingFoundReports',
             'unresolvedCases', 'completedCases', 'successRate',
             'totalReportsThisMonth', 'lostReportsThisMonth', 'foundReportsThisMonth',
-            'unresolvedCasesThisMonth', 'completedCasesThisMonth', 'monthlySuccessRate',
+            'unresolvedCasesThisMonth', 'completedCasesThisMonth', 'totalHandoverAttemptsThisMonth', 'monthlySuccessRate',
             'topLostCategories', 'topFoundCategories',
             'topLostLocations', 'topFoundLocations'
         );
@@ -445,7 +445,7 @@ class AdminController extends Controller
     // -------------------- FAQ Management -------------------- //
     public function faqs()
     {
-        $faqs = \App\Models\FAQ::orderBy('created_at', 'asc')->get();
+        $faqs = \App\Models\FAQ::orderBy('faqID', 'asc')->get();
         return view('admin.faqs.index', compact('faqs'));
     }
 

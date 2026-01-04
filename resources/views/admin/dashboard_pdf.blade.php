@@ -275,7 +275,7 @@
                 <div class="number">{{ $unresolvedCases }}</div>
                 <div class="description">Waiting for handover completion</div>
             </div>
-            <div class="stat-box">
+            <div class="stat-box completed">
                 <h3>Completed Cases</h3>
                 <div class="number">{{ $completedCases }}</div>
                 <div class="description">Items successfully reunited</div>
@@ -317,7 +317,7 @@
             <div class="stat-box">
                 <h3>Monthly Success Rate</h3>
                 <div class="number">{{ $monthlySuccessRate }}%</div>
-                <div class="description">Handover completion rate</div>
+                <div class="description">{{ $completedCasesThisMonth }} successful handovers out of {{ $totalHandoverAttemptsThisMonth + \App\Models\HandoverRequest::whereIn('requestStatus', ['Pending', 'Approved', 'Rejected'])->count() }} total attempts</div>
             </div>
         </div>
     </div>

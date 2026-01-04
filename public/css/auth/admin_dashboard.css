@@ -188,12 +188,13 @@ hr {
 
 /* ==================== SUCCESS RATE CARD ==================== */
 .success-rate-card {
-  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  background: #3A5987;
+  /* background: linear-gradient(135deg, #28a745 0%, #20c997 100%); */
   border-radius: 12px;
   padding: 2rem;
   margin: 2rem 0;
   color: white;
-  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+  box-shadow: 0 4px 12px rgba(58, 89, 135, 0.7);
 }
 
 .success-rate-card .rate-content {
@@ -207,6 +208,7 @@ hr {
   margin: 0;
   font-size: var(--fs-md);
   font-weight: var(--fw-semibold);
+  color: var(--color-secondary);
 }
 
 .success-rate-card .rate-display {

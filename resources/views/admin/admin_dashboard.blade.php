@@ -189,11 +189,19 @@
                         <h3>Completed This Month</h3>
                         <span class="stat-number">{{ $completedCasesThisMonth }}</span>
                     </div>
+                </div>
 
-                    <div class="summary-card monthly highlight">
+                <!-- Success Rate Indicator -->
+                <div class="success-rate-card">
+                    <div class="rate-content">
                         <h3>Monthly Success Rate</h3>
-                        <span class="stat-number">{{ $monthlySuccessRate }}%</span>
-                        <p class="card-description">Handover completion rate</p>
+                        <div class="rate-display">
+                            <span class="rate-number">{{ $successRate }}%</span>
+                            <p>{{ $completedCasesThisMonth }} out of {{ $totalHandoverAttemptsThisMonth + \App\Models\HandoverRequest::whereIn('requestStatus', ['Pending', 'Approved', 'Rejected'])->count() }} handover attempts succeeded</p>
+                        </div>
+                    </div>
+                    <div class="rate-bar">
+                        <div class="rate-fill" style="width: {{ $successRate }}%"></div>
                     </div>
                 </div>
 

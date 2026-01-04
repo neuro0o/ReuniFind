@@ -44,27 +44,50 @@ class UserDashboardController extends Controller
         })->where('matchStatus', 'suggested')
             ->count();
 
-        // ---------------- Handover Requests ----------------
+        // ---------------- Handover Requests (BOTH SENDER AND RECIPIENT) ----------------
+        
+        // New Claim Requests (as recipient only - you receive claim requests)
         $newClaimRequestsCount = HandoverRequest::where('requestType', 'Claim')
             ->where('requestStatus', 'Pending')
             ->where('recipientID', $userId)
             ->count();
 
+        // New Return Requests (as recipient only - you receive return requests)
         $newReturnRequestsCount = HandoverRequest::where('requestType', 'Return')
             ->where('requestStatus', 'Pending')
             ->where('recipientID', $userId)
             ->count();
 
+        // Pending Handovers (as BOTH sender OR recipient)
         $pendingHandoverCount = HandoverRequest::where('requestStatus', 'Pending')
-            ->where('recipientID', $userId)
+            ->where(function($query) use ($userId) {
+                $query->where('recipientID', $userId)
+                      ->orWhere('senderID', $userId);
+            })
             ->count();
 
-        $acceptedHandoverCount = HandoverRequest::where('requestStatus', 'Accepted')
-            ->where('recipientID', $userId)
+        // Accepted Handovers (as BOTH sender OR recipient)
+        $acceptedHandoverCount = HandoverRequest::where('requestStatus', 'Approved')
+            ->where(function($query) use ($userId) {
+                $query->where('recipientID', $userId)
+                      ->orWhere('senderID', $userId);
+            })
             ->count();
 
+        // Rejected Handovers (as BOTH sender OR recipient)
         $rejectedHandoverCount = HandoverRequest::where('requestStatus', 'Rejected')
-            ->where('recipientID', $userId)
+            ->where(function($query) use ($userId) {
+                $query->where('recipientID', $userId)
+                      ->orWhere('senderID', $userId);
+            })
+            ->count();
+
+        // Completed Handovers (as BOTH sender OR recipient)
+        $completedHandoverCount = HandoverRequest::where('requestStatus', 'Completed')
+            ->where(function($query) use ($userId) {
+                $query->where('recipientID', $userId)
+                      ->orWhere('senderID', $userId);
+            })
             ->count();
 
         return view('user.dashboard', compact(
@@ -79,7 +102,8 @@ class UserDashboardController extends Controller
             'newReturnRequestsCount',
             'pendingHandoverCount',
             'acceptedHandoverCount',
-            'rejectedHandoverCount'
+            'rejectedHandoverCount',
+            'completedHandoverCount'
         ));
     }
 }
