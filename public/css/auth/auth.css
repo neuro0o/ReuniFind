@@ -91,15 +91,15 @@
   }
 }
 
-@media (max-width: 376px) {
+@media (max-width: 426px) {
   .logo img {
   width: 70px;
   }
 
   .form-card {
     margin: 0.8rem 0;
-    width: 70%;
-    padding: 20px 20px;
+    width: 65%;
+    padding: 15px 15px;
   }
 
   #form-title {
@@ -111,12 +111,12 @@
   }
 
   .form-card input {
-  padding: 10px 12px;
+  padding: 8px 10px;
   font-size: var(--fs-sm);
 }
 
   .form-card button {
-    padding: 1.5rem 0rem;
+    padding: 1rem 0rem;
   }
 }
 
