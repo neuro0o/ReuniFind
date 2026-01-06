@@ -27,7 +27,7 @@
             </div>
 
             <!-- Quick Actions Section (Hidden in Print) -->
-            <div class="print-hide">
+            <!-- <div class="print-hide">
                 <h1 class="section-title">Quick Actions</h1>
                 <hr>
                 <div class="quick-actions">
@@ -76,7 +76,7 @@
                         <span>Manage Forum</span>
                     </a>
                 </div>
-            </div>
+            </div> -->
 
             <!-- Analytics Section -->
             <div class="analytics-section">
